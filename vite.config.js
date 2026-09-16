@@ -15,6 +15,13 @@ export default defineConfig({
         'pwa-192.png',
         'pwa-512.png',
         'pwa-maskable-512.png',
+        'brand/bg-pitch.png',
+        'brand/hero-campeao.png',
+        'brand/btn-ball.png',
+        'brand/btn-trophy.png',
+        'brand/btn-shield.png',
+        'brand/btn-calendar.png',
+        '.nojekyll',
       ],
       manifest: {
         name: 'Palmeiras Hub',

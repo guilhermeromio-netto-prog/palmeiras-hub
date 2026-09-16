@@ -1,9 +1,9 @@
 {
   "name": "palmeiras-hub",
   "private": true,
-  "version": "3.2.0",
+  "version": "3.3.0",
   "type": "module",
-  "description": "Hub pessoal de torcedor do Palmeiras — PWA, ao vivo, preferências, filtros, favoritos (fontes públicas)",
+  "description": "Hub pessoal Palmeiras \u2014 UI glass + ao vivo + prefer\u00eancias (fontes p\u00fablicas)",
   "scripts": {
     "dev": "vite",
     "dev:proxy": "concurrently -k -n proxy,web -c green,cyan \"node server/index.js\" \"vite\"",

@@ -18,14 +18,16 @@ import { isMatchDaySP, isTodaySP } from './utils/datetime'
 import { matchTitle } from './utils/format'
 import './App.css'
 
-const CREST = `${import.meta.env.BASE_URL}palmeiras-crest.svg`
+const BASE = import.meta.env.BASE_URL
+const CREST = `${BASE}palmeiras-crest.svg`
+const BG_PITCH = `${BASE}brand/bg-pitch.png`
 
 const TABS = [
-  { id: 'home', label: 'Início', icon: '🏠' },
-  { id: 'calendar', label: 'Jogos', icon: '📅' },
-  { id: 'team', label: 'Time', icon: '👕' },
-  { id: 'tables', label: 'Tabelas', icon: '📊' },
-  { id: 'news', label: 'Notícias', icon: '📰' },
+  { id: 'calendar', label: 'Jogos', icon: `${BASE}brand/btn-calendar.png` },
+  { id: 'team', label: 'Time', icon: `${BASE}brand/btn-shield.png` },
+  { id: 'home', label: 'Início', icon: `${BASE}brand/btn-ball.png`, primary: true },
+  { id: 'tables', label: 'Tabelas', icon: `${BASE}brand/btn-trophy.png` },
+  { id: 'news', label: 'Notícias', icon: `${BASE}brand/btn-ball.png`, news: true },
 ]
 
 export default function App() {
@@ -47,6 +49,7 @@ export default function App() {
 
   const appClass = [
     'app',
+    'app--glass',
     matchDay ? 'matchday' : '',
     prefs.fontSize === 'large' ? 'font-large' : '',
     prefs.compactMode ? 'compact' : '',
@@ -56,8 +59,12 @@ export default function App() {
 
   return (
     <div className={appClass}>
-      <div className="pitch-bg" aria-hidden="true" />
-      <header className="topbar">
+      <div
+        className="pitch-bg"
+        aria-hidden="true"
+        style={{ '--pitch-img': `url(${BG_PITCH})` }}
+      />
+      <header className="topbar topbar--glass">
         <div className="brand">
           <img
             className="crest crest--header"
@@ -133,16 +140,27 @@ export default function App() {
         update={update}
       />
 
-      <nav className="tabbar" aria-label="Seções">
+      <nav className="tabbar tabbar--liquid" aria-label="Seções">
         {TABS.map((t) => (
           <button
             key={t.id}
             type="button"
-            className={tab === t.id ? 'active' : ''}
+            className={[
+              'tab-liquid',
+              tab === t.id ? 'active' : '',
+              t.primary ? 'tab-liquid--primary' : '',
+              t.news ? 'tab-liquid--news' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
             onClick={() => setTab(t.id)}
+            aria-current={tab === t.id ? 'page' : undefined}
           >
-            <span aria-hidden="true">{t.icon}</span>
-            {t.label}
+            <span className="tab-liquid__orb">
+              <img src={t.icon} alt="" width={56} height={56} decoding="async" />
+              {t.news && <span className="tab-liquid__badge" aria-hidden="true">📰</span>}
+            </span>
+            <span className="tab-liquid__label">{t.label}</span>
           </button>
         ))}
       </nav>

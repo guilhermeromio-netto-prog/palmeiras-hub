@@ -15,7 +15,9 @@ import {
   resultShareText,
 } from '../utils/share'
 
-const CREST = `${import.meta.env.BASE_URL}palmeiras-crest.svg`
+const BASE = import.meta.env.BASE_URL
+const CREST = `${BASE}palmeiras-crest.svg`
+const HERO = `${BASE}brand/hero-campeao.png`
 
 export default function Home({
   data,
@@ -51,13 +53,21 @@ export default function Home({
 
   return (
     <section className="page home">
-      <div className="hero-strip">
-        <img className="crest crest--hero" src={CREST} width={64} height={64} alt="" decoding="async" />
-        <div>
-          <p className="eyebrow">{matchDay ? 'Dia de jogo' : 'Hub do torcedor'}</p>
-          <h2>Avanti Palestra</h2>
-          <p className="lede">
-            Próximo jogo, elenco, escalação e tabelas — dados públicos a cada abertura
+      <div className="hero-campeao">
+        <img
+          className="hero-campeao__img"
+          src={HERO}
+          alt=""
+          decoding="async"
+          fetchPriority="high"
+        />
+        <div className="hero-campeao__veil" aria-hidden="true" />
+        <div className="hero-campeao__copy">
+          <img className="crest crest--hero" src={CREST} width={52} height={52} alt="" decoding="async" />
+          <p className="eyebrow">{matchDay ? 'Dia de jogo' : 'Palmeiras Hub'}</p>
+          <h2 className="hero-campeao__title">O Maior Campeão</h2>
+          <p className="lede hero-campeao__lede">
+            Avanti Palestra — jogos, elenco e tabelas com fontes públicas
             {liveMatch?.polling ? ' · placar ao vivo ativo' : ''}.
           </p>
         </div>

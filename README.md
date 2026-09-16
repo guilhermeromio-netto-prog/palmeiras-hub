@@ -2,6 +2,8 @@
 
 App pessoal de torcedor do **Palmeiras**: próximo jogo, **placar ao vivo**, countdown, H2H, calendário com filtros, elenco com favoritos, escalação/tática, cartões, tabelas, notícias + ticker RSS, preferências locais e “desde a última vez” — UI em pt-BR, estética verdão (sem marcas oficiais do clube).
 
+**UI next-gen:** fundo de estádio imersivo, hero “O Maior Campeão”, cards em glassmorphism e navegação liquid-glass com ícones de bola/troféu/escudo/calendário (arte inspirada no Verdão — **não** são marcas oficiais do clube).
+
 **PWA** instalável no celular. **Sem API keys.** A cada abertura a página busca dados frescos em fontes públicas; se houver jogo ao vivo, o centro de partida faz polling na ESPN.
 
 **Live:** https://guilhermeromio-netto-prog.github.io/palmeiras-hub/
