@@ -11,32 +11,18 @@ import {
 import { fetchSportsDbNextLast } from './sportsdb.js'
 import { fetchPalmeirasNews } from './news.js'
 import { fetchWikiScorers } from './wikipedia.js'
+import { mergeMatchesByKey } from '../../utils/matchKey.js'
+import { applyStandingsMovement } from '../../utils/standingsMovement.js'
 
 function mergeUpcoming(primary, extra) {
-  const map = new Map()
-  const keyOf = (m) =>
-    `${(m.date || '').slice(0, 16)}|${(m.homeTeam || '').toLowerCase()}|${(m.awayTeam || '').toLowerCase()}`
-  for (const m of [...(primary || []), ...(extra || [])]) {
-    if (!m?.date) continue
-    const k = keyOf(m)
-    if (!map.has(k)) map.set(k, m)
-  }
   const now = Date.now() - 60 * 60 * 1000
-  return [...map.values()]
+  return mergeMatchesByKey(primary, extra)
     .filter((m) => m.status === 'SCHEDULED' && new Date(m.date).getTime() >= now)
     .sort((a, b) => new Date(a.date) - new Date(b.date))
 }
 
 function mergeResults(primary, extra) {
-  const map = new Map()
-  const keyOf = (m) =>
-    `${(m.date || '').slice(0, 16)}|${(m.homeTeam || '').toLowerCase()}|${(m.awayTeam || '').toLowerCase()}`
-  for (const m of [...(primary || []), ...(extra || [])]) {
-    if (!m) continue
-    const k = keyOf(m)
-    if (!map.has(k)) map.set(k, m)
-  }
-  return [...map.values()]
+  return mergeMatchesByKey(primary, extra)
     .filter((m) => m.status === 'FINISHED')
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 16)
@@ -139,9 +125,22 @@ export async function buildHubFromPublicSources({ signal } = {}) {
     errors.push(`Escalação: ${err.message}`)
   }
 
+  const rawCompetitions = standingsRes?.competitions || []
+  const competitions = applyStandingsMovement(rawCompetitions)
+
+  // Keep BSA standings in sync with movement-enriched table
+  const bsa = competitions.find((c) => c.competitionCode === 'BSA')
+  const standings = bsa
+    ? { competition: bsa.competition, season: bsa.season, table: bsa.table }
+    : standingsRes?.standings || {
+        competition: 'Brasileirão Série A',
+        season: String(new Date().getFullYear()),
+        table: [],
+      }
+
   const hasFootball =
-    Boolean(standingsRes?.standings?.table?.length) ||
-    Boolean(standingsRes?.competitions?.length) ||
+    Boolean(standings?.table?.length) ||
+    Boolean(competitions.length) ||
     recentResults.length > 0 ||
     upcoming.length > 0 ||
     Boolean(rosterRes?.squad?.length)
@@ -178,12 +177,8 @@ export async function buildHubFromPublicSources({ signal } = {}) {
     form,
     recentResults,
     upcoming,
-    standings: standingsRes?.standings || {
-      competition: 'Brasileirão Série A',
-      season: String(new Date().getFullYear()),
-      table: [],
-    },
-    competitions: standingsRes?.competitions || [],
+    standings,
+    competitions,
     stats: standingsRes?.stats || null,
     topScorers: scorersRes?.topScorers || [],
     squad: rosterRes?.squad || [],
@@ -197,5 +192,7 @@ export async function buildHubFromPublicSources({ signal } = {}) {
     newsErrors: newsRes?.errors || [],
     errors,
     fromCache: false,
+    movementNote:
+      'Setas: ESPN rankChange quando disponível; senão, comparação com a visita anterior (localStorage).',
   }
 }

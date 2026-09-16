@@ -1,4 +1,14 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { movementGlyph } from '../utils/standingsMovement'
+
+function MovementCell({ row }) {
+  const g = movementGlyph(row.movement)
+  return (
+    <span className={`move move--${g.tone}`} title={g.label} aria-label={g.label}>
+      {g.symbol}
+    </span>
+  )
+}
 
 function StandingsTable({ table }) {
   if (!table?.length) {
@@ -10,6 +20,7 @@ function StandingsTable({ table }) {
         <thead>
           <tr>
             <th>#</th>
+            <th aria-label="Movimento" />
             <th>Clube</th>
             <th>P</th>
             <th>J</th>
@@ -26,8 +37,11 @@ function StandingsTable({ table }) {
             const isPal = row.highlight || /palmeiras/i.test(row.team)
             return (
               <tr key={`${row.position}-${row.team}`} className={isPal ? 'highlight' : ''}>
-                <td>{row.position}</td>
-                <td>{row.team}</td>
+                <td className="pos-cell">{row.position}</td>
+                <td className="move-cell">
+                  <MovementCell row={row} />
+                </td>
+                <td className="team-cell">{row.team}</td>
                 <td>
                   <strong>{row.points}</strong>
                 </td>
@@ -51,29 +65,30 @@ export default function Competitions({ data }) {
   const comps = data.competitions || []
   const scorers = data.topScorers || []
   const stats = data.stats
-  const [open, setOpen] = useState(comps[0] ? keyOf(comps[0], 0) : null)
 
-  // Fallback: if competitions empty but standings.table exists
-  const list =
-    comps.length > 0
-      ? comps
-      : data.standings?.table?.length
-        ? [
-            {
-              competition: data.standings.competition,
-              competitionCode: 'BSA',
-              group: null,
-              season: data.standings.season,
-              table: data.standings.table,
-            },
-          ]
-        : []
+  const list = useMemo(() => {
+    if (comps.length > 0) return comps
+    if (data.standings?.table?.length) {
+      return [
+        {
+          competition: data.standings.competition,
+          competitionCode: 'BSA',
+          group: null,
+          season: data.standings.season,
+          table: data.standings.table,
+        },
+      ]
+    }
+    return []
+  }, [comps, data.standings])
+
+  const [open, setOpen] = useState(list[0] ? keyOf(list[0], 0) : null)
 
   return (
     <section className="page competitions">
       <h2>Campeonatos</h2>
       <p className="lede">
-        Classificação de todas as competições em que o Palmeiras aparece nas fontes públicas.
+        Classificação com setas de movimento (↑↓→) vs rodada anterior — Palmeiras em destaque.
       </p>
 
       {stats && (
@@ -133,7 +148,8 @@ export default function Competitions({ data }) {
       </div>
 
       <p className="source-hint">
-        Fonte: ESPN · Copa do Brasil (mata-mata) pode não ter tabela de pontos.
+        Fonte: ESPN · Setas: rankChange quando a API envia; senão, delta da visita anterior
+        (localStorage). Copa do Brasil (mata-mata) pode não ter tabela.
       </p>
 
       <h3 className="section-title">Artilharia</h3>

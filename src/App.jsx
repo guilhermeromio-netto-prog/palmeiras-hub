@@ -10,6 +10,8 @@ import Competitions from './components/Competitions'
 import News from './components/News'
 import './App.css'
 
+const CREST = `${import.meta.env.BASE_URL}palmeiras-crest.svg`
+
 const TABS = [
   { id: 'home', label: 'Início', icon: '🏠' },
   { id: 'calendar', label: 'Jogos', icon: '📅' },
@@ -27,15 +29,20 @@ export default function App() {
       <div className="pitch-bg" aria-hidden="true" />
       <header className="topbar">
         <div className="brand">
-          <div className="monogram sm" aria-hidden="true">
-            <span>P</span>
-          </div>
+          <img
+            className="crest crest--header"
+            src={CREST}
+            width={44}
+            height={44}
+            alt=""
+            decoding="async"
+          />
           <div>
             <strong>Palmeiras Hub</strong>
             <span className="brand-sub">torcedor · pessoal</span>
           </div>
         </div>
-        <button type="button" className="btn ghost" onClick={reload} disabled={loading}>
+        <button type="button" className="btn ghost touch" onClick={reload} disabled={loading}>
           {loading ? 'Atualizando…' : 'Atualizar'}
         </button>
       </header>

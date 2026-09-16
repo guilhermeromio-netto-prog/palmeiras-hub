@@ -37,7 +37,7 @@ Cada seção mostra a origem e o banner **Atualizado às HH:MM** (America/Sao_Pa
 | **Início** | Próximo jogo, forma V-E-D, atalhos (elenco / tática / cartões) |
 | **Jogos** | Próximos + recentes (multi-competição) |
 | **Time** | Elenco · Escalação (gramado CSS) · Cartões |
-| **Tabelas** | Accordion com classificação de cada campeonato + artilharia |
+| **Tabelas** | Accordion com classificação + setas ↑↓→ (ESPN `rankChange` ou delta localStorage) + artilharia |
 | **Notícias** | Manchetes com link ao original |
 
 ## Limitações honestas
@@ -47,7 +47,10 @@ Cada seção mostra a origem e o banner **Atualizado às HH:MM** (America/Sao_Pa
 - **Cartões**: refletem stats de temporada do roster ESPN (Brasileirão), não necessariamente todos os campeonatos.
 - **Calendário longo**: scoreboards cobrem ~14 dias; TheSportsDB free reforça 1 próximo/1 último.
 - **Sem API-Football**: de propósito.
+- **Agenda sem duplicatas**: jogos mesclados por dia (America/Sao_Paulo) + código da competição + mando (casa/fora), para unificar ESPN e TheSportsDB mesmo com nomes diferentes (ex. Liga de Quito / LDU Quito).
+- **Setas na tabela**: preferem `rankChange` da ESPN; se vier 0/ausente, comparam com o snapshot da visita anterior em `localStorage`.
+- **Brasão**: SVG próprio verde-branco-vermelho em `public/` (Wikimedia bloqueou download neste ambiente; não hotlink).
 
 ## Aviso
 
-Projeto **não oficial**, feito por torcedor. Identidade visual geométrica própria — não reproduz logotipos ou marcas registradas do SEP.
+Projeto **não oficial**, feito por torcedor. Brasão estilizado inspirado nas cores clássicas (verde, branco e vermelho) — não é o escudo oficial registrado do SEP.

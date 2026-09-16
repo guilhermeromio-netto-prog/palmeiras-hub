@@ -1,4 +1,5 @@
 import { formatDateTime, matchTitle, scoreLine } from '../utils/format'
+import { matchDedupeKey } from '../utils/matchKey'
 
 function MatchRow({ m }) {
   return (
@@ -46,7 +47,7 @@ export default function Calendar({ data }) {
           </p>
         )}
         {upcoming.map((m) => (
-          <MatchRow key={m.id} m={m} />
+          <MatchRow key={matchDedupeKey(m) || m.id} m={m} />
         ))}
       </div>
 
@@ -54,7 +55,7 @@ export default function Calendar({ data }) {
       <div className="list-stack">
         {recent.length === 0 && <p className="muted">Sem resultados recentes.</p>}
         {recent.map((m) => (
-          <MatchRow key={m.id} m={m} />
+          <MatchRow key={matchDedupeKey(m) || m.id} m={m} />
         ))}
       </div>
     </section>

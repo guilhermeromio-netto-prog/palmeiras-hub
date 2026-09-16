@@ -38,13 +38,26 @@ function mapEvent(e, finished) {
     ? 'LIB'
     : /copa do brasil|brazil cup/i.test(league)
       ? 'CDB'
-      : /serie a|brasileir|brazil/i.test(league)
-        ? 'BSA'
-        : 'OTH'
+      : /paulista/i.test(league)
+        ? 'PAU'
+        : /serie a|brasileir/i.test(league)
+          ? 'BSA'
+          : 'OTH'
+
+  const competition =
+    code === 'LIB'
+      ? 'Libertadores'
+      : code === 'BSA'
+        ? 'Brasileirão Série A'
+        : code === 'CDB'
+          ? 'Copa do Brasil'
+          : code === 'PAU'
+            ? 'Paulistão'
+            : league.replace(/^Brazilian Serie A$/i, 'Brasileirão Série A')
 
   return {
     id: `tsdb-${e.idEvent}`,
-    competition: league.replace(/^Brazilian Serie A$/i, 'Brasileirão Série A'),
+    competition,
     competitionCode: code,
     homeTeam: home,
     awayTeam: away,

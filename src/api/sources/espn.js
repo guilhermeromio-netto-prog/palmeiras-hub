@@ -144,6 +144,10 @@ function mapStandingEntry(row) {
   }
   const teamName = row.team?.displayName || row.team?.name || '—'
   const id = String(row.team?.id || '')
+  const rankChangeRaw = stats.rankChange?.value
+  const rankChange =
+    rankChangeRaw == null || rankChangeRaw === '' ? 0 : Number(rankChangeRaw)
+
   return {
     position: num('rank') || Number(row.team?.rank) || 0,
     team: teamName,
@@ -156,6 +160,7 @@ function mapStandingEntry(row) {
     gd: num('pointDifferential'),
     points: num('points'),
     form: '',
+    rankChange: Number.isFinite(rankChange) ? rankChange : 0,
     highlight: id === PALMEIRAS_ESPN_ID || /palmeiras/i.test(teamName),
   }
 }
@@ -338,7 +343,16 @@ export async function fetchEspnMatches(signal) {
     if (!prev) byId.set(m.id, m)
     else if (m.score && !prev.score) byId.set(m.id, m)
   }
-  const all = [...byId.values()]
+  // Segunda passagem: dedupe lógico (dia+competição+mando) caso IDs divergem
+  const byLogic = new Map()
+  for (const m of byId.values()) {
+    const day = (m.date || '').slice(0, 10)
+    const logic = `${day}|${m.competitionCode || ''}|${m.isHome ? 'H' : 'A'}`
+    const prev = byLogic.get(logic)
+    if (!prev) byLogic.set(logic, m)
+    else if ((m.score && !prev.score) || (m.espnEventId && !prev.espnEventId)) byLogic.set(logic, m)
+  }
+  const all = [...byLogic.values()]
   const now = Date.now() - 60 * 60 * 1000
 
   const recentResults = all

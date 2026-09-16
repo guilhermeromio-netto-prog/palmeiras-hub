@@ -2,6 +2,9 @@ import MatchCard from './MatchCard'
 import FormDots from './FormDots'
 import { formatDate, scoreLine, matchTitle } from '../utils/format'
 import { formationLabel } from '../utils/formation'
+import { matchDedupeKey } from '../utils/matchKey'
+
+const CREST = `${import.meta.env.BASE_URL}palmeiras-crest.svg`
 
 export default function Home({ data }) {
   const recent = (data.recentResults || []).slice(0, 3)
@@ -12,9 +15,7 @@ export default function Home({ data }) {
   return (
     <section className="page home">
       <div className="hero-strip">
-        <div className="monogram" aria-hidden="true">
-          <span>P</span>
-        </div>
+        <img className="crest crest--hero" src={CREST} width={64} height={64} alt="" decoding="async" />
         <div>
           <p className="eyebrow">Hub do torcedor</p>
           <h2>Avanti Palestra</h2>
@@ -100,7 +101,7 @@ export default function Home({ data }) {
           <p className="muted">Sem resultados recentes nesta atualização.</p>
         )}
         {recent.map((m) => (
-          <article key={m.id} className="card row-card">
+          <article key={matchDedupeKey(m) || m.id} className="card row-card">
             <div>
               <span className="pill tiny">{m.competition}</span>
               <strong>{matchTitle(m)}</strong>
