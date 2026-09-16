@@ -98,7 +98,7 @@
   backdrop-filter: blur(8px);
 }
 
-.status-banner.demo {
+.status-banner.partial {
   background: rgba(255, 196, 0, 0.18);
   color: #ffe9a8;
   border: 1px solid rgba(255, 214, 102, 0.35);
@@ -108,6 +108,11 @@
   background: rgba(255, 255, 255, 0.12);
   color: #dff8e9;
   border: 1px solid var(--line);
+}
+
+.status-banner .sources {
+  display: inline;
+  opacity: 0.75;
 }
 
 .status-banner .dot {
@@ -563,4 +568,10 @@
 .empty {
   padding: 1.2rem;
   color: var(--muted);
+}
+
+.pad-refresh {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.75);
 }

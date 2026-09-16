@@ -1,80 +1,92 @@
 # Palmeiras Hub 🌿
 
-App pessoal de torcedor do **Palmeiras**: próximo jogo, calendário, estatísticas do Brasileirão e notícias — UI em pt-BR, estética verdão (sem usar marcas oficiais do clube).
+App pessoal de torcedor do **Palmeiras**: próximo jogo, calendário, estatísticas do Brasileirão e notícias — UI em pt-BR, estética verdão (sem marcas oficiais do clube).
 
-## Stack
+**Sem API keys.** A cada abertura da página o app busca dados frescos em fontes públicas (CORS liberado).
 
-- **Frontend:** Vite + React (mobile-first)
-- **Backend/proxy:** Express (CORS + agregação de dados)
-- **Fontes de dados (gratuitas):**
-  - [API-Football](https://www.api-football.com/) (api-sports.io) — preferencial se houver chave
-  - [football-data.org](https://www.football-data.org/) — alternativa free
-  - RSS do ge.globo (Palmeiras) para notícias
-  - **Modo DEMO** com dados de exemplo rotulados quando não há chave de API
+## Como abrir (dados frescos a cada load)
 
-## Como rodar
+### Opção 1 — recomendada: Vite / serve estático
 
 ```bash
 npm install
-cp .env.example .env   # opcional — preencha chaves se quiser modo live
-npm run dev
+npm run dev          # http://localhost:5173 — sem .env
 ```
 
-- App: [http://localhost:5173](http://localhost:5173)
-- API: [http://localhost:3001](http://localhost:3001) (`/api/hub`, `/api/health`)
-
-Produção local:
+Ou build estático:
 
 ```bash
 npm run build
-npm start
+npx serve dist       # ou: npm run serve
 ```
 
-## Variáveis de ambiente
+Abra o endereço no navegador. Em `DOMContentLoaded` / boot do React, o app refetcha tudo.
 
-Veja `.env.example`:
+### Opção 2 — abrir o HTML
 
-| Variável | Descrição |
-|----------|-----------|
-| `PORT` | Porta do Express (padrão `3001`) |
-| `API_FOOTBALL_KEY` | Chave API-Football / api-sports |
-| `FOOTBALL_DATA_API_KEY` | Token football-data.org |
-| `FORCE_DEMO` | `true` força dados de exemplo |
-| `CACHE_TTL_SECONDS` | Cache em memória no servidor (padrão `120`) |
+- **Não dependa de `file://`**: a maioria dos browsers bloqueia `fetch` cross-origin a partir de arquivos locais.
+- Depois do build, sirva a pasta `dist/`:
 
-**Não commite o arquivo `.env`.**
+```bash
+npm run build && npx serve dist
+```
 
-Cadastros gratuitos:
+Ou use a extensão **Live Server** no editor apontando para `dist/` (ou `npm run dev` na raiz).
 
-1. API-Football: https://dashboard.api-football.com/
-2. football-data.org: https://www.football-data.org/client/register
+### Opção 3 — proxy Express opcional
 
-## Como o refresh funciona
+Só se alguma fonte bloquear CORS no seu ambiente:
 
-1. Ao **abrir o app** (e ao clicar em **Atualizar**), o front chama `GET /api/hub?refresh=1`.
-2. O servidor busca (ou revalida) jogos, tabela, artilheiros e RSS.
-3. Há um **cache curto** em memória no Express; cada start do client força revalidação.
-4. Sem chaves → **MODO DEMO** (banner amarelo). Com chave → **dados ao vivo**.
-5. Se a API live falhar, o app **não inventa placares**: mostra erro ou cai para demo claramente rotulado.
-6. No **plano Free** da API-Football, só certas temporadas estão liberadas (em geral **2022–2024**). O servidor tenta a temporada civil atual e, se bloqueada, usa automaticamente a mais recente disponível — sempre rotulada no banner e na aba Estatísticas.
+```bash
+npm run dev:proxy    # Vite + Express /api/proxy
+```
+
+O caminho principal **não precisa** do Express.
+
+## Fontes públicas (sem chave)
+
+| Dado | Fonte |
+|------|--------|
+| Classificação / stats | ESPN public API (`site.api.espn.com` / `apis/v2/.../standings`) |
+| Resultados e próximos jogos | ESPN schedule + scoreboards diários; fallback **TheSportsDB** (key pública `123`) |
+| Artilharia | Wikipedia pt (página do Brasileirão da temporada) |
+| Notícias | RSS via **rss2json.com**: Gazeta Esportiva Palmeiras → Google Notícias → ge.globo |
+
+Cada seção mostra a origem e o banner exibe **Atualizado às HH:MM** (America/Sao_Paulo) a cada abertura.
+
+Se uma fonte falhar: estado vazio + botão **Atualizar** / **Tentar de novo**. **Nunca** inventamos placares ao vivo.
 
 ## Seções
 
 | Aba | Conteúdo |
 |-----|----------|
-| **Início** | Card do próximo jogo (adversário, competição, data/hora America/Sao_Paulo, local), forma V-E-D, mini stats |
-| **Calendário** | Próximos jogos + resultados (Brasileirão / Libertadores / Copa do Brasil quando a fonte cobrir) |
-| **Estatísticas** | Tabela do Brasileirão com Palmeiras destacado, V-E-D, gols, artilharia |
-| **Notícias** | Manchetes com link para o original |
+| **Início** | Próximo jogo, forma V-E-D, mini stats, resultados recentes |
+| **Calendário** | Próximos + recentes (Brasileirão / Libertadores quando a fonte cobrir) |
+| **Estatísticas** | Tabela do Brasileirão (Palmeiras destacado), V-E-D, artilharia |
+| **Notícias** | Manchetes com link ao original |
 
 ## Scripts
 
 | Comando | Função |
 |---------|--------|
-| `npm run dev` | Express + Vite juntos |
-| `npm run build` | Build do frontend em `dist/` |
-| `npm start` | Serve API + `dist/` em produção |
-| `npm run dev:server` / `dev:web` | Processos separados |
+| `npm run dev` | Só Vite (padrão, sem keys) |
+| `npm run dev:proxy` | Vite + proxy Express opcional |
+| `npm run build` | Gera `dist/` estático |
+| `npm run serve` / `npx serve dist` | Abre o HTML buildado via HTTP |
+| `npm start` | Produção: Express serve `dist/` + proxy |
+
+## Variáveis de ambiente
+
+Veja `.env.example`. Apenas `PORT` do proxy opcional. **Não commite `.env`.**
+
+## Limitações honestas
+
+- **CORS / `file://`**: abra via `http://localhost` (`npm run dev` ou `npx serve dist`).
+- **Proxies públicos / rss2json**: rate limits e indisponibilidade ocasional.
+- **ESPN scoreboards**: próximos jogos são descobertos na janela ~14 dias; calendário longo pode ficar incompleto.
+- **TheSportsDB free**: costuma devolver só 1 próximo / 1 último — usado como reforço.
+- **Wikipedia / ESPN**: dados editorialmente corretos, mas podem atrasar minutos/horas vs. placares ao vivo de apps pagos.
+- **Sem API-Football / football-data**: de propósito — sem plano free com chave.
 
 ## Aviso
 

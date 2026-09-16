@@ -6,6 +6,7 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
+      // Opcional: só usado se rodar `npm run dev:proxy` (Express na 3001)
       '/api': {
         target: 'http://localhost:3001',
         changeOrigin: true,

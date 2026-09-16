@@ -1,13 +1,26 @@
 export default function StatusBanner({ data }) {
   if (!data) return null
-  const isDemo = data.mode === 'demo'
+  const isPartial = data.mode === 'partial'
+  const time =
+    data.updatedAtLabel ||
+    (data.fetchedAt
+      ? new Intl.DateTimeFormat('pt-BR', {
+          timeZone: 'America/Sao_Paulo',
+          hour: '2-digit',
+          minute: '2-digit',
+        }).format(new Date(data.fetchedAt))
+      : null)
+
   return (
-    <div className={`status-banner ${isDemo ? 'demo' : 'live'}`} role="status">
+    <div className={`status-banner ${isPartial ? 'partial' : 'live'}`} role="status">
       <span className="dot" aria-hidden="true" />
       <span>
-        {data.label || (isDemo ? 'MODO DEMO' : 'Dados ao vivo')}
-        {data.fetchedAt && (
-          <small> · atualizado {new Date(data.fetchedAt).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}</small>
+        {data.label || 'Fontes públicas'}
+        {time && !String(data.label || '').includes(time) && (
+          <small> · Atualizado às {time}</small>
+        )}
+        {data.sources?.length > 0 && (
+          <small className="sources"> · {data.sources.join(' · ')}</small>
         )}
       </span>
     </div>

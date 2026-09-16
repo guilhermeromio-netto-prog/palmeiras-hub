@@ -43,16 +43,18 @@ export default function App() {
       <main className="main">
         {loading && !data && <Loading />}
         {error && !data && <ErrorState message={error} onRetry={reload} />}
-        {data && !error && (
+        {data && (
           <>
+            {loading && (
+              <p className="muted pad-refresh" aria-live="polite">
+                Atualizando fontes públicas…
+              </p>
+            )}
             {tab === 'home' && <Home data={data} />}
             {tab === 'calendar' && <Calendar data={data} />}
             {tab === 'stats' && <Stats data={data} />}
             {tab === 'news' && <News data={data} />}
           </>
-        )}
-        {data && error && (
-          <ErrorState message={error} onRetry={reload} />
         )}
       </main>
 

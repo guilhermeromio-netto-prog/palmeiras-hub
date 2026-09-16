@@ -9,9 +9,8 @@ export function useHubData() {
   const load = useCallback(async () => {
     setLoading(true)
     setError(null)
-    const ctrl = new AbortController()
     try {
-      const json = await fetchHub({ signal: ctrl.signal })
+      const json = await fetchHub()
       setData(json)
     } catch (err) {
       if (err.name !== 'AbortError') {

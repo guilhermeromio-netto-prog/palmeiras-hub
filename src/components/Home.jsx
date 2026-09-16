@@ -15,7 +15,7 @@ export default function Home({ data }) {
           <p className="eyebrow">Hub do torcedor</p>
           <h2>Avanti Palestra</h2>
           <p className="lede">
-            Próximo jogo, forma recente e o pulso do Brasileirão — tudo no verde.
+            Próximo jogo, forma recente e o pulso do Brasileirão — atualizado a cada abertura.
           </p>
         </div>
       </div>
@@ -26,11 +26,14 @@ export default function Home({ data }) {
       ) : (
         <article className="card match-card featured">
           <p className="muted">
-            Sem jogos futuros na temporada {data.standings?.season || 'atual'} disponível na API.
-            Confira os resultados recentes abaixo.
+            Nenhum jogo futuro encontrado nas fontes públicas neste momento. Use Atualizar ou
+            confira os resultados recentes.
           </p>
           {data.form?.length > 0 && (
-            <p className="form-line">Forma recente · veja os pontos verdes/vermelhos nos resultados</p>
+            <div className="match-card__form">
+              <span className="label">Forma recente</span>
+              <FormDots form={data.form} />
+            </div>
           )}
         </article>
       )}
@@ -62,13 +65,17 @@ export default function Home({ data }) {
 
       <h3 className="section-title">Resultados recentes</h3>
       <div className="list-stack">
-        {recent.length === 0 && <p className="muted">Sem resultados recentes.</p>}
+        {recent.length === 0 && (
+          <p className="muted">Sem resultados recentes nesta atualização.</p>
+        )}
         {recent.map((m) => (
           <article key={m.id} className="card row-card">
             <div>
               <span className="pill tiny">{m.competition}</span>
               <strong>{matchTitle(m)}</strong>
-              <p className="muted">{formatDate(m.date)} · {m.venue}</p>
+              <p className="muted">
+                {formatDate(m.date)} · {m.venue}
+              </p>
             </div>
             <div className="row-card__right">
               <span className={`result-badge ${(m.result || '').toLowerCase()}`}>
