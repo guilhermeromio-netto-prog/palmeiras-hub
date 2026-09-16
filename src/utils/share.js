@@ -50,3 +50,38 @@ export function resultShareText(match, { formatDate, matchTitle, scoreLine }) {
     `Mais no Palmeiras Hub:\n${SITE_URL}`
   )
 }
+
+export function reactionShareText(emoji, matchLabel) {
+  const label = matchLabel || 'o Verdão'
+  return (
+    `🌿 Reagi com ${emoji} no Palmeiras Hub!\n` +
+    `Jogo: ${label}\n` +
+    `Mande sua reação também:\n${SITE_URL}`
+  )
+}
+
+export function tipShareText(tip, matchLabel) {
+  if (!tip) return `Palpite do Verdão no Palmeiras Hub:\n${SITE_URL}`
+  const label = matchLabel || 'próximo jogo'
+  return (
+    `⚽ Meu palpite no Palmeiras Hub!\n` +
+    `${label}\n` +
+    `Placar: ${tip.home} × ${tip.away}\n\n` +
+    `Faça o seu também:\n${SITE_URL}`
+  )
+}
+
+export function muralInviteText() {
+  return (
+    `💬 Entra no mural da torcida no Palmeiras Hub!\n` +
+    `Deixe uma mensagem pro Verdão (neste aparelho/família).\n\n` +
+    `${SITE_URL}`
+  )
+}
+
+export function quizShareText(score, total) {
+  return (
+    `🧠 Quiz do Verdão — acertei ${score}/${total} no Palmeiras Hub!\n` +
+    `Topa desafiar?\n${SITE_URL}`
+  )
+}

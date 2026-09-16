@@ -6,6 +6,8 @@ import ShareButton from './ShareButton'
 import LiveMatchCenter from './LiveMatchCenter'
 import SinceLastVisit from './SinceLastVisit'
 import FavoritePlayers from './FavoritePlayers'
+import CrowdReactions from './CrowdReactions'
+import ScoreTip from './ScoreTip'
 import { formatDate, formatDateTime, scoreLine, matchTitle } from '../utils/format'
 import { formationLabel } from '../utils/formation'
 import { matchDedupeKey } from '../utils/matchKey'
@@ -24,6 +26,7 @@ export default function Home({
   matchDay = false,
   liveMatch,
   favoriteIds = [],
+  onOpenTorcida,
 }) {
   const recent = (data.recentResults || []).slice(0, 3)
   const lineup = data.lineup
@@ -50,6 +53,16 @@ export default function Home({
     liveMatch?.polling ||
     liveMatch?.candidate?.status === 'LIVE' ||
     liveMatch?.candidate?.status === 'FINISHED'
+
+  const reactionMatch = liveMatch?.candidate || displayMatch
+  const reactionId =
+    (reactionMatch && (matchDedupeKey(reactionMatch) || reactionMatch.id)) || 'geral'
+  const reactionLabel = reactionMatch ? matchTitle(reactionMatch) : 'Palmeiras'
+
+  const finalScore =
+    liveMatch?.live?.score ||
+    (liveMatch?.candidate?.status === 'FINISHED' ? liveMatch?.candidate?.score : null)
+  const finalStatus = liveMatch?.live?.status || liveMatch?.candidate?.status || displayMatch?.status
 
   return (
     <section className="page home">
@@ -84,6 +97,10 @@ export default function Home({
         />
       )}
 
+      {reactionMatch && (
+        <CrowdReactions matchId={reactionId} matchLabel={reactionLabel} compact />
+      )}
+
       <FavoritePlayers squad={data.squad} favoriteIds={favoriteIds} />
 
       <h3 className="section-title">Próximo confronto</h3>
@@ -96,6 +113,11 @@ export default function Home({
             emphasizeToday={isTodaySP(displayMatch.date)}
           />
           <Countdown match={displayMatch} pulse={matchDay} />
+          <ScoreTip
+            match={displayMatch}
+            finalScore={finalScore}
+            finalStatus={finalStatus}
+          />
           <div className="share-row">
             <ShareButton text={shareNext} label="WhatsApp · próximo jogo" />
           </div>
@@ -113,6 +135,16 @@ export default function Home({
             </div>
           )}
         </article>
+      )}
+
+      {typeof onOpenTorcida === 'function' && (
+        <button
+          type="button"
+          className="btn torcida-cta touch"
+          onClick={onOpenTorcida}
+        >
+          💚 Abrir Torcida — mural, quiz e mais
+        </button>
       )}
 
       {displayMatch && (

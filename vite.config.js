@@ -21,6 +21,7 @@ export default defineConfig({
         'brand/btn-trophy.png',
         'brand/btn-shield.png',
         'brand/btn-calendar.png',
+        'brand/btn-torcida.png',
         '.nojekyll',
       ],
       manifest: {

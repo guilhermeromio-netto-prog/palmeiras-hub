@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useHubData } from './hooks/useHubData'
 import { usePreferences } from './hooks/usePreferences'
 import { useLiveMatch } from './hooks/useLiveMatch'
@@ -10,12 +10,21 @@ import Calendar from './components/Calendar'
 import Team from './components/Team'
 import Competitions from './components/Competitions'
 import News from './components/News'
+import Torcida from './components/Torcida'
 import MatchDayBanner from './components/MatchDayBanner'
 import NewsTicker from './components/NewsTicker'
 import Preferences from './components/Preferences'
 import FeedbackButton from './components/FeedbackButton'
+import PitchParticles from './components/PitchParticles'
+import ConfettiBurst from './components/ConfettiBurst'
 import { isMatchDaySP, isTodaySP } from './utils/datetime'
 import { matchTitle } from './utils/format'
+import { matchDedupeKey } from './utils/matchKey'
+import { didPalmeirasWin } from './utils/palmeirasWin'
+import {
+  confettiAlreadySeen,
+  markConfettiSeen,
+} from './utils/torcidaStorage'
 import './App.css'
 
 const BASE = import.meta.env.BASE_URL
@@ -26,6 +35,7 @@ const TABS = [
   { id: 'calendar', label: 'Jogos', icon: `${BASE}brand/btn-calendar.png` },
   { id: 'team', label: 'Time', icon: `${BASE}brand/btn-shield.png` },
   { id: 'home', label: 'Início', icon: `${BASE}brand/btn-ball.png`, primary: true },
+  { id: 'torcida', label: 'Torcida', icon: `${BASE}brand/btn-torcida.png`, torcida: true },
   { id: 'tables', label: 'Tabelas', icon: `${BASE}brand/btn-trophy.png` },
   { id: 'news', label: 'Notícias', icon: `${BASE}brand/btn-ball.png`, news: true },
 ]
@@ -36,6 +46,8 @@ export default function App() {
   const [prefsOpen, setPrefsOpen] = useState(false)
   const { data, loading, error, reload } = useHubData()
   const liveMatch = useLiveMatch(data)
+  const [confetti, setConfetti] = useState(false)
+  const [parallax, setParallax] = useState(0)
 
   const matchDay = useMemo(() => (data ? isMatchDaySP(data) : false), [data])
   const todayTitle = useMemo(() => {
@@ -47,10 +59,60 @@ export default function App() {
     return hit ? matchTitle(hit) : ''
   }, [data, matchDay])
 
+  const liveStatus = liveMatch?.live?.status || liveMatch?.candidate?.status
+  const arenaLive = matchDay && liveStatus === 'LIVE'
+
+  // Confetti: FT + vitória verificada (uma vez por jogo neste aparelho)
+  useEffect(() => {
+    const live = liveMatch?.live
+    const candidate = liveMatch?.candidate
+    if (!live && !candidate) return
+    const status = live?.status || candidate?.status
+    if (status !== 'FINISHED') return
+
+    const payload = {
+      status: 'FINISHED',
+      score: live?.score || candidate?.score,
+      homeTeam: live?.homeTeam || candidate?.homeTeam,
+      awayTeam: live?.awayTeam || candidate?.awayTeam,
+      isHome: candidate?.isHome,
+      result: candidate?.result,
+    }
+    if (!payload.score || payload.score.home == null || payload.score.away == null) return
+    if (!didPalmeirasWin(payload)) return
+
+    const id =
+      (candidate && (matchDedupeKey(candidate) || candidate.id || candidate.espnEventId)) ||
+      'ft-win'
+    if (confettiAlreadySeen(id)) return
+    markConfettiSeen(id)
+    setConfetti(true)
+  }, [liveMatch?.live, liveMatch?.candidate])
+
+  const onConfettiDone = useCallback(() => setConfetti(false), [])
+
+  // Parallax leve no scroll (hero via CSS var)
+  useEffect(() => {
+    let raf = 0
+    const onScroll = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        const y = Math.min(120, window.scrollY || 0)
+        setParallax(y * 0.22)
+      })
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      cancelAnimationFrame(raf)
+    }
+  }, [])
+
   const appClass = [
     'app',
     'app--glass',
     matchDay ? 'matchday' : '',
+    arenaLive ? 'arena-mode' : '',
     prefs.fontSize === 'large' ? 'font-large' : '',
     prefs.compactMode ? 'compact' : '',
   ]
@@ -58,12 +120,15 @@ export default function App() {
     .join(' ')
 
   return (
-    <div className={appClass}>
+    <div className={appClass} style={{ '--hero-parallax': `${parallax}px` }}>
       <div
         className="pitch-bg"
         aria-hidden="true"
         style={{ '--pitch-img': `url(${BG_PITCH})` }}
       />
+      <PitchParticles />
+      <ConfettiBurst active={confetti} onDone={onConfettiDone} />
+
       <header className="topbar topbar--glass">
         <div className="brand">
           <img
@@ -76,7 +141,7 @@ export default function App() {
           />
           <div>
             <strong>Palmeiras Hub</strong>
-            <span className="brand-sub">torcedor · pessoal</span>
+            <span className="brand-sub">O Maior Campeão</span>
           </div>
         </div>
         <div className="topbar-actions">
@@ -99,7 +164,7 @@ export default function App() {
       {matchDay && <MatchDayBanner matchTitle={todayTitle} />}
       {data && <StatusBanner data={data} />}
 
-      <main className="main">
+      <main className="main" key={tab}>
         {loading && !data && <Loading />}
         {error && !data && <ErrorState message={error} onRetry={reload} />}
         {data && (
@@ -115,6 +180,7 @@ export default function App() {
                 matchDay={matchDay}
                 liveMatch={liveMatch}
                 favoriteIds={prefs.favoritePlayerIds}
+                onOpenTorcida={() => setTab('torcida')}
               />
             )}
             {tab === 'calendar' && <Calendar data={data} />}
@@ -125,6 +191,7 @@ export default function App() {
                 onToggleFavorite={toggleFavoritePlayer}
               />
             )}
+            {tab === 'torcida' && <Torcida data={data} liveMatch={liveMatch} />}
             {tab === 'tables' && <Competitions data={data} />}
             {tab === 'news' && <News data={data} />}
           </>
@@ -140,7 +207,7 @@ export default function App() {
         update={update}
       />
 
-      <nav className="tabbar tabbar--liquid" aria-label="Seções">
+      <nav className="tabbar tabbar--liquid tabbar--six" aria-label="Seções">
         {TABS.map((t) => (
           <button
             key={t.id}
@@ -150,6 +217,7 @@ export default function App() {
               tab === t.id ? 'active' : '',
               t.primary ? 'tab-liquid--primary' : '',
               t.news ? 'tab-liquid--news' : '',
+              t.torcida ? 'tab-liquid--torcida' : '',
             ]
               .filter(Boolean)
               .join(' ')}
@@ -158,7 +226,11 @@ export default function App() {
           >
             <span className="tab-liquid__orb">
               <img src={t.icon} alt="" width={56} height={56} decoding="async" />
-              {t.news && <span className="tab-liquid__badge" aria-hidden="true">📰</span>}
+              {t.news && (
+                <span className="tab-liquid__badge" aria-hidden="true">
+                  📰
+                </span>
+              )}
             </span>
             <span className="tab-liquid__label">{t.label}</span>
           </button>

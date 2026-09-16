@@ -32,7 +32,7 @@ export function writePreferences(prefs) {
 }
 
 export function normalizePrefs(input) {
-  const tab = ['home', 'calendar', 'team', 'tables', 'news'].includes(input?.defaultTab)
+  const tab = ['home', 'calendar', 'team', 'torcida', 'tables', 'news'].includes(input?.defaultTab)
     ? input.defaultTab
     : 'home'
   const fontSize = input?.fontSize === 'large' ? 'large' : 'normal'

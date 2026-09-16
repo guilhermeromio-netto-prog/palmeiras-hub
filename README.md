@@ -2,7 +2,9 @@
 
 App pessoal de torcedor do **Palmeiras**: próximo jogo, **placar ao vivo**, countdown, H2H, calendário com filtros, elenco com favoritos, escalação/tática, cartões, tabelas, notícias + ticker RSS, preferências locais e “desde a última vez” — UI em pt-BR, estética verdão (sem marcas oficiais do clube).
 
-**UI next-gen:** fundo de estádio imersivo, hero “O Maior Campeão”, cards em glassmorphism e navegação liquid-glass com ícones de bola/troféu/escudo/calendário (arte inspirada no Verdão — **não** são marcas oficiais do clube).
+**UI next-gen:** fundo de estádio imersivo (partículas/orbs), hero “O Maior Campeão”, cards em glassmorphism, navegação liquid-glass, **modo arena** no dia de jogo / AO VIVO, confete em vitória FT verificada.
+
+**Torcida:** reações emoji, palpite de placar, mural e quiz do Verdão — salvos neste aparelho + convite WhatsApp (sem backend).
 
 **PWA** instalável no celular. **Sem API keys.** A cada abertura a página busca dados frescos em fontes públicas; se houver jogo ao vivo, o centro de partida faz polling na ESPN.
 
@@ -48,10 +50,14 @@ npm run build && npm run serve
 
 | Recurso | Detalhe |
 |---------|---------|
-| Preferências | Aba inicial, fonte normal/grande, modo compacto |
+| Preferências | Aba inicial (incl. Torcida), fonte, modo compacto |
 | Favoritos | Estrela 3–5 jogadores no Elenco → cards no Início |
 | Filtros | Agenda por competição + casa/fora; notícias por palavra/fonte |
 | Desde a última vez | Delta de posição, novos resultados e manchetes |
+| Reações | Emoji bar por jogo — contagens **neste aparelho** + share |
+| Palpite | Placar antes do apito; confere no FT se o placar for conhecido |
+| Mural | Nome + mensagem (últimas 30) neste aparelho / família |
+| Quiz do Verdão | 5 perguntas factuais + share do resultado |
 | Faltou algo? | Nota local ou share/WhatsApp (`wa.me` sem número fixo) |
 
 ## Live match center
@@ -60,10 +66,12 @@ npm run build && npm run serve
 2. Se status LIVE (ou janela 15 min antes → ~3 h após o apito sem FT), busca o **summary** ESPN.
 3. Poll a cada **~45 s** só nessa janela; **para no FT** e mostra o placar final uma vez.
 4. Exibe placar, minuto/status, gols e cartões quando a ESPN publica em `keyEvents`.
+5. Se FT + vitória do Verdão **verificada no placar**, dispara confete (uma vez por jogo neste aparelho).
 
 ## Limitações honestas
 
 - Ao vivo depende da ESPN publicar o evento/summary; se a API falhar, mostramos erro — **sem inventar placar**.
+- Torcida **não sincroniza entre celulares** (sem backend / sem API keys). Share via WhatsApp convida outros a abrir o hub.
 - Copa do Brasil: mata-mata — muitas vezes sem tabela de pontos.
 - Escalação “provável”: só a **última** formação publicada.
 - Cartões do elenco: stats de temporada do roster (Brasileirão).
@@ -71,4 +79,4 @@ npm run build && npm run serve
 
 ## Aviso
 
-Projeto **não oficial**, feito por torcedor. Brasão estilizado — não é o escudo oficial do SEP.
+Projeto **não oficial**, feito por torcedor. Brasão estilizado — não é o escudo oficial do SEP. Arte em `public/brand/` é inspirada no Verdão — **não** são marcas oficiais do clube.

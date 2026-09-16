@@ -2,6 +2,7 @@ const TABS = [
   { id: 'home', label: 'Início' },
   { id: 'calendar', label: 'Jogos' },
   { id: 'team', label: 'Time' },
+  { id: 'torcida', label: 'Torcida' },
   { id: 'tables', label: 'Tabelas' },
   { id: 'news', label: 'Notícias' },
 ]
