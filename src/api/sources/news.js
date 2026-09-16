@@ -1,5 +1,6 @@
 /**
  * Notícias via rss2json (CORS *) — fontes RSS públicas brasileiras.
+ * Agrega feeds (dedupe) para ticker + aba Notícias.
  */
 import { fetchJson } from './fetchJson.js'
 
@@ -35,32 +36,52 @@ function idFrom(url, title) {
   return `news-${h.toString(36)}`
 }
 
+function mapItems(feed, items) {
+  return (items || []).slice(0, 10).map((item) => ({
+    id: idFrom(item.link, item.title),
+    title: item.title,
+    source: feed.name,
+    publishedAt: toIso(item.pubDate),
+    url: item.link,
+    summary: (item.description || '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, 220),
+  }))
+}
+
 export async function fetchPalmeirasNews(signal) {
   const errors = []
-  for (const feed of FEEDS) {
-    try {
-      const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.rss)}`
-      const json = await fetchJson(url, { signal, timeoutMs: 16000 })
-      if (json.status !== 'ok' || !Array.isArray(json.items) || !json.items.length) {
-        errors.push(`${feed.name}: feed vazio`)
-        continue
+  const byId = new Map()
+  const sourcesOk = []
+
+  await Promise.all(
+    FEEDS.map(async (feed) => {
+      try {
+        const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.rss)}`
+        const json = await fetchJson(url, { signal, timeoutMs: 16000 })
+        if (json.status !== 'ok' || !Array.isArray(json.items) || !json.items.length) {
+          errors.push(`${feed.name}: feed vazio`)
+          return
+        }
+        sourcesOk.push(feed.name)
+        for (const item of mapItems(feed, json.items)) {
+          if (!byId.has(item.id)) byId.set(item.id, item)
+        }
+      } catch (err) {
+        errors.push(`${feed.name}: ${err.message}`)
       }
-      const news = json.items.slice(0, 12).map((item) => ({
-        id: idFrom(item.link, item.title),
-        title: item.title,
-        source: feed.name,
-        publishedAt: toIso(item.pubDate),
-        url: item.link,
-        summary: (item.description || '')
-          .replace(/<[^>]+>/g, ' ')
-          .replace(/\s+/g, ' ')
-          .trim()
-          .slice(0, 220),
-      }))
-      return { news, source: feed.name, errors }
-    } catch (err) {
-      errors.push(`${feed.name}: ${err.message}`)
-    }
+    })
+  )
+
+  const news = [...byId.values()].sort(
+    (a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)
+  )
+
+  return {
+    news: news.slice(0, 24),
+    source: sourcesOk.join(' + ') || null,
+    errors,
   }
-  return { news: [], source: null, errors }
 }

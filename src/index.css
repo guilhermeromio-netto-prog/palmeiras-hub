@@ -59,3 +59,7 @@ code {
   padding: 0.1em 0.35em;
   border-radius: 6px;
 }
+
+html[data-compact='1'] body {
+  line-height: 1.35;
+}

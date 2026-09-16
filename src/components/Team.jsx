@@ -9,7 +9,7 @@ const SUBS = [
   { id: 'cards', label: 'Cartões' },
 ]
 
-export default function Team({ data }) {
+export default function Team({ data, favoriteIds, onToggleFavorite }) {
   const [sub, setSub] = useState('squad')
 
   return (
@@ -32,7 +32,13 @@ export default function Team({ data }) {
         ))}
       </div>
 
-      {sub === 'squad' && <Squad data={data} />}
+      {sub === 'squad' && (
+        <Squad
+          data={data}
+          favoriteIds={favoriteIds}
+          onToggleFavorite={onToggleFavorite}
+        />
+      )}
       {sub === 'lineup' && <Lineup data={data} />}
       {sub === 'cards' && <Discipline data={data} />}
     </section>

@@ -1,9 +1,9 @@
 {
   "name": "palmeiras-hub",
   "private": true,
-  "version": "3.1.0",
+  "version": "3.2.0",
   "type": "module",
-  "description": "Hub pessoal de torcedor do Palmeiras — PWA, countdown, H2H, share, dia de jogo (fontes públicas)",
+  "description": "Hub pessoal de torcedor do Palmeiras — PWA, ao vivo, preferências, filtros, favoritos (fontes públicas)",
   "scripts": {
     "dev": "vite",
     "dev:proxy": "concurrently -k -n proxy,web -c green,cyan \"node server/index.js\" \"vite\"",

@@ -1,3 +1,5 @@
+import { MAX_FAVORITES } from '../utils/preferences'
+
 const GROUPS = [
   { key: 'G', label: 'Goleiros' },
   { key: 'D', label: 'Defensores' },
@@ -5,15 +7,20 @@ const GROUPS = [
   { key: 'F', label: 'Atacantes' },
 ]
 
-export default function Squad({ data }) {
+export default function Squad({ data, favoriteIds = [], onToggleFavorite }) {
   const byPos = data.squadByPosition || {}
   const total = data.squad?.length || 0
+  const favSet = new Set((favoriteIds || []).map(String))
+  const favCount = favSet.size
 
   return (
     <div className="squad-block">
       <p className="lede tight">
         {total ? `${total} jogadores` : 'Elenco indisponível'} · fonte ESPN
         {data.cardsSeason ? ` · temporada ${data.cardsSeason}` : ''}
+        {onToggleFavorite
+          ? ` · favoritos ${favCount}/${MAX_FAVORITES} (estrela)`
+          : ''}
       </p>
       {!total && (
         <p className="muted empty-card">
@@ -29,33 +36,65 @@ export default function Squad({ data }) {
               {g.label} <span className="count-pill">{list.length}</span>
             </h3>
             <div className="list-stack">
-              {list.map((p) => (
-                <article key={p.id} className="card row-card player-row">
-                  <div className="player-left">
-                    <span className="jersey-badge" aria-label={p.jersey ? `Camisa ${p.jersey}` : 'Sem número'}>
-                      {p.jersey || '—'}
-                    </span>
-                    <div>
-                      <strong>{p.name}</strong>
-                      <p className="muted">
-                        {p.positionLabel}
-                        {p.age != null ? ` · ${p.age} anos` : ''}
-                        {p.nationality ? ` · ${p.nationality}` : ''}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="row-card__right player-stats">
-                    {p.appearances > 0 && (
-                      <span className="muted tiny">{p.appearances} jog.</span>
-                    )}
-                    {(p.goals > 0 || p.assists > 0) && (
-                      <span className="muted tiny">
-                        {p.goals}G {p.assists}A
+              {list.map((p) => {
+                const isFav = favSet.has(String(p.id))
+                const canAdd = isFav || favCount < MAX_FAVORITES
+                return (
+                  <article
+                    key={p.id}
+                    className={`card row-card player-row${isFav ? ' player-row--fav' : ''}`}
+                  >
+                    <div className="player-left">
+                      <span
+                        className="jersey-badge"
+                        aria-label={p.jersey ? `Camisa ${p.jersey}` : 'Sem número'}
+                      >
+                        {p.jersey || '—'}
                       </span>
-                    )}
-                  </div>
-                </article>
-              ))}
+                      <div>
+                        <strong>{p.name}</strong>
+                        <p className="muted">
+                          {p.positionLabel}
+                          {p.age != null ? ` · ${p.age} anos` : ''}
+                          {p.nationality ? ` · ${p.nationality}` : ''}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="row-card__right player-stats">
+                      {p.appearances > 0 && (
+                        <span className="muted tiny">{p.appearances} jog.</span>
+                      )}
+                      {(p.goals > 0 || p.assists > 0) && (
+                        <span className="muted tiny">
+                          {p.goals}G {p.assists}A
+                        </span>
+                      )}
+                      {onToggleFavorite && (
+                        <button
+                          type="button"
+                          className={`star-btn${isFav ? ' active' : ''}`}
+                          onClick={() => onToggleFavorite(p.id)}
+                          disabled={!canAdd && !isFav}
+                          aria-label={
+                            isFav
+                              ? `Remover ${p.name} dos favoritos`
+                              : `Favoritar ${p.name}`
+                          }
+                          title={
+                            !canAdd && !isFav
+                              ? `Máximo de ${MAX_FAVORITES} favoritos`
+                              : isFav
+                                ? 'Remover favorito'
+                                : 'Favoritar'
+                          }
+                        >
+                          {isFav ? '★' : '☆'}
+                        </button>
+                      )}
+                    </div>
+                  </article>
+                )
+              })}
             </div>
           </div>
         )

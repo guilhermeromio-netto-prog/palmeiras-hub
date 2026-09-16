@@ -3,6 +3,9 @@ import FormDots from './FormDots'
 import Countdown from './Countdown'
 import H2H from './H2H'
 import ShareButton from './ShareButton'
+import LiveMatchCenter from './LiveMatchCenter'
+import SinceLastVisit from './SinceLastVisit'
+import FavoritePlayers from './FavoritePlayers'
 import { formatDate, formatDateTime, scoreLine, matchTitle } from '../utils/format'
 import { formationLabel } from '../utils/formation'
 import { matchDedupeKey } from '../utils/matchKey'
@@ -14,19 +17,21 @@ import {
 
 const CREST = `${import.meta.env.BASE_URL}palmeiras-crest.svg`
 
-export default function Home({ data, matchDay = false }) {
+export default function Home({
+  data,
+  matchDay = false,
+  liveMatch,
+  favoriteIds = [],
+}) {
   const recent = (data.recentResults || []).slice(0, 3)
   const lineup = data.lineup
   const squadCount = data.squad?.length || 0
   const yellow = (data.cards || []).reduce((s, p) => s + (p.yellowCards || 0), 0)
 
-  // Se o "próximo" já passou do apito e ainda está SCHEDULED, mantemos para countdown "em andamento"
-  // mas também oferecemos o seguinte da agenda se existir.
   let displayMatch = data.nextMatch
   const upcoming = data.upcoming || []
   if (displayMatch?.date) {
     const ms = msUntil(displayMatch.date)
-    // Após ~3h do apito sem status FINISHED, avança para o próximo da lista
     if (ms != null && ms < -3 * 60 * 60 * 1000 && upcoming.length > 1) {
       displayMatch = upcoming[1]
     }
@@ -38,6 +43,12 @@ export default function Home({ data, matchDay = false }) {
     ? resultShareText(lastFinished, { formatDate, matchTitle, scoreLine })
     : null
 
+  const showLive =
+    liveMatch?.live ||
+    liveMatch?.polling ||
+    liveMatch?.candidate?.status === 'LIVE' ||
+    liveMatch?.candidate?.status === 'FINISHED'
+
   return (
     <section className="page home">
       <div className="hero-strip">
@@ -46,10 +57,24 @@ export default function Home({ data, matchDay = false }) {
           <p className="eyebrow">{matchDay ? 'Dia de jogo' : 'Hub do torcedor'}</p>
           <h2>Avanti Palestra</h2>
           <p className="lede">
-            Próximo jogo, elenco, escalação e tabelas — dados públicos a cada abertura.
+            Próximo jogo, elenco, escalação e tabelas — dados públicos a cada abertura
+            {liveMatch?.polling ? ' · placar ao vivo ativo' : ''}.
           </p>
         </div>
       </div>
+
+      <SinceLastVisit data={data} />
+
+      {showLive && (
+        <LiveMatchCenter
+          candidate={liveMatch.candidate}
+          live={liveMatch.live}
+          error={liveMatch.error}
+          polling={liveMatch.polling}
+        />
+      )}
+
+      <FavoritePlayers squad={data.squad} favoriteIds={favoriteIds} />
 
       <h3 className="section-title">Próximo confronto</h3>
       {displayMatch ? (

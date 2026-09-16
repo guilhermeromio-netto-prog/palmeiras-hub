@@ -22,7 +22,7 @@ function mergeUpcoming(primary, extra) {
   return mergeMatchesByKey(primary, extra)
     .filter((m) => {
       if (!m || m.status === 'FINISHED') return false
-      // LIVE: mantém identidade do jogo do dia (sem polling — só snapshot na abertura)
+      // LIVE: mantém identidade do jogo do dia (polling ao vivo fica no hook useLiveMatch)
       if (m.status === 'LIVE') return true
       if (m.status !== 'SCHEDULED') return false
       const t = new Date(m.date).getTime()

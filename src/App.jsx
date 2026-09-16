@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useHubData } from './hooks/useHubData'
+import { usePreferences } from './hooks/usePreferences'
+import { useLiveMatch } from './hooks/useLiveMatch'
 import StatusBanner from './components/StatusBanner'
 import Loading from './components/Loading'
 import ErrorState from './components/ErrorState'
@@ -9,6 +11,9 @@ import Team from './components/Team'
 import Competitions from './components/Competitions'
 import News from './components/News'
 import MatchDayBanner from './components/MatchDayBanner'
+import NewsTicker from './components/NewsTicker'
+import Preferences from './components/Preferences'
+import FeedbackButton from './components/FeedbackButton'
 import { isMatchDaySP, isTodaySP } from './utils/datetime'
 import { matchTitle } from './utils/format'
 import './App.css'
@@ -24,8 +29,11 @@ const TABS = [
 ]
 
 export default function App() {
-  const [tab, setTab] = useState('home')
+  const { prefs, update, toggleFavoritePlayer } = usePreferences()
+  const [tab, setTab] = useState(prefs.defaultTab || 'home')
+  const [prefsOpen, setPrefsOpen] = useState(false)
   const { data, loading, error, reload } = useHubData()
+  const liveMatch = useLiveMatch(data)
 
   const matchDay = useMemo(() => (data ? isMatchDaySP(data) : false), [data])
   const todayTitle = useMemo(() => {
@@ -37,8 +45,17 @@ export default function App() {
     return hit ? matchTitle(hit) : ''
   }, [data, matchDay])
 
+  const appClass = [
+    'app',
+    matchDay ? 'matchday' : '',
+    prefs.fontSize === 'large' ? 'font-large' : '',
+    prefs.compactMode ? 'compact' : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <div className={`app${matchDay ? ' matchday' : ''}`}>
+    <div className={appClass}>
       <div className="pitch-bg" aria-hidden="true" />
       <header className="topbar">
         <div className="brand">
@@ -55,11 +72,23 @@ export default function App() {
             <span className="brand-sub">torcedor · pessoal</span>
           </div>
         </div>
-        <button type="button" className="btn ghost touch" onClick={reload} disabled={loading}>
-          {loading ? 'Atualizando…' : 'Atualizar'}
-        </button>
+        <div className="topbar-actions">
+          <button
+            type="button"
+            className="btn ghost touch"
+            onClick={() => setPrefsOpen(true)}
+            aria-label="Preferências"
+            title="Preferências"
+          >
+            ⚙️
+          </button>
+          <button type="button" className="btn ghost touch" onClick={reload} disabled={loading}>
+            {loading ? 'Atualizando…' : 'Atualizar'}
+          </button>
+        </div>
       </header>
 
+      {data?.news?.length > 0 && <NewsTicker news={data.news} />}
       {matchDay && <MatchDayBanner matchTitle={todayTitle} />}
       {data && <StatusBanner data={data} />}
 
@@ -73,14 +102,36 @@ export default function App() {
                 Atualizando fontes públicas…
               </p>
             )}
-            {tab === 'home' && <Home data={data} matchDay={matchDay} />}
+            {tab === 'home' && (
+              <Home
+                data={data}
+                matchDay={matchDay}
+                liveMatch={liveMatch}
+                favoriteIds={prefs.favoritePlayerIds}
+              />
+            )}
             {tab === 'calendar' && <Calendar data={data} />}
-            {tab === 'team' && <Team data={data} />}
+            {tab === 'team' && (
+              <Team
+                data={data}
+                favoriteIds={prefs.favoritePlayerIds}
+                onToggleFavorite={toggleFavoritePlayer}
+              />
+            )}
             {tab === 'tables' && <Competitions data={data} />}
             {tab === 'news' && <News data={data} />}
           </>
         )}
       </main>
+
+      <FeedbackButton />
+
+      <Preferences
+        open={prefsOpen}
+        onClose={() => setPrefsOpen(false)}
+        prefs={prefs}
+        update={update}
+      />
 
       <nav className="tabbar" aria-label="Seções">
         {TABS.map((t) => (
@@ -98,4 +149,3 @@ export default function App() {
     </div>
   )
 }
-

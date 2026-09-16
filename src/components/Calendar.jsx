@@ -1,5 +1,17 @@
+import { useMemo, useState } from 'react'
 import { formatDateTime, matchTitle, scoreLine } from '../utils/format'
 import { matchDedupeKey } from '../utils/matchKey'
+
+const COMP_FILTERS = [
+  { id: 'all', label: 'Todas' },
+  { id: 'BSA', label: 'Brasileirão' },
+  { id: 'LIB', label: 'Libertadores' },
+  { id: 'CDB', label: 'Copa do Brasil' },
+  { id: 'PAU', label: 'Paulistão' },
+  { id: 'other', label: 'Outras' },
+]
+
+const KNOWN = new Set(['BSA', 'LIB', 'CDB', 'PAU'])
 
 function MatchRow({ m }) {
   return (
@@ -28,9 +40,26 @@ function MatchRow({ m }) {
   )
 }
 
+function passesFilters(m, competition, venue) {
+  if (venue === 'home' && !m.isHome) return false
+  if (venue === 'away' && m.isHome) return false
+  if (competition === 'all') return true
+  if (competition === 'other') return !KNOWN.has(m.competitionCode)
+  return m.competitionCode === competition
+}
+
 export default function Calendar({ data }) {
-  const upcoming = data.upcoming || []
-  const recent = data.recentResults || []
+  const [competition, setCompetition] = useState('all')
+  const [venue, setVenue] = useState('all')
+
+  const upcoming = useMemo(
+    () => (data.upcoming || []).filter((m) => passesFilters(m, competition, venue)),
+    [data.upcoming, competition, venue]
+  )
+  const recent = useMemo(
+    () => (data.recentResults || []).filter((m) => passesFilters(m, competition, venue)),
+    [data.recentResults, competition, venue]
+  )
 
   return (
     <section className="page calendar">
@@ -39,11 +68,48 @@ export default function Calendar({ data }) {
         Brasileirão, Libertadores, Paulistão e Copa do Brasil — próximos e recentes.
       </p>
 
+      <div className="filters" aria-label="Filtros da agenda">
+        <div className="filter-row">
+          <span className="filter-label">Competição</span>
+          <div className="filter-chips">
+            {COMP_FILTERS.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                className={`chip${competition === f.id ? ' active' : ''}`}
+                onClick={() => setCompetition(f.id)}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="filter-row">
+          <span className="filter-label">Mando</span>
+          <div className="filter-chips">
+            {[
+              { id: 'all', label: 'Todos' },
+              { id: 'home', label: 'Casa' },
+              { id: 'away', label: 'Fora' },
+            ].map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                className={`chip${venue === f.id ? ' active' : ''}`}
+                onClick={() => setVenue(f.id)}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <h3 className="section-title">Próximos jogos</h3>
       <div className="list-stack">
         {upcoming.length === 0 && (
           <p className="muted empty-card">
-            Nenhum jogo futuro na janela atual das fontes (ESPN + TheSportsDB).
+            Nenhum jogo com esses filtros na janela atual das fontes.
           </p>
         )}
         {upcoming.map((m) => (
@@ -53,7 +119,7 @@ export default function Calendar({ data }) {
 
       <h3 className="section-title">Resultados recentes</h3>
       <div className="list-stack">
-        {recent.length === 0 && <p className="muted">Sem resultados recentes.</p>}
+        {recent.length === 0 && <p className="muted">Sem resultados com esses filtros.</p>}
         {recent.map((m) => (
           <MatchRow key={matchDedupeKey(m) || m.id} m={m} />
         ))}
