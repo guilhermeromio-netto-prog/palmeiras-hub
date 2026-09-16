@@ -575,3 +575,368 @@
   font-size: 0.85rem;
   color: rgba(255,255,255,0.75);
 }
+
+/* —— Upgrade: Time / pitch / tables —— */
+
+.tabbar {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.tabbar button {
+  font-size: 0.62rem;
+  padding: 0.4rem 0.1rem;
+}
+
+.subtabs {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0 0 1rem;
+  padding: 0.3rem;
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 999px;
+  border: 1px solid var(--line);
+}
+
+.subtabs button {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.55rem 0.4rem;
+  border-radius: 999px;
+}
+
+.subtabs button.active {
+  background: rgba(255, 255, 255, 0.16);
+  color: white;
+}
+
+.lede.tight {
+  margin-bottom: 0.65rem;
+}
+
+.count-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4rem;
+  padding: 0.05rem 0.4rem;
+  margin-left: 0.35rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.player-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.jersey-badge {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: white;
+  background: linear-gradient(145deg, var(--green-mid), var(--green-deep));
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.player-stats {
+  font-size: 0.78rem;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card-tile.yellow {
+  background: rgba(255, 196, 0, 0.18);
+  border-color: rgba(255, 214, 102, 0.35);
+}
+
+.card-tile.red {
+  background: rgba(180, 35, 24, 0.22);
+  border-color: rgba(255, 120, 100, 0.35);
+}
+
+.card-counts {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.card-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.card-chip .card-icon {
+  width: 12px;
+  height: 16px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.card-chip.yellow .card-icon {
+  background: #f5c518;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.card-chip.red .card-icon {
+  background: #c1121f;
+}
+
+.lineup-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.95rem 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.lineup-match {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 1.05rem;
+}
+
+.formation-badge {
+  text-align: center;
+  background: var(--green-soft);
+  color: var(--green-deep);
+  border-radius: 14px;
+  padding: 0.45rem 0.7rem;
+  min-width: 4.5rem;
+}
+
+.formation-badge__label {
+  display: block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
+}
+
+.formation-badge__value {
+  display: block;
+  font-weight: 800;
+  font-size: 1.15rem;
+}
+
+.pitch {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-bottom: 0.75rem;
+}
+
+.pitch__field {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  max-height: 520px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 30%),
+    repeating-linear-gradient(
+      0deg,
+      #0d6b3c 0,
+      #0d6b3c 12.5%,
+      #0b5c34 12.5%,
+      #0b5c34 25%
+    );
+  border: 2px solid rgba(255, 255, 255, 0.35);
+}
+
+.pitch__halfway {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.pitch__circle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+}
+
+.pitch__box {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44%;
+  height: 16%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.pitch__box--top {
+  top: 0;
+  border-top: none;
+}
+
+.pitch__box--bottom {
+  bottom: 0;
+  border-bottom: none;
+}
+
+.pitch-player {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: grid;
+  justify-items: center;
+  gap: 0.15rem;
+  width: 3.4rem;
+  z-index: 2;
+}
+
+.pitch-player__num {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 0.78rem;
+  color: var(--green-deep);
+  background: white;
+  border: 2px solid rgba(0, 100, 55, 0.35);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.pitch-player__name {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65);
+  text-align: center;
+  line-height: 1.1;
+  max-width: 3.6rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bench-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.bench-chip {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.source-hint {
+  margin: 0.75rem 0 0;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.source-hint.top {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.accordion {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.accordion-item {
+  overflow: hidden;
+}
+
+.accordion-head {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  background: transparent;
+  border: none;
+  text-align: left;
+  color: var(--ink);
+}
+
+.accordion-head .chev {
+  color: var(--green);
+  font-size: 1rem;
+}
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: 0.85rem 0 0.25rem;
+}
+
+@media (min-width: 520px) {
+  .quick-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.quick-tile {
+  padding: 0.75rem 0.65rem;
+  text-align: center;
+}
+
+.quick-tile__num {
+  display: block;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--green-deep);
+}
+
+.quick-tile__lbl {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.empty-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 14px;
+  padding: 0.9rem 1rem;
+}
+
+.pill.status.live {
+  background: #ffe3e0;
+  color: #9b1c1c;
+  animation: pulse-live 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse-live {
+  50% { opacity: 0.7; }
+}

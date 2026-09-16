@@ -5,14 +5,16 @@ import Loading from './components/Loading'
 import ErrorState from './components/ErrorState'
 import Home from './components/Home'
 import Calendar from './components/Calendar'
-import Stats from './components/Stats'
+import Team from './components/Team'
+import Competitions from './components/Competitions'
 import News from './components/News'
 import './App.css'
 
 const TABS = [
   { id: 'home', label: 'Início', icon: '🏠' },
-  { id: 'calendar', label: 'Calendário', icon: '📅' },
-  { id: 'stats', label: 'Estatísticas', icon: '📊' },
+  { id: 'calendar', label: 'Jogos', icon: '📅' },
+  { id: 'team', label: 'Time', icon: '👕' },
+  { id: 'tables', label: 'Tabelas', icon: '📊' },
   { id: 'news', label: 'Notícias', icon: '📰' },
 ]
 
@@ -52,7 +54,8 @@ export default function App() {
             )}
             {tab === 'home' && <Home data={data} />}
             {tab === 'calendar' && <Calendar data={data} />}
-            {tab === 'stats' && <Stats data={data} />}
+            {tab === 'team' && <Team data={data} />}
+            {tab === 'tables' && <Competitions data={data} />}
             {tab === 'news' && <News data={data} />}
           </>
         )}

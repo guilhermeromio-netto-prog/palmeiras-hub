@@ -1,8 +1,13 @@
 /**
  * Agrega fontes públicas a cada abertura do app.
- * Nunca inventa placares — se falhar, devolve vazio/erro parcial.
+ * Nunca inventa placares / escalações / cartões — se falhar, devolve vazio/erro parcial.
  */
-import { fetchEspnMatches, fetchEspnStandings } from './espn.js'
+import {
+  fetchEspnMatches,
+  fetchEspnAllStandings,
+  fetchEspnRoster,
+  fetchEspnLineup,
+} from './espn.js'
 import { fetchSportsDbNextLast } from './sportsdb.js'
 import { fetchPalmeirasNews } from './news.js'
 import { fetchWikiScorers } from './wikipedia.js'
@@ -34,7 +39,7 @@ function mergeResults(primary, extra) {
   return [...map.values()]
     .filter((m) => m.status === 'FINISHED')
     .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, 12)
+    .slice(0, 16)
 }
 
 function formatTimeLabel(iso) {
@@ -50,55 +55,66 @@ export async function buildHubFromPublicSources({ signal } = {}) {
   const errors = []
   const sourcesUsed = []
 
-  const [standingsRes, matchesRes, sportsDbRes, newsRes, scorersRes] = await Promise.all([
-    fetchEspnStandings(signal)
-      .then((r) => {
-        sourcesUsed.push(r.source)
-        return r
-      })
-      .catch((err) => {
-        errors.push(`Classificação: ${err.message}`)
-        return null
-      }),
-    fetchEspnMatches(signal)
-      .then((r) => {
-        sourcesUsed.push(r.source)
-        if (r.errors?.length) errors.push(...r.errors)
-        return r
-      })
-      .catch((err) => {
-        errors.push(`Jogos ESPN: ${err.message}`)
-        return null
-      }),
-    fetchSportsDbNextLast(signal)
-      .then((r) => {
-        sourcesUsed.push(r.source)
-        return r
-      })
-      .catch((err) => {
-        errors.push(`TheSportsDB: ${err.message}`)
-        return null
-      }),
-    fetchPalmeirasNews(signal)
-      .then((r) => {
-        if (r.source) sourcesUsed.push(`RSS (${r.source})`)
-        if (r.errors?.length) errors.push(...r.errors.map((e) => `Notícias: ${e}`))
-        return r
-      })
-      .catch((err) => {
-        errors.push(`Notícias: ${err.message}`)
-        return { news: [], source: null, errors: [err.message] }
-      }),
-    fetchWikiScorers(signal)
-      .then((r) => {
-        sourcesUsed.push(r.source)
-        return r
-      })
-      .catch((err) => {
-        errors.push(`Artilharia: ${err.message}`)
-        return null
-      }),
-  ])
+  const [standingsRes, matchesRes, sportsDbRes, newsRes, scorersRes, rosterRes] =
+    await Promise.all([
+      fetchEspnAllStandings(signal)
+        .then((r) => {
+          sourcesUsed.push(r.source)
+          if (r.errors?.length) errors.push(...r.errors.map((e) => `Tabela: ${e}`))
+          return r
+        })
+        .catch((err) => {
+          errors.push(`Classificação: ${err.message}`)
+          return null
+        }),
+      fetchEspnMatches(signal)
+        .then((r) => {
+          sourcesUsed.push(r.source)
+          if (r.errors?.length) errors.push(...r.errors)
+          return r
+        })
+        .catch((err) => {
+          errors.push(`Jogos ESPN: ${err.message}`)
+          return null
+        }),
+      fetchSportsDbNextLast(signal)
+        .then((r) => {
+          sourcesUsed.push(r.source)
+          return r
+        })
+        .catch((err) => {
+          errors.push(`TheSportsDB: ${err.message}`)
+          return null
+        }),
+      fetchPalmeirasNews(signal)
+        .then((r) => {
+          if (r.source) sourcesUsed.push(`RSS (${r.source})`)
+          if (r.errors?.length) errors.push(...r.errors.map((e) => `Notícias: ${e}`))
+          return r
+        })
+        .catch((err) => {
+          errors.push(`Notícias: ${err.message}`)
+          return { news: [], source: null, errors: [err.message] }
+        }),
+      fetchWikiScorers(signal)
+        .then((r) => {
+          sourcesUsed.push(r.source)
+          return r
+        })
+        .catch((err) => {
+          errors.push(`Artilharia: ${err.message}`)
+          return null
+        }),
+      fetchEspnRoster(signal)
+        .then((r) => {
+          sourcesUsed.push(r.source)
+          return r
+        })
+        .catch((err) => {
+          errors.push(`Elenco: ${err.message}`)
+          return null
+        }),
+    ])
 
   const upcoming = mergeUpcoming(matchesRes?.upcoming, sportsDbRes?.next)
   const recentResults = mergeResults(matchesRes?.recentResults, sportsDbRes?.last)
@@ -111,10 +127,24 @@ export async function buildHubFromPublicSources({ signal } = {}) {
           .map((r) => r.result)
           .filter(Boolean)
 
+  // Lineup depends on match ids — fetch after matches
+  let lineupRes = null
+  try {
+    lineupRes = await fetchEspnLineup(signal, matchesRes?.allMatches || recentResults)
+    if (lineupRes?.source) sourcesUsed.push(lineupRes.source)
+    if (lineupRes?.errors?.length && !lineupRes.lineup) {
+      errors.push(...lineupRes.errors.slice(0, 2).map((e) => `Escalação: ${e}`))
+    }
+  } catch (err) {
+    errors.push(`Escalação: ${err.message}`)
+  }
+
   const hasFootball =
     Boolean(standingsRes?.standings?.table?.length) ||
+    Boolean(standingsRes?.competitions?.length) ||
     recentResults.length > 0 ||
-    upcoming.length > 0
+    upcoming.length > 0 ||
+    Boolean(rosterRes?.squad?.length)
   const hasNews = (newsRes?.news || []).length > 0
 
   if (!hasFootball && !hasNews) {
@@ -123,10 +153,7 @@ export async function buildHubFromPublicSources({ signal } = {}) {
         ? `Todas as fontes falharam. ${errors.slice(0, 3).join(' · ')}`
         : 'Nenhuma fonte pública respondeu.'
     )
-    err.partial = {
-      fetchedAt,
-      errors,
-    }
+    err.partial = { fetchedAt, errors }
     throw err
   }
 
@@ -156,8 +183,15 @@ export async function buildHubFromPublicSources({ signal } = {}) {
       season: String(new Date().getFullYear()),
       table: [],
     },
+    competitions: standingsRes?.competitions || [],
     stats: standingsRes?.stats || null,
     topScorers: scorersRes?.topScorers || [],
+    squad: rosterRes?.squad || [],
+    squadByPosition: rosterRes?.byPosition || { G: [], D: [], M: [], F: [] },
+    cards: rosterRes?.cards || [],
+    cardsSeason: rosterRes?.cardsSeason || null,
+    cardsCompetition: rosterRes?.cardsCompetition || null,
+    lineup: lineupRes?.lineup || null,
     news: newsRes?.news || [],
     newsSource: newsRes?.source || null,
     newsErrors: newsRes?.errors || [],

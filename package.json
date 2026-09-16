@@ -1,9 +1,9 @@
 {
   "name": "palmeiras-hub",
   "private": true,
-  "version": "2.0.0",
+  "version": "3.0.0",
   "type": "module",
-  "description": "Hub pessoal de torcedor do Palmeiras — jogos, tabela, estatísticas e notícias (fontes públicas, sem API key)",
+  "description": "Hub pessoal de torcedor do Palmeiras — elenco, escalação, cartões, multi-tabelas, jogos e notícias (fontes públicas)",
   "scripts": {
     "dev": "vite",
     "dev:proxy": "concurrently -k -n proxy,web -c green,cyan \"node server/index.js\" \"vite\"",

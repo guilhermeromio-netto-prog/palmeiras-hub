@@ -17,6 +17,8 @@ function MatchRow({ m }) {
           <span className={`result-badge ${(m.result || '').toLowerCase()}`}>
             {scoreLine(m)}
           </span>
+        ) : m.status === 'LIVE' ? (
+          <span className="pill status live">Ao vivo</span>
         ) : (
           <span className="pill status scheduled">Agendado</span>
         )}
@@ -31,12 +33,18 @@ export default function Calendar({ data }) {
 
   return (
     <section className="page calendar">
-      <h2>Calendário</h2>
-      <p className="lede">Brasileirão, Libertadores e Copa do Brasil — próximos e recentes.</p>
+      <h2>Jogos</h2>
+      <p className="lede">
+        Brasileirão, Libertadores, Paulistão e Copa do Brasil — próximos e recentes.
+      </p>
 
       <h3 className="section-title">Próximos jogos</h3>
       <div className="list-stack">
-        {upcoming.length === 0 && <p className="muted">Nenhum jogo futuro na janela atual.</p>}
+        {upcoming.length === 0 && (
+          <p className="muted empty-card">
+            Nenhum jogo futuro na janela atual das fontes (ESPN + TheSportsDB).
+          </p>
+        )}
         {upcoming.map((m) => (
           <MatchRow key={m.id} m={m} />
         ))}

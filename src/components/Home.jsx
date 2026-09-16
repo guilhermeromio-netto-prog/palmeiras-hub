@@ -1,9 +1,13 @@
 import MatchCard from './MatchCard'
 import FormDots from './FormDots'
 import { formatDate, scoreLine, matchTitle } from '../utils/format'
+import { formationLabel } from '../utils/formation'
 
 export default function Home({ data }) {
   const recent = (data.recentResults || []).slice(0, 3)
+  const lineup = data.lineup
+  const squadCount = data.squad?.length || 0
+  const yellow = (data.cards || []).reduce((s, p) => s + (p.yellowCards || 0), 0)
 
   return (
     <section className="page home">
@@ -15,7 +19,7 @@ export default function Home({ data }) {
           <p className="eyebrow">Hub do torcedor</p>
           <h2>Avanti Palestra</h2>
           <p className="lede">
-            Próximo jogo, forma recente e o pulso do Brasileirão — atualizado a cada abertura.
+            Próximo jogo, elenco, escalação e tabelas — dados públicos a cada abertura.
           </p>
         </div>
       </div>
@@ -26,8 +30,8 @@ export default function Home({ data }) {
       ) : (
         <article className="card match-card featured">
           <p className="muted">
-            Nenhum jogo futuro encontrado nas fontes públicas neste momento. Use Atualizar ou
-            confira os resultados recentes.
+            Nenhum jogo futuro encontrado nas fontes públicas neste momento. Confira os
+            resultados recentes ou toque em Atualizar.
           </p>
           {data.form?.length > 0 && (
             <div className="match-card__form">
@@ -62,6 +66,33 @@ export default function Home({ data }) {
           </div>
         </div>
       )}
+
+      <div className="quick-grid">
+        {squadCount > 0 && (
+          <div className="quick-tile card">
+            <span className="quick-tile__num">{squadCount}</span>
+            <span className="quick-tile__lbl">No elenco</span>
+          </div>
+        )}
+        {lineup?.formation && (
+          <div className="quick-tile card">
+            <span className="quick-tile__num">{formationLabel(lineup.formation)}</span>
+            <span className="quick-tile__lbl">Última tática</span>
+          </div>
+        )}
+        {yellow > 0 && (
+          <div className="quick-tile card">
+            <span className="quick-tile__num">{yellow}</span>
+            <span className="quick-tile__lbl">Amarelos</span>
+          </div>
+        )}
+        {(data.competitions || []).length > 0 && (
+          <div className="quick-tile card">
+            <span className="quick-tile__num">{data.competitions.length}</span>
+            <span className="quick-tile__lbl">Tabelas</span>
+          </div>
+        )}
+      </div>
 
       <h3 className="section-title">Resultados recentes</h3>
       <div className="list-stack">
