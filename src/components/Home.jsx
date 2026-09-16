@@ -21,7 +21,19 @@ export default function Home({ data }) {
       </div>
 
       <h3 className="section-title">Próximo confronto</h3>
-      <MatchCard match={data.nextMatch} form={data.form} featured />
+      {data.nextMatch ? (
+        <MatchCard match={data.nextMatch} form={data.form} featured />
+      ) : (
+        <article className="card match-card featured">
+          <p className="muted">
+            Sem jogos futuros na temporada {data.standings?.season || 'atual'} disponível na API.
+            Confira os resultados recentes abaixo.
+          </p>
+          {data.form?.length > 0 && (
+            <p className="form-line">Forma recente · veja os pontos verdes/vermelhos nos resultados</p>
+          )}
+        </article>
+      )}
 
       {data.stats && (
         <div className="stats-mini grid-4">

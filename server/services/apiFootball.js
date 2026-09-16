@@ -2,6 +2,9 @@
  * API-Football (api-sports.io)
  * Palmeiras team id: 121
  * Brasileirão: 71 | Libertadores: 13 | Copa do Brasil: 73
+ *
+ * Plano Free: tipicamente só libera temporadas 2022–2024.
+ * Tentamos a temporada civil atual e caímos para a mais recente disponível.
  */
 import fetch from 'node-fetch'
 
@@ -31,15 +34,56 @@ async function apiGet(path, key) {
   }
   const json = await res.json()
   if (json.errors && Object.keys(json.errors).length) {
-    throw new Error(`API-Football: ${JSON.stringify(json.errors)}`)
+    const err = new Error(`API-Football: ${JSON.stringify(json.errors)}`)
+    err.apiErrors = json.errors
+    throw err
   }
   return json.response || []
 }
 
-function seasonYear() {
-  // Brasileirão runs calendar year; before março ainda é temporada anterior
+function preferredSeason() {
   const d = new Date()
+  // Brasileirão: antes de março ainda conta a temporada anterior
   return d.getMonth() < 2 ? d.getFullYear() - 1 : d.getFullYear()
+}
+
+function seasonCandidates() {
+  const preferred = preferredSeason()
+  // Free plans documentados: 2022–2024; tentamos preferred → preferred-1 → 2024…2022
+  const list = [preferred, preferred - 1, 2024, 2023, 2022]
+  return [...new Set(list)].filter((y) => y >= 2022)
+}
+
+function isSeasonPlanError(err) {
+  const msg = String(err?.message || '')
+  const plan = err?.apiErrors?.plan || ''
+  return /do not have access to this season/i.test(msg) || /do not have access to this season/i.test(plan)
+}
+
+async function resolveSeason(key) {
+  const candidates = seasonCandidates()
+  let lastErr = null
+  for (const season of candidates) {
+    try {
+      const standings = await apiGet(`/standings?league=${LEAGUES.BSA}&season=${season}`, key)
+      const rows = standings?.[0]?.league?.standings?.[0] || []
+      if (rows.length) {
+        return {
+          season,
+          standingsRes: standings,
+          note:
+            season !== preferredSeason()
+              ? `Plano Free: temporada ${season} (mais recente disponível na API; ${preferredSeason()} ainda não liberada).`
+              : null,
+        }
+      }
+    } catch (err) {
+      lastErr = err
+      if (isSeasonPlanError(err)) continue
+      throw err
+    }
+  }
+  throw lastErr || new Error('Nenhuma temporada do Brasileirão disponível na API-Football')
 }
 
 function mapFixture(fx) {
@@ -77,24 +121,21 @@ function mapFixture(fx) {
     venue: fx.fixture.venue?.name
       ? `${fx.fixture.venue.name}${fx.fixture.venue.city ? `, ${fx.fixture.venue.city}` : ''}`
       : 'A definir',
-    status: finished ? 'FINISHED' : statusShort === 'NS' ? 'SCHEDULED' : statusShort,
+    status: finished ? 'FINISHED' : statusShort === 'NS' || statusShort === 'TBD' ? 'SCHEDULED' : statusShort,
     score,
     result,
   }
 }
 
 export async function fetchFromApiFootball(key) {
-  const season = seasonYear()
+  const { season, standingsRes, note } = await resolveSeason(key)
   const leagueIds = [LEAGUES.BSA, LEAGUES.LIB, LEAGUES.CDB]
 
   const fixturePromises = leagueIds.map((id) =>
     apiGet(`/fixtures?team=${TEAM_ID}&league=${id}&season=${season}`, key).catch(() => [])
   )
-  const [standingsRes, scorersRes, ...fixtureGroups] = await Promise.all([
-    apiGet(`/standings?league=${LEAGUES.BSA}&season=${season}`, key),
-    apiGet(`/players/topscorers?league=${LEAGUES.BSA}&season=${season}&team=${TEAM_ID}`, key).catch(
-      () => []
-    ),
+  const [scorersRes, ...fixtureGroups] = await Promise.all([
+    apiGet(`/players/topscorers?league=${LEAGUES.BSA}&season=${season}`, key).catch(() => []),
     ...fixturePromises,
   ])
 
@@ -109,12 +150,13 @@ export async function fetchFromApiFootball(key) {
     .slice(0, 10)
 
   const nextMatch = upcoming[0] || null
-  const form = recentResults.slice(0, 5).map((r) => r.result).filter(Boolean)
+  const form = recentResults
+    .slice(0, 5)
+    .map((r) => r.result)
+    .filter(Boolean)
 
-  let table = []
-  let stats = null
   const standingBlock = standingsRes?.[0]?.league?.standings?.[0] || []
-  table = standingBlock.map((row) => ({
+  const table = standingBlock.map((row) => ({
     position: row.rank,
     team: row.team.name,
     played: row.all.played,
@@ -130,6 +172,7 @@ export async function fetchFromApiFootball(key) {
   }))
 
   const palmeirasRow = table.find((r) => r.highlight || /palmeiras/i.test(r.team))
+  let stats = null
   if (palmeirasRow) {
     stats = {
       played: palmeirasRow.played,
@@ -143,28 +186,24 @@ export async function fetchFromApiFootball(key) {
     }
   }
 
-  // Top scorers: API may return league-wide; filter Palmeiras if team filter ignored
-  let topScorers = (scorersRes || [])
-    .filter((p) => !p.statistics?.[0]?.team?.id || p.statistics[0].team.id === TEAM_ID)
-    .slice(0, 8)
-    .map((p) => ({
-      name: p.player.name,
-      goals: p.statistics?.[0]?.goals?.total ?? 0,
-      assists: p.statistics?.[0]?.goals?.assists ?? 0,
-    }))
-
-  if (!topScorers.length && scorersRes?.length) {
-    topScorers = scorersRes.slice(0, 5).map((p) => ({
-      name: p.player.name,
-      goals: p.statistics?.[0]?.goals?.total ?? 0,
-      assists: p.statistics?.[0]?.goals?.assists ?? 0,
-    }))
-  }
+  // Artilharia: liga inteira → prioriza jogadores do Palmeiras; se poucos, completa com top geral
+  const mappedScorers = (scorersRes || []).map((p) => ({
+    name: p.player.name,
+    goals: p.statistics?.[0]?.goals?.total ?? 0,
+    assists: p.statistics?.[0]?.goals?.assists ?? 0,
+    teamId: p.statistics?.[0]?.team?.id,
+    team: p.statistics?.[0]?.team?.name,
+  }))
+  const palmeirasScorers = mappedScorers.filter((p) => p.teamId === TEAM_ID)
+  let topScorers = (palmeirasScorers.length ? palmeirasScorers : mappedScorers).slice(0, 8)
 
   return {
     mode: 'live',
-    label: 'Dados ao vivo via API-Football',
+    label: note
+      ? `Dados ao vivo via API-Football · ${note}`
+      : 'Dados ao vivo via API-Football',
     provider: 'api-football',
+    seasonNote: note,
     updatedAt: new Date().toISOString(),
     team: { id: TEAM_ID, name: 'Palmeiras', shortName: 'PAL' },
     nextMatch,

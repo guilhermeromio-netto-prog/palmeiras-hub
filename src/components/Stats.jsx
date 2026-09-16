@@ -81,6 +81,7 @@ export default function Stats({ data }) {
           <article key={`${s.name}-${i}`} className="card row-card">
             <div>
               <span className="rank">#{i + 1}</span> <strong>{s.name}</strong>
+              {s.team && <p className="muted">{s.team}</p>}
             </div>
             <div className="row-card__right scorers">
               <span>{s.goals} gols</span>

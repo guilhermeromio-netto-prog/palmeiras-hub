@@ -56,6 +56,7 @@ Cadastros gratuitos:
 3. Há um **cache curto** em memória no Express; cada start do client força revalidação.
 4. Sem chaves → **MODO DEMO** (banner amarelo). Com chave → **dados ao vivo**.
 5. Se a API live falhar, o app **não inventa placares**: mostra erro ou cai para demo claramente rotulado.
+6. No **plano Free** da API-Football, só certas temporadas estão liberadas (em geral **2022–2024**). O servidor tenta a temporada civil atual e, se bloqueada, usa automaticamente a mais recente disponível — sempre rotulada no banner e na aba Estatísticas.
 
 ## Seções
 
