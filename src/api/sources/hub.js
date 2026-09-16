@@ -11,13 +11,26 @@ import {
 import { fetchSportsDbNextLast } from './sportsdb.js'
 import { fetchPalmeirasNews } from './news.js'
 import { fetchWikiScorers } from './wikipedia.js'
+import { fetchHeadToHead } from './h2h.js'
 import { mergeMatchesByKey } from '../../utils/matchKey.js'
 import { applyStandingsMovement } from '../../utils/standingsMovement.js'
+import { dateKeySP } from '../../utils/datetime.js'
 
 function mergeUpcoming(primary, extra) {
   const now = Date.now() - 60 * 60 * 1000
+  const today = dateKeySP(new Date())
   return mergeMatchesByKey(primary, extra)
-    .filter((m) => m.status === 'SCHEDULED' && new Date(m.date).getTime() >= now)
+    .filter((m) => {
+      if (!m || m.status === 'FINISHED') return false
+      // LIVE: mantém identidade do jogo do dia (sem polling — só snapshot na abertura)
+      if (m.status === 'LIVE') return true
+      if (m.status !== 'SCHEDULED') return false
+      const t = new Date(m.date).getTime()
+      if (Number.isNaN(t)) return false
+      if (t >= now) return true
+      // Já passou o apito, mas ainda é hoje (SP): countdown → "em andamento"
+      return dateKeySP(m.date) === today
+    })
     .sort((a, b) => new Date(a.date) - new Date(b.date))
 }
 
@@ -113,7 +126,6 @@ export async function buildHubFromPublicSources({ signal } = {}) {
           .map((r) => r.result)
           .filter(Boolean)
 
-  // Lineup depends on match ids — fetch after matches
   let lineupRes = null
   try {
     lineupRes = await fetchEspnLineup(signal, matchesRes?.allMatches || recentResults)
@@ -125,10 +137,24 @@ export async function buildHubFromPublicSources({ signal } = {}) {
     errors.push(`Escalação: ${err.message}`)
   }
 
+  let h2h = { opponent: null, meetings: [], source: null }
+  if (nextMatch?.opponent) {
+    try {
+      const localPool = mergeMatchesByKey(matchesRes?.allMatches || [], recentResults)
+      h2h = await fetchHeadToHead({
+        opponent: nextMatch.opponent,
+        localMatches: localPool,
+        signal,
+      })
+      if (h2h.source) sourcesUsed.push(`H2H (${h2h.source})`)
+    } catch (err) {
+      errors.push(`H2H: ${err.message}`)
+    }
+  }
+
   const rawCompetitions = standingsRes?.competitions || []
   const competitions = applyStandingsMovement(rawCompetitions)
 
-  // Keep BSA standings in sync with movement-enriched table
   const bsa = competitions.find((c) => c.competitionCode === 'BSA')
   const standings = bsa
     ? { competition: bsa.competition, season: bsa.season, table: bsa.table }
@@ -187,6 +213,7 @@ export async function buildHubFromPublicSources({ signal } = {}) {
     cardsSeason: rosterRes?.cardsSeason || null,
     cardsCompetition: rosterRes?.cardsCompetition || null,
     lineup: lineupRes?.lineup || null,
+    h2h,
     news: newsRes?.news || [],
     newsSource: newsRes?.source || null,
     newsErrors: newsRes?.errors || [],

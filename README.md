@@ -1,8 +1,10 @@
 # Palmeiras Hub 🌿
 
-App pessoal de torcedor do **Palmeiras**: próximo jogo, calendário, elenco, escalação/tática, cartões, tabelas de todos os campeonatos e notícias — UI em pt-BR, estética verdão (sem marcas oficiais do clube).
+App pessoal de torcedor do **Palmeiras**: próximo jogo, countdown, H2H, calendário, elenco, escalação/tática, cartões, tabelas de todos os campeonatos e notícias — UI em pt-BR, estética verdão (sem marcas oficiais do clube).
 
-**Sem API keys.** A cada abertura da página o app busca dados frescos em fontes públicas (CORS liberado).
+**PWA** instalável no celular. **Sem API keys.** A cada abertura da página o app busca dados frescos em fontes públicas (CORS liberado).
+
+**Live:** https://guilhermeromio-netto-prog.github.io/palmeiras-hub/
 
 ## Como abrir
 
@@ -14,12 +16,28 @@ npm run build && npm run serve
 
 `vite.config.js` mantém `base: '/palmeiras-hub/'` para GitHub Pages.
 
+## Instalar no celular (PWA)
+
+### iPhone / iPad (Safari)
+1. Abra o link do Pages no **Safari**.
+2. Toque em **Compartilhar** (□↑).
+3. Escolha **Adicionar à Tela de Início**.
+4. Confirme o nome **Palmeiras Hub**.
+
+### Android (Chrome)
+1. Abra o link no **Chrome**.
+2. Menu **⋮** → **Instalar app** / **Adicionar à tela inicial** (o texto varia).
+3. Confirme. O ícone verde abre em tela cheia (standalone).
+
+O service worker faz cache dos assets estáticos; os dados de futebol/notícias continuam sendo buscados na rede a cada abertura (NetworkFirst nas APIs públicas).
+
 ## Fontes públicas (sem chave)
 
 | Dado | Fonte |
 |------|--------|
 | Classificações (Brasileirão, Libertadores, Paulistão) | ESPN public API standings |
 | Resultados / próximos jogos | ESPN schedule + scoreboards; fallback TheSportsDB |
+| H2H (histórico do próximo adversário) | Confrontos com placar da agenda ESPN + TheSportsDB `searchevents` |
 | Elenco (posição, número) | ESPN team roster |
 | Cartões amarelos/vermelhos | Stats embutidos no roster ESPN |
 | Escalação + formação (ex. 4-2-3-1) | ESPN match summary (última escalação publicada) |
@@ -28,28 +46,32 @@ npm run build && npm run serve
 
 Cada seção mostra a origem e o banner **Atualizado às HH:MM** (America/Sao_Paulo).
 
-**Nunca** inventamos placares, escalações “prováveis” ou cartões.
+**Nunca** inventamos placares, escalações “prováveis”, cartões ou placar ao vivo.
 
-## Seções
+## Seções / recursos
 
-| Aba | Conteúdo |
+| Aba / recurso | Conteúdo |
 |-----|----------|
-| **Início** | Próximo jogo, forma V-E-D, atalhos (elenco / tática / cartões) |
+| **Início** | Próximo jogo, **countdown** (dias/h/min/s, fuso SP), H2H, forma V-E-D, atalhos |
+| **Dia de jogo** | Tema mais intenso + banner quando há partida do Palmeiras no dia local SP |
+| **WhatsApp** | Compartilhar próximo jogo, manchete ou resultado (`wa.me` / Web Share) |
 | **Jogos** | Próximos + recentes (multi-competição) |
 | **Time** | Elenco · Escalação (gramado CSS) · Cartões |
-| **Tabelas** | Accordion com classificação + setas ↑↓→ (ESPN `rankChange` ou delta localStorage) + artilharia |
-| **Notícias** | Manchetes com link ao original |
+| **Tabelas** | Accordion com classificação + setas ↑↓→ + artilharia |
+| **Notícias** | Manchetes com link ao original + share |
 
 ## Limitações honestas
 
+- **Sem live match center**: após o horário de início, o countdown mostra “jogo em andamento / verifique fontes” — **não** há placar ao vivo nem polling durante a partida.
 - **Copa do Brasil**: mata-mata — ESPN frequentemente não expõe tabela de pontos.
 - **Escalação “provável”**: só mostramos a **última** formação publicada no resumo ESPN; se não houver, estado vazio.
 - **Cartões**: refletem stats de temporada do roster ESPN (Brasileirão), não necessariamente todos os campeonatos.
 - **Calendário longo**: scoreboards cobrem ~14 dias; TheSportsDB free reforça 1 próximo/1 último.
+- **H2H**: só jogos com placar confirmado nas fontes; nomes de times são normalizados (ex. LDU / Liga de Quito).
 - **Sem API-Football**: de propósito.
-- **Agenda sem duplicatas**: jogos mesclados por dia (America/Sao_Paulo) + código da competição + mando (casa/fora), para unificar ESPN e TheSportsDB mesmo com nomes diferentes (ex. Liga de Quito / LDU Quito).
+- **Agenda sem duplicatas**: jogos mesclados por dia (America/Sao_Paulo) + código da competição + mando (casa/fora).
 - **Setas na tabela**: preferem `rankChange` da ESPN; se vier 0/ausente, comparam com o snapshot da visita anterior em `localStorage`.
-- **Brasão**: SVG próprio verde-branco-vermelho em `public/` (Wikimedia bloqueou download neste ambiente; não hotlink).
+- **Brasão / ícones PWA**: SVG próprio + PNGs gerados em `public/` (não hotlink oficial).
 
 ## Aviso
 

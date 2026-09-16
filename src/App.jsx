@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useHubData } from './hooks/useHubData'
 import StatusBanner from './components/StatusBanner'
 import Loading from './components/Loading'
@@ -8,6 +8,9 @@ import Calendar from './components/Calendar'
 import Team from './components/Team'
 import Competitions from './components/Competitions'
 import News from './components/News'
+import MatchDayBanner from './components/MatchDayBanner'
+import { isMatchDaySP, isTodaySP } from './utils/datetime'
+import { matchTitle } from './utils/format'
 import './App.css'
 
 const CREST = `${import.meta.env.BASE_URL}palmeiras-crest.svg`
@@ -24,8 +27,18 @@ export default function App() {
   const [tab, setTab] = useState('home')
   const { data, loading, error, reload } = useHubData()
 
+  const matchDay = useMemo(() => (data ? isMatchDaySP(data) : false), [data])
+  const todayTitle = useMemo(() => {
+    if (!data || !matchDay) return ''
+    const pool = [data.nextMatch, ...(data.upcoming || []), ...(data.recentResults || [])].filter(
+      Boolean
+    )
+    const hit = pool.find((m) => isTodaySP(m.date))
+    return hit ? matchTitle(hit) : ''
+  }, [data, matchDay])
+
   return (
-    <div className="app">
+    <div className={`app${matchDay ? ' matchday' : ''}`}>
       <div className="pitch-bg" aria-hidden="true" />
       <header className="topbar">
         <div className="brand">
@@ -47,6 +60,7 @@ export default function App() {
         </button>
       </header>
 
+      {matchDay && <MatchDayBanner matchTitle={todayTitle} />}
       {data && <StatusBanner data={data} />}
 
       <main className="main">
@@ -59,7 +73,7 @@ export default function App() {
                 Atualizando fontes públicas…
               </p>
             )}
-            {tab === 'home' && <Home data={data} />}
+            {tab === 'home' && <Home data={data} matchDay={matchDay} />}
             {tab === 'calendar' && <Calendar data={data} />}
             {tab === 'team' && <Team data={data} />}
             {tab === 'tables' && <Competitions data={data} />}
@@ -84,3 +98,4 @@ export default function App() {
     </div>
   )
 }
+

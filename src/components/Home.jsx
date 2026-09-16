@@ -1,23 +1,49 @@
 import MatchCard from './MatchCard'
 import FormDots from './FormDots'
-import { formatDate, scoreLine, matchTitle } from '../utils/format'
+import Countdown from './Countdown'
+import H2H from './H2H'
+import ShareButton from './ShareButton'
+import { formatDate, formatDateTime, scoreLine, matchTitle } from '../utils/format'
 import { formationLabel } from '../utils/formation'
 import { matchDedupeKey } from '../utils/matchKey'
+import { isTodaySP, msUntil } from '../utils/datetime'
+import {
+  nextMatchShareText,
+  resultShareText,
+} from '../utils/share'
 
 const CREST = `${import.meta.env.BASE_URL}palmeiras-crest.svg`
 
-export default function Home({ data }) {
+export default function Home({ data, matchDay = false }) {
   const recent = (data.recentResults || []).slice(0, 3)
   const lineup = data.lineup
   const squadCount = data.squad?.length || 0
   const yellow = (data.cards || []).reduce((s, p) => s + (p.yellowCards || 0), 0)
+
+  // Se o "próximo" já passou do apito e ainda está SCHEDULED, mantemos para countdown "em andamento"
+  // mas também oferecemos o seguinte da agenda se existir.
+  let displayMatch = data.nextMatch
+  const upcoming = data.upcoming || []
+  if (displayMatch?.date) {
+    const ms = msUntil(displayMatch.date)
+    // Após ~3h do apito sem status FINISHED, avança para o próximo da lista
+    if (ms != null && ms < -3 * 60 * 60 * 1000 && upcoming.length > 1) {
+      displayMatch = upcoming[1]
+    }
+  }
+
+  const shareNext = nextMatchShareText(displayMatch, { formatDateTime, matchTitle })
+  const lastFinished = recent[0]
+  const shareLast = lastFinished
+    ? resultShareText(lastFinished, { formatDate, matchTitle, scoreLine })
+    : null
 
   return (
     <section className="page home">
       <div className="hero-strip">
         <img className="crest crest--hero" src={CREST} width={64} height={64} alt="" decoding="async" />
         <div>
-          <p className="eyebrow">Hub do torcedor</p>
+          <p className="eyebrow">{matchDay ? 'Dia de jogo' : 'Hub do torcedor'}</p>
           <h2>Avanti Palestra</h2>
           <p className="lede">
             Próximo jogo, elenco, escalação e tabelas — dados públicos a cada abertura.
@@ -26,8 +52,19 @@ export default function Home({ data }) {
       </div>
 
       <h3 className="section-title">Próximo confronto</h3>
-      {data.nextMatch ? (
-        <MatchCard match={data.nextMatch} form={data.form} featured />
+      {displayMatch ? (
+        <>
+          <MatchCard
+            match={displayMatch}
+            form={data.form}
+            featured
+            emphasizeToday={isTodaySP(displayMatch.date)}
+          />
+          <Countdown match={displayMatch} pulse={matchDay} />
+          <div className="share-row">
+            <ShareButton text={shareNext} label="WhatsApp · próximo jogo" />
+          </div>
+        </>
       ) : (
         <article className="card match-card featured">
           <p className="muted">
@@ -41,6 +78,10 @@ export default function Home({ data }) {
             </div>
           )}
         </article>
+      )}
+
+      {displayMatch && (
+        <H2H h2h={data.h2h} opponent={displayMatch.opponent} />
       )}
 
       {data.stats && (
@@ -100,7 +141,7 @@ export default function Home({ data }) {
         {recent.length === 0 && (
           <p className="muted">Sem resultados recentes nesta atualização.</p>
         )}
-        {recent.map((m) => (
+        {recent.map((m, idx) => (
           <article key={matchDedupeKey(m) || m.id} className="card row-card">
             <div>
               <span className="pill tiny">{m.competition}</span>
@@ -108,6 +149,15 @@ export default function Home({ data }) {
               <p className="muted">
                 {formatDate(m.date)} · {m.venue}
               </p>
+              {idx === 0 && shareLast && (
+                <div className="share-row share-row--inline">
+                  <ShareButton
+                    text={shareLast}
+                    label="WhatsApp · resultado"
+                    className="share-btn--compact"
+                  />
+                </div>
+              )}
             </div>
             <div className="row-card__right">
               <span className={`result-badge ${(m.result || '').toLowerCase()}`}>

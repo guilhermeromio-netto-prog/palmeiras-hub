@@ -361,7 +361,10 @@ export async function fetchEspnMatches(signal) {
     .slice(0, 16)
 
   const upcoming = all
-    .filter((m) => m.status === 'SCHEDULED' && new Date(m.date).getTime() >= now)
+    .filter((m) => {
+      if (m.status === 'LIVE') return true
+      return m.status === 'SCHEDULED' && new Date(m.date).getTime() >= now
+    })
     .sort((a, b) => new Date(a.date) - new Date(b.date))
     .slice(0, 16)
 
