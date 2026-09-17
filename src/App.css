@@ -93,43 +93,120 @@
 }
 
 .status-banner {
+  display: block;
+  padding: 0.35rem 0.65rem;
+  border-radius: 12px;
+  font-size: 0.68rem;
+  line-height: 1.35;
+  margin: 1.25rem 0 0.35rem;
+  backdrop-filter: blur(6px);
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+}
+
+.status-banner:hover,
+.status-banner:focus-within {
+  opacity: 0.85;
+}
+
+.status-banner--footer {
+  order: 90;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: rgba(232, 248, 239, 0.72) !important;
+}
+
+.status-banner__details {
+  margin: 0;
+}
+
+.status-banner__summary {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
-  padding: 0.55rem 0.85rem;
-  border-radius: 999px;
-  font-size: 0.82rem;
-  margin: 0.4rem 0 1rem;
-  backdrop-filter: blur(8px);
+  gap: 0.4rem;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 0.62rem;
+  opacity: 0.9;
+}
+
+.status-banner__summary::-webkit-details-marker {
+  display: none;
+}
+
+.status-banner__summary::after {
+  content: '▾';
+  margin-left: auto;
+  opacity: 0.55;
+  font-size: 0.7rem;
+}
+
+.status-banner__details[open] .status-banner__summary::after {
+  content: '▴';
+}
+
+.status-banner__summary-text {
+  opacity: 0.85;
+}
+
+.status-banner__time {
+  text-transform: none;
+  font-weight: 400;
+  letter-spacing: 0;
+  opacity: 0.75;
+}
+
+.status-banner__body {
+  margin: 0.45rem 0 0.1rem;
+  font-size: 0.66rem;
+  line-height: 1.4;
+  opacity: 0.8;
+  text-transform: none;
+  font-weight: 400;
 }
 
 .status-banner.partial {
-  background: rgba(255, 196, 0, 0.18);
-  color: #ffe9a8;
-  border: 1px solid rgba(255, 214, 102, 0.35);
+  background: rgba(255, 196, 0, 0.08);
+  color: rgba(255, 233, 168, 0.85);
+  border: 1px solid rgba(255, 214, 102, 0.2);
 }
 
 .status-banner.live {
-  background: rgba(255, 255, 255, 0.12);
-  color: #dff8e9;
-  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(223, 248, 233, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .status-banner .sources {
   display: inline;
-  opacity: 0.75;
+  opacity: 0.7;
 }
 
 .status-banner .dot {
-  width: 8px;
-  height: 8px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: currentColor;
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.12);
+  opacity: 0.7;
+  flex-shrink: 0;
+  box-shadow: none;
 }
 
 .status-banner small {
-  opacity: 0.8;
+  opacity: 0.75;
+}
+
+.home-media {
+  margin-top: 0.75rem;
 }
 
 .main {
@@ -2263,7 +2340,8 @@ html[data-font-size='large'] {
 .app > .main,
 .app > .news-ticker,
 .app > .matchday-banner,
-.app > .status-banner {
+.app > .status-banner,
+.app > .status-banner--footer {
   position: relative;
   z-index: 1;
 }
@@ -4275,29 +4353,29 @@ html[data-font-size='large'] {
   color: var(--muted);
 }
 
-/* —— Status pill: readable on olive / dark —— */
-.status-banner.partial {
-  background: #fff3c4;
-  color: #2a2208;
-  border: 1px solid rgba(160, 120, 20, 0.45);
+/* —— Status footer: discreet on olive / dark —— */
+.status-banner--footer.status-banner.partial {
+  background: rgba(255, 243, 196, 0.12) !important;
+  color: rgba(255, 236, 180, 0.78) !important;
+  border: 1px solid rgba(255, 214, 102, 0.18) !important;
 }
 
-.status-banner.partial .sources,
-.status-banner.partial small {
-  color: #3a3210;
-  opacity: 0.92;
+.status-banner--footer.status-banner.partial .sources,
+.status-banner--footer.status-banner.partial .status-banner__body {
+  color: rgba(255, 236, 180, 0.72);
+  opacity: 0.85;
 }
 
-.status-banner.live {
-  background: rgba(0, 55, 32, 0.88);
-  color: #f2fff7;
-  border: 1px solid rgba(255, 255, 255, 0.28);
+.status-banner--footer.status-banner.live {
+  background: rgba(0, 40, 24, 0.35) !important;
+  color: rgba(232, 248, 239, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-.status-banner.live .sources,
-.status-banner.live small {
-  color: #e8f8ef;
-  opacity: 0.9;
+.status-banner--footer.status-banner.live .sources,
+.status-banner--footer.status-banner.live .status-banner__body {
+  color: rgba(232, 248, 239, 0.68);
+  opacity: 0.85;
 }
 
 /* —— Bottom nav: no overlapping labels —— */

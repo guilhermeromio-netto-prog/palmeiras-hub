@@ -40,6 +40,27 @@ const TABS = [
   { id: 'news', label: 'Notíc.', fullLabel: 'Notícias', icon: `${BASE}brand/btn-ball.png`, news: true },
 ]
 
+/** Scroll window + main app/page containers to top (tab / placar view changes). */
+export function scrollAppToTop() {
+  try {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  } catch {
+    window.scrollTo(0, 0)
+  }
+  if (typeof document !== 'undefined') {
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+    document.querySelectorAll('.app, .main, .page').forEach((el) => {
+      try {
+        el.scrollTop = 0
+        el.scrollTo?.(0, 0)
+      } catch {
+        /* ignore */
+      }
+    })
+  }
+}
+
 export default function App() {
   const { prefs, update, toggleFavoritePlayer } = usePreferences()
   const [tab, setTab] = useState(prefs.defaultTab || 'home')
@@ -91,6 +112,11 @@ export default function App() {
 
   const onConfettiDone = useCallback(() => setConfetti(false), [])
 
+  // Scroll to top on every tab change
+  useEffect(() => {
+    scrollAppToTop()
+  }, [tab])
+
   // Parallax leve no scroll (hero via CSS var)
   useEffect(() => {
     let raf = 0
@@ -106,6 +132,12 @@ export default function App() {
       window.removeEventListener('scroll', onScroll)
       cancelAnimationFrame(raf)
     }
+  }, [])
+
+  const selectTab = useCallback((id) => {
+    setTab(id)
+    // Immediate scroll so it feels instant even before paint
+    scrollAppToTop()
   }, [])
 
   const appClass = [
@@ -166,7 +198,6 @@ export default function App() {
 
       {data?.news?.length > 0 && <NewsTicker news={data.news} />}
       {matchDay && <MatchDayBanner matchTitle={todayTitle} />}
-      {data && <StatusBanner data={data} />}
 
       <main className="main" key={tab}>
         {loading && !data && <Loading />}
@@ -184,10 +215,10 @@ export default function App() {
                 matchDay={matchDay}
                 liveMatch={liveMatch}
                 favoriteIds={prefs.favoritePlayerIds}
-                onOpenTorcida={() => setTab('torcida')}
+                onOpenTorcida={() => selectTab('torcida')}
               />
             )}
-            {tab === 'calendar' && <Calendar data={data} />}
+            {tab === 'calendar' && <Calendar data={data} onViewChange={scrollAppToTop} />}
             {tab === 'team' && (
               <Team
                 data={data}
@@ -196,11 +227,13 @@ export default function App() {
               />
             )}
             {tab === 'torcida' && <Torcida data={data} liveMatch={liveMatch} />}
-            {tab === 'tables' && <Competitions data={data} />}
+            {tab === 'tables' && <Competitions data={data} onViewChange={scrollAppToTop} />}
             {tab === 'news' && <News data={data} />}
           </>
         )}
       </main>
+
+      {data && <StatusBanner data={data} />}
 
       <FeedbackButton />
 
@@ -225,7 +258,7 @@ export default function App() {
             ]
               .filter(Boolean)
               .join(' ')}
-            onClick={() => setTab(t.id)}
+            onClick={() => selectTab(t.id)}
             aria-label={t.fullLabel || t.label}
             aria-current={tab === t.id ? 'page' : undefined}
           >

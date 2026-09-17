@@ -121,7 +121,7 @@ function KnockoutPath({ matches = [], note }) {
   )
 }
 
-export default function Competitions({ data }) {
+export default function Competitions({ data, onViewChange }) {
   const comps = data.competitions || []
   const scorers = data.topScorers || []
   const stats = data.stats

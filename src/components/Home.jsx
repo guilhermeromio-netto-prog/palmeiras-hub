@@ -70,6 +70,7 @@ export default function Home({
 
   return (
     <section className="page home">
+      {/* 1) Hero + match-critical info first */}
       <div className="hero-campeao">
         <img
           className="hero-campeao__img"
@@ -105,12 +106,6 @@ export default function Home({
         />
       )}
 
-      {reactionMatch && (
-        <CrowdReactions matchId={reactionId} matchLabel={reactionLabel} compact />
-      )}
-
-      <FavoritePlayers squad={data.squad} favoriteIds={favoriteIds} />
-
       <h3 className="section-title">Próximo confronto</h3>
       {displayMatch ? (
         <>
@@ -120,9 +115,6 @@ export default function Home({
             featured
             emphasizeToday={isTodaySP(displayMatch.date)}
           />
-          <BroadcastInfo match={displayMatch} />
-          <RadioListen />
-          <YouTubeMatch match={displayMatch} />
           <Countdown match={displayMatch} pulse={matchDay} />
           <SyncStatus compact />
           <ScoreTip
@@ -148,6 +140,23 @@ export default function Home({
           )}
         </article>
       )}
+
+      {/* 2) Media: onde assistir, rádio, YouTube */}
+      {displayMatch && (
+        <div className="home-media">
+          <h3 className="section-title">Onde acompanhar</h3>
+          <BroadcastInfo match={displayMatch} />
+          <RadioListen />
+          <YouTubeMatch match={displayMatch} />
+        </div>
+      )}
+
+      {/* 3) Torcida / reactions after primary match info */}
+      {reactionMatch && (
+        <CrowdReactions matchId={reactionId} matchLabel={reactionLabel} compact />
+      )}
+
+      <FavoritePlayers squad={data.squad} favoriteIds={favoriteIds} />
 
       {typeof onOpenTorcida === 'function' && (
         <button

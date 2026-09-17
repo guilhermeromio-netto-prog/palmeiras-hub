@@ -60,9 +60,18 @@ function passesFilters(m, competition, venue) {
   return m.competitionCode === competition
 }
 
-export default function Calendar({ data }) {
+export default function Calendar({ data, onViewChange }) {
   const [competition, setCompetition] = useState('all')
   const [venue, setVenue] = useState('all')
+
+  const changeCompetition = (id) => {
+    setCompetition(id)
+    onViewChange?.()
+  }
+  const changeVenue = (id) => {
+    setVenue(id)
+    onViewChange?.()
+  }
 
   const upcoming = useMemo(
     () => (data.upcoming || []).filter((m) => passesFilters(m, competition, venue)),
@@ -89,7 +98,7 @@ export default function Calendar({ data }) {
                 key={f.id}
                 type="button"
                 className={`chip${competition === f.id ? ' active' : ''}`}
-                onClick={() => setCompetition(f.id)}
+                onClick={() => changeCompetition(f.id)}
               >
                 {f.label}
               </button>
@@ -108,7 +117,7 @@ export default function Calendar({ data }) {
                 key={f.id}
                 type="button"
                 className={`chip${venue === f.id ? ' active' : ''}`}
-                onClick={() => setVenue(f.id)}
+                onClick={() => changeVenue(f.id)}
               >
                 {f.label}
               </button>

@@ -11,18 +11,32 @@ export default function StatusBanner({ data }) {
         }).format(new Date(data.fetchedAt))
       : null)
 
+  const label = data.label || 'Fontes públicas'
+  const sources = data.sources || []
+
   return (
-    <div className={`status-banner ${isPartial ? 'partial' : 'live'}`} role="status">
-      <span className="dot" aria-hidden="true" />
-      <span>
-        {data.label || 'Fontes públicas'}
-        {time && !String(data.label || '').includes(time) && (
-          <small> · Atualizado às {time}</small>
-        )}
-        {data.sources?.length > 0 && (
-          <small className="sources"> · {data.sources.join(' · ')}</small>
-        )}
-      </span>
-    </div>
+    <footer
+      className={`status-banner status-banner--footer ${isPartial ? 'partial' : 'live'}`}
+      role="contentinfo"
+    >
+      <details className="status-banner__details">
+        <summary className="status-banner__summary">
+          <span className="dot" aria-hidden="true" />
+          <span className="status-banner__summary-text">
+            Fontes
+            {time && <span className="status-banner__time"> · {time}</span>}
+          </span>
+        </summary>
+        <p className="status-banner__body">
+          {label}
+          {time && !String(label).includes(time) && (
+            <span> · Atualizado às {time}</span>
+          )}
+          {sources.length > 0 && (
+            <span className="sources"> · {sources.join(' · ')}</span>
+          )}
+        </p>
+      </details>
+    </footer>
   )
 }
