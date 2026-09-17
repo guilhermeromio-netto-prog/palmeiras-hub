@@ -9,6 +9,8 @@ import FavoritePlayers from './FavoritePlayers'
 import CrowdReactions from './CrowdReactions'
 import ScoreTip from './ScoreTip'
 import BroadcastInfo from './BroadcastInfo'
+import RadioListen from './RadioListen'
+import YouTubeMatch from './YouTubeMatch'
 import SyncStatus from './SyncStatus'
 import { formatDate, formatDateTime, scoreLine, matchTitle } from '../utils/format'
 import { formationLabel } from '../utils/formation'
@@ -115,6 +117,8 @@ export default function Home({
             emphasizeToday={isTodaySP(displayMatch.date)}
           />
           <BroadcastInfo match={displayMatch} />
+          <RadioListen />
+          <YouTubeMatch match={displayMatch} />
           <Countdown match={displayMatch} pulse={matchDay} />
           <SyncStatus compact />
           <ScoreTip

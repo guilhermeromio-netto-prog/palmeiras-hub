@@ -1,9 +1,9 @@
 {
   "name": "palmeiras-hub",
   "private": true,
-  "version": "3.5.0",
+  "version": "3.6.0",
   "type": "module",
-  "description": "Hub pessoal Palmeiras — torcida sync InstantDB + onde assistir + UI glass",
+  "description": "Hub pessoal Palmeiras — rádio + YouTube + torcida VERDAO + onde assistir",
   "scripts": {
     "dev": "vite",
     "dev:proxy": "concurrently -k -n proxy,web -c green,cyan \"node server/index.js\" \"vite\"",

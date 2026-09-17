@@ -2924,6 +2924,238 @@ html[data-font-size='large'] {
   text-underline-offset: 2px;
 }
 
+
+/* —— Rádio + YouTube (próximo jogo) —— */
+.radio-listen,
+.yt-match {
+  margin-top: 0.65rem;
+}
+
+.radio-listen__head,
+.yt-match__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.radio-listen__title,
+.yt-match__title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.radio-listen__badge,
+.yt-match__badge {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+}
+
+.yt-match__badge--watch {
+  background: rgba(61, 220, 132, 0.2);
+  color: #b8f5d0;
+}
+
+.yt-match__badge--ppv {
+  background: rgba(240, 193, 74, 0.18);
+  color: #ffe6a3;
+}
+
+.yt-match__badge--search {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.radio-listen__disclaimer {
+  margin: 0 0 0.55rem;
+}
+
+.radio-listen__stations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.65rem;
+}
+
+.radio-listen__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 40, 24, 0.55);
+  color: inherit;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 2.4rem;
+}
+
+.radio-listen__chip:hover,
+.radio-listen__chip:focus-visible {
+  border-color: rgba(157, 255, 192, 0.55);
+  outline: none;
+}
+
+.radio-listen__chip.is-active {
+  background: linear-gradient(135deg, rgba(0, 120, 65, 0.95), rgba(0, 70, 40, 0.95));
+  border-color: rgba(157, 255, 192, 0.45);
+  box-shadow: 0 0 0 1px rgba(61, 220, 132, 0.25);
+}
+
+.radio-listen__chip--link {
+  background: rgba(255, 255, 255, 0.06);
+  font-weight: 500;
+}
+
+.radio-listen__chip-city {
+  font-size: 0.68rem;
+  opacity: 0.7;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.radio-listen__player {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.radio-listen__now {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.radio-listen__audio {
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 10px;
+  background: rgba(0, 20, 12, 0.55);
+  accent-color: #1db954;
+}
+
+.radio-listen__fallback {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #ffe6a3;
+}
+
+.radio-listen__fallback a,
+.radio-listen__player a {
+  color: #9dffc0;
+}
+
+.yt-match__ppv {
+  margin: 0 0 0.55rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 10px;
+  background: rgba(240, 193, 74, 0.12);
+  border: 1px solid rgba(240, 193, 74, 0.28);
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+
+.yt-match__watch {
+  margin-bottom: 0.55rem;
+}
+
+.yt-match__watch-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #c4302b, #8b1a16);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+  min-height: 2.75rem;
+  box-shadow: 0 4px 14px rgba(196, 48, 43, 0.35);
+}
+
+.yt-match__watch-btn:hover,
+.yt-match__watch-btn:focus-visible {
+  filter: brightness(1.08);
+  outline: none;
+}
+
+.yt-match__watch-title {
+  margin: 0.35rem 0 0;
+}
+
+.yt-match__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.yt-match__link {
+  font-size: 0.85rem;
+  color: #9dffc0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.yt-match__link--primary {
+  display: inline-flex;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  text-decoration: none;
+  color: #e8ffe8;
+  font-weight: 600;
+}
+
+.yt-match__channels {
+  list-style: none;
+  margin: 0 0 0.45rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.yt-match__ch {
+  display: inline-block;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(0, 100, 55, 0.85), rgba(0, 60, 35, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #e8ffe8;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+  min-height: 2.2rem;
+  line-height: 1.5;
+}
+
+.yt-match__ch:hover,
+.yt-match__ch:focus-visible {
+  border-color: rgba(157, 255, 192, 0.5);
+  outline: none;
+}
+
+@media (max-width: 420px) {
+  .radio-listen__chip,
+  .yt-match__ch,
+  .yt-match__link--primary {
+    font-size: 0.8rem;
+  }
+}
+
 .score-tip__family {
   list-style: none;
   margin: 0.75rem 0 0;
