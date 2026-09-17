@@ -33,8 +33,8 @@ const TYPICAL_BY_COMP = [
   {
     test: (m) =>
       m?.competitionCode === 'CDB' || /copa do brasil/i.test(m?.competition || ''),
-    channels: [],
-    note: 'Copa do Brasil varia (Globo, SporTV, Premiere, streaming).',
+    channels: ['TV Globo', 'SporTV', 'Premiere'],
+    note: 'Copa do Brasil: tipicamente Globo e/ou SporTV/Premiere conforme fase e praça — confirme na imprensa.',
   },
   {
     test: (m) =>

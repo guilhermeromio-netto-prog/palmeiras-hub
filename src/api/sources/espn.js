@@ -11,7 +11,7 @@ export const PALMEIRAS_ESPN_ID = '2029'
 export const LEAGUES = {
   BSA: { slug: 'bra.1', name: 'Brasileirão Série A', code: 'BSA', hasTable: true },
   LIB: { slug: 'conmebol.libertadores', name: 'Libertadores', code: 'LIB', hasTable: true, groupOnly: true },
-  CDB: { slug: 'bra.copa_do_brasil', name: 'Copa do Brasil', code: 'CDB', hasTable: false },
+  CDB: { slug: 'bra.copa_do_brazil', name: 'Copa do Brasil', code: 'CDB', hasTable: false },
   PAU: { slug: 'bra.camp.paulista', name: 'Paulistão', code: 'PAU', hasTable: true },
 }
 
@@ -322,6 +322,35 @@ export async function fetchEspnAllStandings(signal) {
   }
 }
 
+/** Datas extras de scoreboard só para mata-mata (CdB) além da janela de 14 dias. */
+function cdbHorizonDates() {
+  const out = []
+  const start = new Date()
+  start.setUTCHours(0, 0, 0, 0)
+  for (let i = 14; i < 100; i++) {
+    const d = new Date(start)
+    d.setUTCDate(d.getUTCDate() + i)
+    // Domingos + quartas (datas-base típicas da CdB) — evita dezenas de requests
+    const dow = d.getUTCDay()
+    if (dow === 0 || dow === 3) out.push(yyyymmdd(d))
+  }
+  return out
+}
+
+/** Quando a ESPN não manda estádio em jogos futuros da CdB, completa com sedes públicas. */
+function enrichCdbVenue(m) {
+  if (!m || m.competitionCode !== 'CDB') return m
+  if (m.venue && m.venue !== 'A definir') return m
+  if (m.isHome) {
+    return { ...m, venue: 'Allianz Parque (Nubank Parque), São Paulo' }
+  }
+  const opp = String(m.opponent || m.homeTeam || '')
+  if (/vasco/i.test(opp)) {
+    return { ...m, venue: 'Estádio São Januário, Rio de Janeiro' }
+  }
+  return m
+}
+
 export async function fetchEspnMatches(signal) {
   const errors = []
   const scheduleLeagues = [LEAGUES.BSA, LEAGUES.LIB, LEAGUES.PAU, LEAGUES.CDB]
@@ -345,7 +374,7 @@ export async function fetchEspnMatches(signal) {
     days.push(yyyymmdd(d))
   }
 
-  const scoreboardLeagues = [LEAGUES.BSA, LEAGUES.LIB, LEAGUES.PAU]
+  const scoreboardLeagues = [LEAGUES.BSA, LEAGUES.LIB, LEAGUES.PAU, LEAGUES.CDB]
   const upcomingPools = await mapPool(days, 4, async (dateStr) => {
     const parts = await Promise.all(
       scoreboardLeagues.map(async (lg) => {
@@ -359,12 +388,29 @@ export async function fetchEspnMatches(signal) {
     return parts.flat()
   })
 
+  // Horizonte longo só CdB (semifinais etc. podem estar 2 meses à frente)
+  const cdbHorizon = await mapPool(cdbHorizonDates(), 5, async (dateStr) => {
+    try {
+      return await scoreboardDay(LEAGUES.CDB, dateStr, signal)
+    } catch {
+      return []
+    }
+  })
+
   const byId = new Map()
-  for (const m of [...schedules.flat(), ...upcomingPools.flat()]) {
+  for (const m of [...schedules.flat(), ...upcomingPools.flat(), ...cdbHorizon.flat()]) {
     if (!m) continue
-    const prev = byId.get(m.id)
-    if (!prev) byId.set(m.id, m)
-    else if (m.score && !prev.score) byId.set(m.id, m)
+    const enriched = enrichCdbVenue(m)
+    const prev = byId.get(enriched.id)
+    if (!prev) byId.set(enriched.id, enriched)
+    else if (enriched.score && !prev.score) byId.set(enriched.id, enriched)
+    else if (
+      enriched.venue &&
+      enriched.venue !== 'A definir' &&
+      (!prev.venue || prev.venue === 'A definir')
+    ) {
+      byId.set(enriched.id, { ...prev, venue: enriched.venue })
+    }
   }
   // Segunda passagem: dedupe lógico (dia+competição+mando) caso IDs divergem
   const byLogic = new Map()
@@ -381,7 +427,7 @@ export async function fetchEspnMatches(signal) {
   const recentResults = all
     .filter((m) => m.status === 'FINISHED')
     .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, 16)
+    .slice(0, 20)
 
   const upcoming = all
     .filter((m) => {
@@ -389,7 +435,7 @@ export async function fetchEspnMatches(signal) {
       return m.status === 'SCHEDULED' && new Date(m.date).getTime() >= now
     })
     .sort((a, b) => new Date(a.date) - new Date(b.date))
-    .slice(0, 16)
+    .slice(0, 20)
 
   return {
     recentResults,
@@ -554,7 +600,7 @@ export async function fetchEspnLineup(signal, matchesHint = []) {
 
   // If hint empty, pull recent schedules
   if (!candidates.length) {
-    for (const lg of [LEAGUES.BSA, LEAGUES.LIB, LEAGUES.PAU]) {
+    for (const lg of [LEAGUES.BSA, LEAGUES.LIB, LEAGUES.PAU, LEAGUES.CDB]) {
       try {
         const evs = await teamSchedule(lg, signal)
         for (const m of evs

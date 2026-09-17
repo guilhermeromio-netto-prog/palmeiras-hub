@@ -4490,3 +4490,15 @@ html[data-font-size='large'] {
   color: #e8fff2 !important;
   font-weight: 800;
 }
+
+/* Copa do Brasil — chaveamento mata-mata */
+.knockout-path__note {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+}
+.knockout-path__list {
+  margin-top: 0.25rem;
+}
+.knockout-leg .row-top {
+  margin-bottom: 0.35rem;
+}

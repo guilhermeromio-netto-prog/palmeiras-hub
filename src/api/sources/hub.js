@@ -49,6 +49,43 @@ function formatTimeLabel(iso) {
   }).format(new Date(iso))
 }
 
+
+function buildCopaDoBrasilPath(allMatches = [], upcoming = [], recent = []) {
+  const pool = [...(allMatches || []), ...(upcoming || []), ...(recent || [])]
+  const byId = new Map()
+  for (const m of pool) {
+    if (!m || m.competitionCode !== 'CDB') continue
+    const k = m.id || `${m.date}|${m.isHome ? 'H' : 'A'}|${m.opponent}`
+    const prev = byId.get(k)
+    if (!prev) byId.set(k, m)
+    else if (m.score && !prev.score) byId.set(k, m)
+  }
+  const matches = [...byId.values()].sort((a, b) => new Date(a.date) - new Date(b.date))
+  if (!matches.length) return null
+
+  const nextLegs = matches.filter((m) => m.status === 'SCHEDULED' || m.status === 'LIVE')
+  const lastFinished = [...matches].filter((m) => m.status === 'FINISHED').reverse()[0]
+  let phaseNote = 'Mata-mata — sem tabela de pontos.'
+  if (nextLegs.length) {
+    const opp = nextLegs[0].opponent || 'adversário'
+    phaseNote = `Semifinal vs ${opp} (ida e volta). Sem tabela de pontos.`
+  } else if (lastFinished) {
+    phaseNote = `Último jogo: vs ${lastFinished.opponent}. Sem tabela de pontos.`
+  }
+
+  return {
+    competition: 'Copa do Brasil',
+    competitionCode: 'CDB',
+    group: null,
+    season: String(new Date(matches[matches.length - 1].date).getFullYear()),
+    table: [],
+    kind: 'knockout',
+    hasTable: false,
+    matches,
+    note: phaseNote,
+  }
+}
+
 export async function buildHubFromPublicSources({ signal } = {}) {
   const fetchedAt = new Date().toISOString()
   const errors = []
@@ -154,6 +191,17 @@ export async function buildHubFromPublicSources({ signal } = {}) {
 
   const rawCompetitions = standingsRes?.competitions || []
   const competitions = applyStandingsMovement(rawCompetitions)
+  const cdbPath = buildCopaDoBrasilPath(
+    matchesRes?.allMatches,
+    upcoming,
+    recentResults
+  )
+  if (cdbPath && !competitions.some((c) => c.competitionCode === 'CDB')) {
+    competitions.push(cdbPath)
+  } else if (cdbPath) {
+    const idx = competitions.findIndex((c) => c.competitionCode === 'CDB')
+    if (idx >= 0) competitions[idx] = { ...competitions[idx], ...cdbPath }
+  }
 
   const bsa = competitions.find((c) => c.competitionCode === 'BSA')
   const standings = bsa

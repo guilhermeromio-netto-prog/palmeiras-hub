@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import { movementGlyph } from '../utils/standingsMovement'
-import TeamLogo from './TeamLogo'
+import { formatDateTime, scoreLine } from '../utils/format'
+import { matchDedupeKey } from '../utils/matchKey'
+import TeamLogo, { MatchTeams } from './TeamLogo'
 
 function MovementCell({ row }) {
   const g = movementGlyph(row.movement)
@@ -67,6 +69,58 @@ function StandingsTable({ table }) {
   )
 }
 
+function KnockoutPath({ matches = [], note }) {
+  if (!matches.length) {
+    return <p className="muted pad">Chaveamento indisponível nesta atualização.</p>
+  }
+  return (
+    <div className="knockout-path pad">
+      {note && <p className="muted knockout-path__note">{note}</p>}
+      <div className="list-stack knockout-path__list">
+        {matches.map((m) => {
+          const homeName = m.homeTeam || (m.isHome ? 'Palmeiras' : m.opponent) || '—'
+          const awayName = m.awayTeam || (m.isHome ? m.opponent : 'Palmeiras') || '—'
+          return (
+            <article key={matchDedupeKey(m) || m.id} className="card row-card knockout-leg">
+              <div>
+                <div className="row-top">
+                  <span className="pill tiny">{m.isHome ? 'Casa' : 'Fora'}</span>
+                  {m.status === 'FINISHED' && m.score && (
+                    <span className="muted tiny">Placar final</span>
+                  )}
+                </div>
+                <MatchTeams
+                  homeName={homeName}
+                  awayName={awayName}
+                  homeEspnId={m.homeEspnId}
+                  awayEspnId={m.awayEspnId}
+                  homeLogoUrl={m.homeLogoUrl}
+                  awayLogoUrl={m.awayLogoUrl}
+                  size={22}
+                  className="calendar-row__teams"
+                />
+                <p className="muted">{formatDateTime(m.date)} (SP)</p>
+                <p className="muted">{m.venue || 'Local a definir'}</p>
+              </div>
+              <div className="row-card__right">
+                {m.status === 'FINISHED' ? (
+                  <span className={`result-badge ${(m.result || '').toLowerCase()}`}>
+                    {scoreLine(m)}
+                  </span>
+                ) : m.status === 'LIVE' ? (
+                  <span className="pill status live">Ao vivo</span>
+                ) : (
+                  <span className="pill status scheduled">Agendado</span>
+                )}
+              </div>
+            </article>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 export default function Competitions({ data }) {
   const comps = data.competitions || []
   const scorers = data.topScorers || []
@@ -95,6 +149,7 @@ export default function Competitions({ data }) {
       <h2>Campeonatos</h2>
       <p className="lede">
         Classificação com setas de movimento (↑↓→) vs rodada anterior — Palmeiras em destaque.
+        Copa do Brasil aparece como chaveamento (mata-mata).
       </p>
 
       {stats && (
@@ -130,6 +185,7 @@ export default function Competitions({ data }) {
         {list.map((c, i) => {
           const k = keyOf(c, i)
           const isOpen = open === k
+          const isKnockout = c.kind === 'knockout' || c.hasTable === false || c.competitionCode === 'CDB'
           const title = c.group ? `${c.competition} · ${c.group}` : c.competition
           return (
             <div key={k} className={`accordion-item card ${isOpen ? 'open' : ''}`}>
@@ -141,13 +197,22 @@ export default function Competitions({ data }) {
               >
                 <span>
                   <strong>{title}</strong>
-                  <span className="muted tiny"> · {c.season || '—'}</span>
+                  <span className="muted tiny">
+                    {' '}
+                    · {c.season || '—'}
+                    {isKnockout ? ' · mata-mata' : ''}
+                  </span>
                 </span>
                 <span className="chev" aria-hidden="true">
                   {isOpen ? '▾' : '▸'}
                 </span>
               </button>
-              {isOpen && <StandingsTable table={c.table} />}
+              {isOpen &&
+                (isKnockout ? (
+                  <KnockoutPath matches={c.matches || []} note={c.note} />
+                ) : (
+                  <StandingsTable table={c.table} />
+                ))}
             </div>
           )
         })}
@@ -155,7 +220,8 @@ export default function Competitions({ data }) {
 
       <p className="source-hint">
         Fonte: ESPN · Setas: rankChange quando a API envia; senão, delta da visita anterior
-        (localStorage). Copa do Brasil (mata-mata) pode não ter tabela.
+        (localStorage). Copa do Brasil (mata-mata) mostra o caminho / pernas agendadas — sem
+        tabela de pontos.
       </p>
 
       <h3 className="section-title">Artilharia</h3>

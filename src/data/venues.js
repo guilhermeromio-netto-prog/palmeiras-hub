@@ -3,7 +3,8 @@
  * Usado pelo clima previsto do próximo jogo (Open-Meteo).
  */
 export const STADIUMS = [
-  { match: /allianz\s*parque|arena\s*palmeiras/i, city: 'São Paulo', lat: -23.5275, lon: -46.6784 },
+  { match: /allianz\s*parque|nubank\s*parque|arena\s*palmeiras/i, city: 'São Paulo', lat: -23.5275, lon: -46.6784 },
+  { match: /s[aã]o\s*janu[aá]rio|sao\s*januario/i, city: 'Rio de Janeiro', lat: -22.8908, lon: -43.2281 },
   { match: /morumbi|cícero\s*pompeu|cicero\s*pompeu/i, city: 'São Paulo', lat: -23.6001, lon: -46.7201 },
   { match: /neo\s*química|arena\s*corinthians/i, city: 'São Paulo', lat: -23.5453, lon: -46.4742 },
   { match: /vila\s*belmiro/i, city: 'Santos', lat: -23.9511, lon: -46.3392 },
