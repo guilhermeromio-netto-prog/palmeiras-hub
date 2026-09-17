@@ -3405,3 +3405,561 @@ html[data-font-size='large'] {
 .app.compact .match-teams__name {
   font-size: 0.75rem;
 }
+
+/* =========================================================
+   v3.7 — Tricolor premium redesign (green → white → red)
+   Opposite of washed sage/grey cards on flat muddy green.
+   ========================================================= */
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.star-accent {
+  color: var(--red);
+  font-size: 0.85em;
+  margin: 0 0.15em;
+  text-shadow: 0 0 12px rgba(227, 6, 19, 0.45);
+  vertical-align: middle;
+}
+
+.brand-sub {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  opacity: 0.95;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.hero-campeao__title .star-accent {
+  font-size: 0.72em;
+  vertical-align: 0.12em;
+}
+
+/* —— Background: vivid emerald → white mid → red accents —— */
+.pitch-bg {
+  background-color: #004d2a;
+  background-image:
+    linear-gradient(
+      148deg,
+      #004d2a 0%,
+      #006437 18%,
+      #0a7a45 32%,
+      rgba(232, 248, 239, 0.88) 52%,
+      rgba(255, 255, 255, 0.92) 60%,
+      rgba(255, 229, 232, 0.72) 74%,
+      rgba(227, 6, 19, 0.42) 88%,
+      #c8102e 100%
+    ),
+    radial-gradient(ellipse 80% 55% at 12% 8%, rgba(0, 168, 89, 0.55), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 92% 92%, rgba(227, 6, 19, 0.5), transparent 50%),
+    radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.35), transparent 38%),
+    var(--pitch-img, none);
+  background-size: cover, cover, cover, cover, cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.pitch-bg::after {
+  background:
+    linear-gradient(180deg, rgba(0, 40, 24, 0.2) 0%, transparent 22%, rgba(255, 255, 255, 0.08) 55%, rgba(40, 0, 8, 0.18) 100%),
+    radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.22), transparent 55%);
+}
+
+.app.matchday .pitch-bg {
+  background-image:
+    linear-gradient(
+      148deg,
+      #003820 0%,
+      #006437 20%,
+      rgba(255, 255, 255, 0.9) 55%,
+      rgba(255, 220, 224, 0.75) 72%,
+      rgba(227, 6, 19, 0.55) 90%,
+      #c8102e 100%
+    ),
+    radial-gradient(circle at 88% 6%, rgba(227, 6, 19, 0.55), transparent 34%),
+    var(--pitch-img, none);
+}
+
+.app.arena-mode .pitch-bg {
+  background-image:
+    linear-gradient(
+      155deg,
+      #2a0610 0%,
+      #004d2a 28%,
+      rgba(255, 255, 255, 0.85) 58%,
+      rgba(227, 6, 19, 0.5) 85%,
+      #c8102e 100%
+    ),
+    radial-gradient(circle at 88% 6%, rgba(227, 6, 19, 0.6), transparent 36%),
+    var(--pitch-img, none);
+}
+
+/* —— Cards: clean white / frosted glass + green|red glow —— */
+.card,
+.app--glass .card {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(0, 100, 55, 0.14);
+  border-radius: var(--radius);
+  box-shadow:
+    0 14px 40px rgba(0, 40, 24, 0.18),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset,
+    0 0 32px rgba(0, 168, 89, 0.1);
+  backdrop-filter: blur(18px) saturate(1.35);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
+  color: var(--ink);
+}
+
+.match-card.featured,
+.app--glass .match-card.featured {
+  background:
+    linear-gradient(160deg, #ffffff 0%, #f3fff8 55%, #fff5f6 100%);
+  border: 1px solid rgba(0, 100, 55, 0.18);
+  box-shadow:
+    0 16px 44px rgba(0, 40, 24, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.95) inset,
+    0 0 36px rgba(227, 6, 19, 0.08);
+}
+
+.app.matchday .match-card.featured,
+.app.matchday .match-card--hoje {
+  border: 2px solid rgba(227, 6, 19, 0.4);
+  background:
+    linear-gradient(160deg, #ffffff 0%, #f0fff6 42%, #ffe8ec 100%);
+}
+
+.app--glass .since-card,
+.app--glass .live-center,
+.app--glass .fav-player-card,
+.app--glass .prefs-sheet,
+.app--glass .countdown {
+  background: rgba(255, 255, 255, 0.96);
+}
+
+/* High-contrast text on light cards */
+.card h3,
+.card .radio-listen__title,
+.card .yt-match__title,
+.card .broadcast-info__title {
+  color: var(--green-deep);
+  font-weight: 800;
+}
+
+.card .muted,
+.radio-listen .muted,
+.yt-match .muted,
+.broadcast-info .muted {
+  color: var(--muted);
+}
+
+/* —— Buttons —— */
+.btn.primary {
+  background: linear-gradient(145deg, #00b85f, var(--green));
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(0, 100, 55, 0.38);
+}
+
+.btn.accent {
+  background: linear-gradient(145deg, #ff2a3a, var(--red-deep));
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(227, 6, 19, 0.38);
+}
+
+.btn.ghost {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* —— Feedback FAB —— */
+.app--glass .feedback-fab,
+.feedback-fab {
+  background: #fff !important;
+  color: var(--green-deep);
+  border: 1px solid rgba(0, 100, 55, 0.2);
+  box-shadow: 0 10px 28px rgba(0, 40, 24, 0.22), 0 0 20px rgba(227, 6, 19, 0.08);
+  font-weight: 700;
+}
+
+/* —— Onde assistir (light card) —— */
+.broadcast-info {
+  padding: 1rem 1.1rem 1.15rem;
+}
+
+.broadcast-info__badge {
+  background: var(--green-soft);
+  color: var(--green-deep);
+  border: 1px solid rgba(0, 100, 55, 0.18);
+  font-weight: 700;
+}
+
+.broadcast-info__badge--press {
+  background: var(--green-soft);
+  color: var(--green-deep);
+  border-color: rgba(0, 168, 89, 0.35);
+}
+
+.broadcast-info__badge--typical {
+  background: #fff6e0;
+  color: #8a5a00;
+  border: 1px solid rgba(240, 193, 74, 0.45);
+}
+
+.broadcast-info__badge--unknown {
+  background: #f3f6f4;
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+
+.broadcast-info__ch {
+  background: linear-gradient(135deg, var(--green-bright), var(--green));
+  color: #fff;
+  border: 1px solid rgba(0, 77, 42, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 100, 55, 0.25);
+}
+
+.broadcast-info__link {
+  color: var(--green);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1.5px solid rgba(0, 100, 55, 0.35);
+}
+
+.broadcast-info__link:hover,
+.broadcast-info__link:focus-visible {
+  color: var(--red-deep);
+  border-bottom-color: var(--red);
+}
+
+/* —— Rádio —— */
+.radio-listen,
+.yt-match {
+  padding: 1rem 1.1rem 1.15rem;
+}
+
+.radio-listen__badge,
+.yt-match__badge {
+  background: var(--green-soft);
+  color: var(--green-deep);
+  border: 1px solid rgba(0, 100, 55, 0.18);
+  font-weight: 700;
+}
+
+.radio-listen__badge {
+  background: linear-gradient(135deg, var(--red-soft), #fff);
+  color: var(--red-deep);
+  border-color: rgba(227, 6, 19, 0.28);
+}
+
+.yt-match__badge--watch {
+  background: var(--green-soft);
+  color: var(--green-deep);
+}
+
+.yt-match__badge--ppv {
+  background: #fff6e0;
+  color: #8a5a00;
+  border: 1px solid rgba(240, 193, 74, 0.45);
+}
+
+.yt-match__badge--search {
+  background: #f3f6f4;
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+
+.radio-listen__stations {
+  gap: 0.45rem;
+}
+
+.radio-listen__chip {
+  background: #fff;
+  color: var(--green-deep);
+  border: 1.5px solid rgba(0, 100, 55, 0.28);
+  box-shadow: 0 2px 8px rgba(0, 40, 24, 0.06);
+  font-weight: 700;
+}
+
+.radio-listen__chip:hover,
+.radio-listen__chip:focus-visible {
+  border-color: var(--green-bright);
+  box-shadow: 0 0 0 3px rgba(0, 168, 89, 0.18);
+  outline: none;
+}
+
+.radio-listen__chip.is-active {
+  background: linear-gradient(135deg, var(--green-bright), var(--green));
+  color: #fff;
+  border-color: transparent;
+  box-shadow:
+    0 0 0 2px var(--red),
+    0 6px 16px rgba(0, 100, 55, 0.35);
+}
+
+.radio-listen__chip.is-active .radio-listen__chip-city {
+  opacity: 0.9;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.radio-listen__chip--link {
+  background: linear-gradient(180deg, #fff, var(--green-soft));
+  color: var(--green);
+  border-style: dashed;
+  font-weight: 600;
+}
+
+.radio-listen__chip-city {
+  color: var(--muted);
+  opacity: 0.85;
+}
+
+.radio-listen__now {
+  color: var(--ink);
+}
+
+.radio-listen__playbtn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.85rem;
+  min-height: 3.35rem;
+  padding: 0.55rem 1.1rem 0.55rem 0.55rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #00b85f 0%, var(--green) 55%, var(--green-deep) 100%);
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 800;
+  box-shadow:
+    0 10px 28px rgba(0, 100, 55, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.25) inset;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.radio-listen__playbtn:hover,
+.radio-listen__playbtn:focus-visible {
+  filter: brightness(1.06);
+  outline: none;
+  box-shadow:
+    0 12px 32px rgba(0, 100, 55, 0.45),
+    0 0 0 3px rgba(227, 6, 19, 0.25);
+}
+
+.radio-listen__playbtn.is-playing {
+  background: linear-gradient(135deg, var(--green-deep), #013820);
+  box-shadow:
+    0 10px 28px rgba(0, 40, 24, 0.4),
+    0 0 0 2px var(--red);
+}
+
+.radio-listen__play-orb {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.radio-listen__play-icon {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 7px 0 7px 12px;
+  border-color: transparent transparent transparent var(--green);
+  margin-left: 2px;
+}
+
+.radio-listen__pause-icon {
+  display: flex;
+  gap: 3px;
+  width: 12px;
+  height: 14px;
+}
+
+.radio-listen__pause-icon::before,
+.radio-listen__pause-icon::after {
+  content: '';
+  flex: 1;
+  border-radius: 2px;
+  background: var(--green-deep);
+}
+
+.radio-listen__play-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.radio-listen__play-label {
+  letter-spacing: 0.02em;
+}
+
+.radio-listen__eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+}
+
+.radio-listen__eq i {
+  display: block;
+  width: 3px;
+  height: 6px;
+  border-radius: 1px;
+  background: #fff;
+  animation: radioEq 0.85s ease-in-out infinite;
+}
+
+.radio-listen__eq i:nth-child(2) { animation-delay: 0.12s; height: 10px; }
+.radio-listen__eq i:nth-child(3) { animation-delay: 0.24s; height: 14px; }
+.radio-listen__eq i:nth-child(4) { animation-delay: 0.36s; height: 8px; }
+
+@keyframes radioEq {
+  0%, 100% { transform: scaleY(0.45); opacity: 0.7; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+
+.radio-listen__audio {
+  display: none !important;
+}
+
+.radio-listen__fallback {
+  color: var(--red-deep);
+  background: var(--red-soft);
+  border: 1px solid rgba(227, 6, 19, 0.28);
+  border-radius: 12px;
+  padding: 0.55rem 0.75rem;
+}
+
+.radio-listen__fallback a,
+.radio-listen__player a {
+  color: var(--green);
+  font-weight: 700;
+}
+
+/* —— YouTube —— */
+.yt-match__ppv {
+  background: linear-gradient(135deg, #fff8e8, #fff);
+  border: 1px solid rgba(240, 193, 74, 0.45);
+  color: var(--ink);
+  border-radius: 14px;
+}
+
+.yt-match__watch-btn {
+  background: linear-gradient(135deg, #ff2a3a, var(--red-deep));
+  border-radius: 999px;
+  box-shadow: 0 8px 22px rgba(227, 6, 19, 0.35);
+}
+
+.yt-match__link {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.yt-match__link--primary {
+  background: linear-gradient(135deg, var(--green-soft), #fff);
+  border: 1.5px solid rgba(0, 100, 55, 0.28);
+  color: var(--green-deep);
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  box-shadow: 0 4px 14px rgba(0, 40, 24, 0.08);
+}
+
+.yt-match__link--primary:hover,
+.yt-match__link--primary:focus-visible {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.15);
+  outline: none;
+}
+
+.yt-match__ch {
+  background: #fff;
+  color: var(--green-deep);
+  border: 1.5px solid rgba(0, 100, 55, 0.28);
+  font-weight: 700;
+}
+
+.yt-match__ch:hover,
+.yt-match__ch:focus-visible {
+  background: linear-gradient(135deg, var(--green-bright), var(--green));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 0 0 2px var(--red);
+  outline: none;
+}
+
+/* —— Bottom nav: readable labels + green/red active ring —— */
+.tabbar.tabbar--liquid {
+  background:
+    linear-gradient(180deg, rgba(0, 60, 36, 0.55), rgba(0, 30, 18, 0.88));
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.tab-liquid {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.tab-liquid__label {
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+}
+
+.tab-liquid.active {
+  color: #fff;
+}
+
+.tab-liquid.active .tab-liquid__label {
+  color: #fff;
+}
+
+.tab-liquid.active .tab-liquid__orb,
+.tabbar--six .tab-liquid.active .tab-liquid__orb {
+  border-color: rgba(255, 255, 255, 0.85);
+  box-shadow:
+    0 12px 26px rgba(0, 0, 0, 0.4),
+    0 0 0 2px var(--green-bright),
+    0 0 0 5px rgba(227, 6, 19, 0.85),
+    0 0 22px rgba(0, 168, 89, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.tab-liquid--torcida.active .tab-liquid__orb {
+  box-shadow:
+    0 12px 26px rgba(0, 0, 0, 0.4),
+    0 0 0 2px var(--green-bright),
+    0 0 0 5px rgba(227, 6, 19, 0.85),
+    0 0 20px rgba(227, 6, 19, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+/* Live / AO VIVO accents stay vivid red */
+.live-badge,
+.status-banner.live .dot {
+  background: var(--red);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radio-listen__eq i {
+    animation: none;
+  }
+}

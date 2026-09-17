@@ -1,7 +1,7 @@
 {
   "name": "palmeiras-hub",
   "private": true,
-  "version": "3.6.0",
+  "version": "3.7.0",
   "type": "module",
   "description": "Hub pessoal Palmeiras — rádio + YouTube + torcida VERDAO + onde assistir",
   "scripts": {

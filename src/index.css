@@ -1,20 +1,25 @@
 :root {
+  /* Palmeiras / Italian tricolor — vivid, premium */
   --green: #006437;
-  --green-deep: #004d2c;
+  --green-deep: #004d2a;
   --green-mid: #0a7a45;
   --green-bright: #00a859;
-  --green-soft: #e8f5ee;
-  --red: #c8102e;
-  --red-soft: #fde8ec;
-  --pitch: #0b3d28;
+  --green-soft: #e8f8ef;
+  --red: #e30613;
+  --red-deep: #c8102e;
+  --red-soft: #ffe5e8;
+  --pitch: #004d2a;
   --white: #ffffff;
-  --ink: #0f1f17;
-  --muted: #5a6b62;
-  --line: rgba(255, 255, 255, 0.14);
-  --card: rgba(255, 255, 255, 0.78);
-  --shadow: 0 14px 44px rgba(0, 28, 18, 0.28);
-  --shadow-sm: 0 6px 18px rgba(0, 40, 24, 0.16);
-  --radius: 18px;
+  --ink: #0a1f14;
+  --muted: #3d5248;
+  --line: rgba(0, 77, 42, 0.12);
+  --card: rgba(255, 255, 255, 0.96);
+  --card-border: rgba(0, 100, 55, 0.16);
+  --shadow: 0 16px 48px rgba(0, 40, 24, 0.22);
+  --shadow-sm: 0 8px 22px rgba(0, 40, 24, 0.14);
+  --glow-green: 0 0 28px rgba(0, 168, 89, 0.18);
+  --glow-red: 0 0 24px rgba(227, 6, 19, 0.16);
+  --radius: 20px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   font-family: 'Segoe UI', system-ui, -apple-system, Roboto, Ubuntu, sans-serif;
   color: var(--ink);

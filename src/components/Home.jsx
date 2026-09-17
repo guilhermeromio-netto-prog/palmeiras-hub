@@ -82,7 +82,11 @@ export default function Home({
         <div className="hero-campeao__copy">
           <img className="crest crest--hero" src={CREST} width={52} height={52} alt="" decoding="async" />
           <p className="eyebrow">{matchDay ? 'Dia de jogo' : 'Palmeiras Hub'}</p>
-          <h2 className="hero-campeao__title">O Maior Campeão</h2>
+          <h2 className="hero-campeao__title">
+            <span className="star-accent" aria-hidden="true">★</span>
+            O Maior Campeão
+            <span className="star-accent" aria-hidden="true">★</span>
+          </h2>
           <p className="lede hero-campeao__lede">
             Avanti Palestra — jogos, elenco e tabelas com fontes públicas
             {liveMatch?.polling ? ' · placar ao vivo ativo' : ''}.

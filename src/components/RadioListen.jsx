@@ -10,7 +10,7 @@ function stationUrls(radio) {
 }
 
 /**
- * Ouvir no rádio — player HTML5 + escolha de emissoras esportivas.
+ * Ouvir no rádio — player custom + escolha de emissoras esportivas.
  * load()+play() rodam dentro do gesto do usuário (obrigatório no mobile).
  */
 export default function RadioListen() {
@@ -193,19 +193,35 @@ export default function RadioListen() {
           <div className="radio-listen__controls">
             <button
               type="button"
-              className={`radio-listen__playbtn touch${playing ? ' is-playing' : ''}`}
+              className={`radio-listen__playbtn touch${playing ? ' is-playing' : ''}${busy ? ' is-busy' : ''}`}
               onClick={togglePlayPause}
               aria-pressed={playing}
               disabled={busy && !playing}
             >
-              {playing ? '⏸ Pausar' : '▶ Ouvir agora'}
+              <span className="radio-listen__play-orb" aria-hidden="true">
+                {playing ? (
+                  <span className="radio-listen__pause-icon" />
+                ) : (
+                  <span className="radio-listen__play-icon" />
+                )}
+              </span>
+              <span className="radio-listen__play-copy">
+                <span className="radio-listen__play-label">
+                  {busy && !playing ? 'Conectando…' : playing ? 'Pausar' : 'Ouvir agora'}
+                </span>
+                {playing && (
+                  <span className="radio-listen__eq" aria-hidden="true">
+                    <i /><i /><i /><i />
+                  </span>
+                )}
+              </span>
             </button>
           </div>
 
+          {/* Hidden native element — custom UI drives the same Audio API */}
           <audio
             ref={audioRef}
-            className="radio-listen__audio"
-            controls
+            className="radio-listen__audio sr-only"
             preload="none"
             playsInline
             onError={handleAudioError}

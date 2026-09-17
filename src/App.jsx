@@ -141,7 +141,11 @@ export default function App() {
           />
           <div>
             <strong>Palmeiras Hub</strong>
-            <span className="brand-sub">O Maior Campeão</span>
+            <span className="brand-sub">
+              <span className="star-accent" aria-hidden="true">★</span>
+              O Maior Campeão
+              <span className="star-accent" aria-hidden="true">★</span>
+            </span>
           </div>
         </div>
         <div className="topbar-actions">
