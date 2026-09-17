@@ -2,6 +2,7 @@ import { formatDateTime, scoreLine } from '../utils/format'
 import FormDots from './FormDots'
 import { MatchTeams } from './TeamLogo'
 import { isTodaySP } from '../utils/datetime'
+import MatchWeather from './MatchWeather'
 
 export default function MatchCard({ match, form, featured = false, emphasizeToday = false }) {
   if (!match) {
@@ -16,6 +17,10 @@ export default function MatchCard({ match, form, featured = false, emphasizeToda
   const today = emphasizeToday || isTodaySP(match.date)
   const homeName = match.homeTeam || (match.isHome ? 'Palmeiras' : match.opponent) || '—'
   const awayName = match.awayTeam || (match.isHome ? match.opponent : 'Palmeiras') || '—'
+  const showWeather =
+    featured &&
+    match.status !== 'FINISHED' &&
+    (match.status === 'SCHEDULED' || match.status === 'LIVE' || !match.status)
 
   return (
     <article
@@ -71,6 +76,9 @@ export default function MatchCard({ match, form, featured = false, emphasizeToda
           <dd>{match.isHome ? 'Casa' : 'Fora'}</dd>
         </div>
       </dl>
+
+      {showWeather && <MatchWeather match={match} />}
+
       {form && (
         <div className="match-card__form">
           <span className="label">Forma recente</span>

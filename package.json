@@ -1,9 +1,9 @@
 {
   "name": "palmeiras-hub",
   "private": true,
-  "version": "3.7.0",
+  "version": "3.8.0",
   "type": "module",
-  "description": "Hub pessoal Palmeiras — rádio + YouTube + torcida VERDAO + onde assistir",
+  "description": "Hub pessoal Palmeiras \u2014 r\u00e1dio + YouTube + torcida VERDAO + onde assistir",
   "scripts": {
     "dev": "vite",
     "dev:proxy": "concurrently -k -n proxy,web -c green,cyan \"node server/index.js\" \"vite\"",

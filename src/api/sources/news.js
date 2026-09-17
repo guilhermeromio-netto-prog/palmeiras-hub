@@ -37,7 +37,7 @@ function idFrom(url, title) {
 }
 
 function mapItems(feed, items) {
-  return (items || []).slice(0, 10).map((item) => ({
+  return (items || []).slice(0, 14).map((item) => ({
     id: idFrom(item.link, item.title),
     title: item.title,
     source: feed.name,
@@ -80,7 +80,7 @@ export async function fetchPalmeirasNews(signal) {
   )
 
   return {
-    news: news.slice(0, 24),
+    news: news.slice(0, 36),
     source: sourcesOk.join(' + ') || null,
     errors,
   }
