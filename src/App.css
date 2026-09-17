@@ -3656,10 +3656,10 @@ html[data-font-size='large'] {
 .app--glass .since-card,
 .app--glass .live-center,
 .app--glass .fav-player-card,
-.app--glass .prefs-sheet,
-.app--glass .countdown {
+.app--glass .prefs-sheet {
   background: rgba(255, 255, 255, 0.96);
 }
+/* countdown stays dark green — do not force white glass */
 
 /* High-contrast text on light cards */
 .card h3,
@@ -4126,61 +4126,68 @@ html[data-font-size='large'] {
   opacity: 1;
 }
 
-/* —— Countdown: solid light card + dark digits —— */
+/* —— Countdown: dark green panel + bright digits (high contrast) —— */
 .countdown,
 .app--glass .countdown {
-  background: #ffffff;
-  color: var(--ink);
-  border: 1px solid rgba(0, 100, 55, 0.18);
+  background:
+    linear-gradient(145deg, #006437 0%, #004d2a 55%, #003820 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.28);
   box-shadow:
-    0 12px 32px rgba(0, 40, 24, 0.14),
-    0 0 0 1px rgba(255, 255, 255, 0.95) inset;
+    0 14px 36px rgba(0, 30, 18, 0.45),
+    0 0 0 1px rgba(227, 6, 19, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .countdown__label {
-  color: var(--ink-soft);
+  color: #ffffff !important;
   opacity: 1;
   font-weight: 800;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
 .countdown__unit {
-  background: rgba(0, 100, 55, 0.07);
-  border: 1px solid rgba(0, 100, 55, 0.1);
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .countdown__num {
-  color: var(--green-deep, #004d2a);
+  color: #ffffff !important;
   font-weight: 900;
+  font-size: 1.65rem;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .countdown__lbl {
-  color: var(--muted);
+  color: #e8fff2 !important;
   opacity: 1;
   font-weight: 700;
 }
 
 .countdown__tz,
 .countdown__hint {
-  color: var(--muted);
+  color: #d7f5e4 !important;
   opacity: 1;
 }
 
 .countdown--hoje {
-  border-color: rgba(227, 6, 19, 0.45);
+  border-color: rgba(255, 220, 220, 0.55);
   box-shadow:
-    0 0 0 2px rgba(227, 6, 19, 0.18),
-    0 12px 32px rgba(0, 40, 24, 0.14);
+    0 0 0 2px rgba(227, 6, 19, 0.45),
+    0 14px 36px rgba(0, 30, 18, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .countdown--live {
-  background: linear-gradient(145deg, #006437, #004d2a);
+  background: linear-gradient(145deg, #c8102e, #006437 55%, #004d2a);
   color: #fff;
-  border-color: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.35);
 }
 
 .countdown--live .countdown__label,
 .countdown--live .countdown__hint {
-  color: rgba(255, 255, 255, 0.95);
+  color: #ffffff !important;
 }
 
 /* —— Match card teams / meta —— */
