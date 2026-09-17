@@ -37,7 +37,7 @@ const TABS = [
   { id: 'home', label: 'Início', icon: `${BASE}brand/btn-ball.png`, primary: true },
   { id: 'torcida', label: 'Torcida', icon: `${BASE}brand/btn-torcida.png`, torcida: true },
   { id: 'tables', label: 'Tabelas', icon: `${BASE}brand/btn-trophy.png` },
-  { id: 'news', label: 'Notícias', icon: `${BASE}brand/btn-ball.png`, news: true },
+  { id: 'news', label: 'Notíc.', fullLabel: 'Notícias', icon: `${BASE}brand/btn-ball.png`, news: true },
 ]
 
 export default function App() {
@@ -226,6 +226,7 @@ export default function App() {
               .filter(Boolean)
               .join(' ')}
             onClick={() => setTab(t.id)}
+            aria-label={t.fullLabel || t.label}
             aria-current={tab === t.id ? 'page' : undefined}
           >
             <span className="tab-liquid__orb">
