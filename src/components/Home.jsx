@@ -13,6 +13,8 @@ import RadioListen from './RadioListen'
 import YouTubeMatch from './YouTubeMatch'
 import MatchWeather from './MatchWeather'
 import SyncStatus from './SyncStatus'
+import StoriesCard from './StoriesCard'
+import StreakBadge from './StreakBadge'
 import { formatDate, formatDateTime, scoreLine, matchTitle } from '../utils/format'
 import { formationLabel } from '../utils/formation'
 import { matchDedupeKey } from '../utils/matchKey'
@@ -123,6 +125,7 @@ export default function Home({
                 <div className="share-row">
                   <ShareButton text={shareNext} label="WhatsApp · próximo jogo" />
                 </div>
+                <StoriesCard nextMatch={displayMatch} lastResult={lastFinished} />
               </>
             ) : (
               <article className="card match-card featured">
@@ -137,6 +140,9 @@ export default function Home({
                   </div>
                 )}
               </article>
+            )}
+            {!displayMatch && lastFinished && (
+              <StoriesCard nextMatch={null} lastResult={lastFinished} />
             )}
           </div>
         )
@@ -329,6 +335,8 @@ export default function Home({
       </div>
 
       <SinceLastVisit data={data} />
+
+      <StreakBadge compact />
 
       {showLive && (
         <LiveMatchCenter

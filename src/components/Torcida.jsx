@@ -3,6 +3,9 @@ import ScoreTip from './ScoreTip'
 import CrowdWall from './CrowdWall'
 import QuizVerdao from './QuizVerdao'
 import SyncStatus from './SyncStatus'
+import RoomInvite from './RoomInvite'
+import StreakBadge from './StreakBadge'
+import StoriesCard from './StoriesCard'
 import { matchTitle } from '../utils/format'
 import { matchDedupeKey } from '../utils/matchKey'
 import { msUntil } from '../utils/datetime'
@@ -42,6 +45,15 @@ export default function Torcida({ data, liveMatch }) {
       </header>
 
       <SyncStatus />
+
+      <StreakBadge />
+
+      <RoomInvite />
+
+      <StoriesCard
+        nextMatch={displayMatch}
+        lastResult={(data?.recentResults || [])[0]}
+      />
 
       <CrowdReactions matchId={matchId} matchLabel={matchLabel} />
 

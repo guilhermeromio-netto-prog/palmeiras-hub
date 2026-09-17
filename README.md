@@ -4,6 +4,14 @@ App pessoal de torcedor do **Palmeiras**: próximo jogo, **onde assistir**, **ou
 
 **Live:** https://guilhermeromio-netto-prog.github.io/palmeiras-hub/
 
+## Novidades v4.0
+
+- **Portal de entrada** — splash Verdão 1× por dia (localStorage + data SP); toque ou auto ≤2.5s; respeita reduced-motion.
+- **Cartão Stories** — arte 9:16 (PNG) do próximo jogo ou último resultado; Baixar + Compartilhar.
+- **Sequência da Torcida** — check-in diário 🔥 N dias; local sempre; InstantDB best-effort.
+- **Enquanto você saiu** — card dramático só quando há novidade (resultado, tabela, manchete).
+- **Convite VERDAO** — one-tap com link + código da sala.
+
 ## Novidades v3.9
 
 - **Modo estádio** — ambiência rica no dia de jogo (SP). Preferências → Automático / Sempre / Desligado.

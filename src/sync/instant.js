@@ -51,6 +51,14 @@ export const schema = i.schema({
       score: i.number(),
       at: i.number().optional(),
     }),
+    checkins: i.entity({
+      roomCode: i.string().indexed(),
+      name: i.string(),
+      dateKey: i.string().indexed(),
+      streak: i.number(),
+      at: i.number().optional(),
+      clientId: i.string().optional(),
+    }),
   },
 })
 

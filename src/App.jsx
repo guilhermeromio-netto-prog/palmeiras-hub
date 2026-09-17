@@ -15,6 +15,7 @@ import MatchDayBanner from './components/MatchDayBanner'
 import NewsTicker from './components/NewsTicker'
 import Preferences from './components/Preferences'
 import FeedbackButton from './components/FeedbackButton'
+import EntryGate from './components/EntryGate'
 import PitchParticles from './components/PitchParticles'
 import ConfettiBurst from './components/ConfettiBurst'
 import { isMatchDaySP, isTodaySP } from './utils/datetime'
@@ -178,6 +179,7 @@ export default function App() {
       />
       <PitchParticles />
       <ConfettiBurst active={confetti} onDone={onConfettiDone} />
+      <EntryGate />
 
       <header className="topbar topbar--glass">
         <div className="brand">

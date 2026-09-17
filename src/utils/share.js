@@ -86,3 +86,13 @@ export function quizShareText(score, total) {
     `Topa desafiar?\n${SITE_URL}`
   )
 }
+
+export function roomInviteText(room = 'VERDAO') {
+  const code = room || 'VERDAO'
+  return (
+    `🌿 Entra no Palmeiras Hub comigo — sala ${code}\n` +
+    `Jogos, placar, mural e torcida juntos.\n\n` +
+    `Link: ${SITE_URL}\n` +
+    `Código da sala: ${code}`
+  )
+}

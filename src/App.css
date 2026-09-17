@@ -5313,3 +5313,305 @@ html[data-font-size='large'] {
     transition: none;
   }
 }
+
+
+/* ===== v4.0.0 — Engagement pillars ===== */
+
+/* —— Entry gate —— */
+.entry-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  animation: entry-gate-in 0.45s ease-out both;
+}
+.entry-gate--out {
+  animation: entry-gate-out 0.32s ease-in both;
+  pointer-events: none;
+}
+.entry-gate--static,
+.entry-gate--static.entry-gate--out {
+  animation: none;
+}
+.entry-gate__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.06);
+  filter: saturate(1.1);
+}
+.entry-gate__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(0, 100, 55, 0.35), transparent 55%),
+    linear-gradient(180deg, rgba(0, 20, 12, 0.55) 0%, rgba(0, 40, 24, 0.88) 100%);
+}
+.entry-gate__content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 1.5rem;
+  color: #fff;
+  max-width: 22rem;
+}
+.entry-gate__crest {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 0.75rem;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.45));
+  animation: entry-crest-pulse 2s ease-in-out infinite;
+}
+.entry-gate--static .entry-gate__crest {
+  animation: none;
+}
+.entry-gate__eyebrow {
+  margin: 0;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.78);
+}
+.entry-gate__title {
+  margin: 0.35rem 0 0.25rem;
+  font-size: clamp(2.6rem, 12vw, 3.4rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+.entry-gate__lede {
+  margin: 0 0 1.25rem;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.95rem;
+}
+.entry-gate__cta {
+  min-width: 12rem;
+  font-weight: 800;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+.entry-gate__skip {
+  display: block;
+  margin: 0.85rem auto 0;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0.4rem 0.8rem;
+}
+@keyframes entry-gate-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes entry-gate-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes entry-crest-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .entry-gate,
+  .entry-gate--out,
+  .entry-gate__crest {
+    animation: none !important;
+  }
+}
+
+/* —— Stories card —— */
+.stories-card {
+  margin: 0.85rem 0 1rem;
+  padding: 0.95rem 1rem 1.05rem;
+  background: linear-gradient(165deg, #0b2e1c 0%, #145c38 55%, #0a2418 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f4fff8;
+}
+.stories-card .eyebrow {
+  color: rgba(184, 255, 200, 0.85);
+}
+.stories-card h3 {
+  margin: 0.15rem 0 0.2rem;
+  color: #fff;
+  font-size: 1.08rem;
+}
+.stories-card .muted,
+.stories-card .muted.tiny {
+  color: rgba(255, 255, 255, 0.68) !important;
+}
+.stories-card__preview-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 0.75rem 0 0.9rem;
+}
+.stories-card__preview {
+  width: 140px;
+  height: auto;
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: #002816;
+}
+.stories-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+.stories-card__actions .btn {
+  flex: 1 1 8rem;
+}
+.stories-card__status {
+  margin: 0.55rem 0 0;
+}
+
+/* —— Streak —— */
+.streak-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 0.85rem;
+  padding: 0.8rem 1rem;
+  background: linear-gradient(135deg, #fff8e8, #fff);
+  border: 1px solid rgba(200, 140, 20, 0.28);
+  color: #1a1a1a;
+}
+.streak-badge--compact {
+  padding: 0.65rem 0.85rem;
+  margin-bottom: 0.75rem;
+}
+.streak-badge--empty {
+  background: linear-gradient(135deg, #f4faf6, #fff);
+  border-color: rgba(0, 100, 55, 0.14);
+}
+.streak-badge__fire {
+  font-size: 1.65rem;
+  line-height: 1;
+}
+.streak-badge__count {
+  display: block;
+  color: #7a3e00;
+  font-size: 1.02rem;
+}
+.streak-badge__body .muted {
+  color: #555 !important;
+  margin: 0.1rem 0 0;
+}
+.streak-badge__text {
+  margin: 0;
+  color: #234;
+  font-size: 0.92rem;
+}
+
+/* —— Room invite —— */
+.room-invite {
+  margin: 0 0 1rem;
+  padding: 1rem 1.05rem 1.1rem;
+  background: linear-gradient(160deg, #ffffff, #e8f7ee);
+  border: 1px solid rgba(0, 100, 55, 0.2);
+  color: #122;
+}
+.room-invite h3 {
+  margin: 0.1rem 0 0.25rem;
+  color: var(--green-deep, #004d2c);
+}
+.room-invite__lede {
+  margin: 0;
+  color: #234;
+  font-size: 0.95rem;
+}
+.room-invite__code {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0.85rem 0 0.45rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 14px;
+  background: #0b2e1c;
+  color: #fff;
+}
+.room-invite__code-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+}
+.room-invite__code-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #b8ffc8;
+}
+.room-invite__hint {
+  margin: 0 0 0.75rem;
+}
+.room-invite__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.room-invite__actions .btn {
+  flex: 1 1 8rem;
+}
+.room-invite__flash {
+  margin: 0.5rem 0 0;
+}
+
+/* —— Since last visit drama —— */
+.since-card--drama {
+  background: linear-gradient(155deg, #0d3320 0%, #176b40 50%, #0a2818 100%);
+  border: 1px solid rgba(255, 215, 100, 0.28);
+  color: #f5fff8;
+  box-shadow: 0 10px 36px rgba(0, 40, 20, 0.35);
+}
+.since-card--drama .eyebrow {
+  color: #ffe566;
+}
+.since-card--drama h3 {
+  color: #fff !important;
+  font-size: 1.2rem;
+}
+.since-card--drama .muted,
+.since-card--drama .muted.tiny {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+.since-card--drama .since-item {
+  color: rgba(255, 255, 255, 0.92);
+}
+.since-card--drama .since-item--up {
+  color: #b8ffc8;
+}
+.since-card--drama .since-item--down {
+  color: #ffb4b4;
+}
+.since-card--drama a {
+  color: #ffe566;
+}
+.since-card__spotlight {
+  margin: 0.65rem 0 0.35rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.since-card--quiet {
+  opacity: 0.95;
+}
+.app--glass .stories-card,
+.app--glass .room-invite,
+.app--glass .streak-badge,
+.app--glass .since-card--drama {
+  backdrop-filter: blur(8px);
+}
