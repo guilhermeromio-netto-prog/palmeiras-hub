@@ -1,6 +1,6 @@
 /**
- * Interações da torcida — só neste aparelho (localStorage).
- * Sem backend / sem API keys.
+ * Preferências locais da torcida (confetti, melhor quiz neste aparelho).
+ * Reações / palpites / mural / ranking syncam via InstantDB (src/sync).
  */
 
 const REACTIONS_KEY = 'palmeiras-hub-reactions-v1'

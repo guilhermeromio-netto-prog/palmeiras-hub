@@ -1,28 +1,43 @@
-import { useState } from 'react'
-import { addMuralEntry, getMural, MAX_MSG, MAX_NAME } from '../utils/torcidaStorage'
+import { useMemo, useState } from 'react'
+import { MAX_MSG, MAX_NAME } from '../utils/torcidaStorage'
 import { muralInviteText } from '../utils/share'
 import ShareButton from './ShareButton'
+import { db, id } from '../sync/instant'
+import { getDisplayName, setDisplayName } from '../sync/identity'
+import { useRoomCodeState } from '../hooks/useRoomCode'
 
-function formatWhen(iso) {
-  if (!iso) return ''
+function formatWhen(ts) {
+  if (ts == null) return ''
   try {
+    const d = typeof ts === 'number' ? new Date(ts) : new Date(ts)
     return new Intl.DateTimeFormat('pt-BR', {
       timeZone: 'America/Sao_Paulo',
       day: '2-digit',
       month: 'short',
       hour: '2-digit',
       minute: '2-digit',
-    }).format(new Date(iso))
+    }).format(d)
   } catch {
     return ''
   }
 }
 
 export default function CrowdWall() {
-  const [entries, setEntries] = useState(() => getMural())
-  const [name, setName] = useState('')
+  const room = useRoomCodeState()
+  const { data, isLoading } = db.useQuery({
+    mural: {
+      $: { where: { roomCode: room } },
+    },
+  })
+  const [name, setName] = useState(() => getDisplayName())
   const [message, setMessage] = useState('')
   const [err, setErr] = useState('')
+
+  const entries = useMemo(() => {
+    const list = [...(data?.mural || [])]
+    list.sort((a, b) => (b.at || 0) - (a.at || 0))
+    return list.slice(0, 30)
+  }, [data?.mural])
 
   function onSubmit(e) {
     e.preventDefault()
@@ -32,8 +47,16 @@ export default function CrowdWall() {
       setErr('Escreva uma mensagem curta.')
       return
     }
-    const next = addMuralEntry(name, msg)
-    setEntries(next)
+    const n = String(name || 'Torcedor').trim().slice(0, MAX_NAME) || 'Torcedor'
+    setDisplayName(n)
+    db.transact(
+      db.tx.mural[id()].update({
+        roomCode: room,
+        name: n,
+        message: msg.slice(0, MAX_MSG),
+        at: Date.now(),
+      })
+    )
     setMessage('')
   }
 
@@ -41,7 +64,9 @@ export default function CrowdWall() {
     <section className="crowd-wall card">
       <header className="crowd-wall__head">
         <h3 className="crowd-wall__title">Mural da torcida</h3>
-        <p className="muted tiny">mural deste aparelho / família</p>
+        <p className="muted tiny">
+          {isLoading ? 'carregando…' : `sala ${room} · todos na família veem`}
+        </p>
       </header>
 
       <form className="crowd-wall__form" onSubmit={onSubmit}>
@@ -72,7 +97,7 @@ export default function CrowdWall() {
             Publicar no mural
           </button>
           <ShareButton
-            text={muralInviteText()}
+            text={muralInviteText(room)}
             label="Compartilhar mural"
             className="share-btn--compact"
           />

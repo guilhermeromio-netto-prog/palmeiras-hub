@@ -1,9 +1,9 @@
 {
   "name": "palmeiras-hub",
   "private": true,
-  "version": "3.4.0",
+  "version": "3.5.0",
   "type": "module",
-  "description": "Hub pessoal Palmeiras \u2014 UI glass + ao vivo + prefer\u00eancias (fontes p\u00fablicas)",
+  "description": "Hub pessoal Palmeiras — torcida sync InstantDB + onde assistir + UI glass",
   "scripts": {
     "dev": "vite",
     "dev:proxy": "concurrently -k -n proxy,web -c green,cyan \"node server/index.js\" \"vite\"",
@@ -15,6 +15,7 @@
     "lint": "oxlint"
   },
   "dependencies": {
+    "@instantdb/react": "^1.0.67",
     "concurrently": "^9.1.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

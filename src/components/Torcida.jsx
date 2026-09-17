@@ -2,12 +2,13 @@ import CrowdReactions from './CrowdReactions'
 import ScoreTip from './ScoreTip'
 import CrowdWall from './CrowdWall'
 import QuizVerdao from './QuizVerdao'
+import SyncStatus from './SyncStatus'
 import { matchTitle } from '../utils/format'
 import { matchDedupeKey } from '../utils/matchKey'
 import { msUntil } from '../utils/datetime'
 
 /**
- * Aba Torcida — reações, palpite, mural e quiz (localStorage + share).
+ * Aba Torcida — reações, palpite, mural e quiz sincronizados na sala.
  */
 export default function Torcida({ data, liveMatch }) {
   let displayMatch = data?.nextMatch
@@ -35,14 +36,12 @@ export default function Torcida({ data, liveMatch }) {
         <p className="eyebrow">Torcida</p>
         <h2>Avanti, família!</h2>
         <p className="lede">
-          Reações, palpite, mural e quiz — tudo neste aparelho. Compartilhe no WhatsApp pra
-          espalhar o Verdão.
-        </p>
-        <p className="muted tiny">
-          Sem servidor público: contagens e mensagens ficam neste dispositivo (ou família no mesmo
-          aparelho).
+          Reações, palpite, mural e quiz — sincronizados entre celulares. Use a sala{' '}
+          <strong>VERDAO</strong> (padrão) no seu e no do pai.
         </p>
       </header>
+
+      <SyncStatus />
 
       <CrowdReactions matchId={matchId} matchLabel={matchLabel} />
 

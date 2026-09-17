@@ -8,6 +8,8 @@ import SinceLastVisit from './SinceLastVisit'
 import FavoritePlayers from './FavoritePlayers'
 import CrowdReactions from './CrowdReactions'
 import ScoreTip from './ScoreTip'
+import BroadcastInfo from './BroadcastInfo'
+import SyncStatus from './SyncStatus'
 import { formatDate, formatDateTime, scoreLine, matchTitle } from '../utils/format'
 import { formationLabel } from '../utils/formation'
 import { matchDedupeKey } from '../utils/matchKey'
@@ -112,7 +114,9 @@ export default function Home({
             featured
             emphasizeToday={isTodaySP(displayMatch.date)}
           />
+          <BroadcastInfo match={displayMatch} />
           <Countdown match={displayMatch} pulse={matchDay} />
+          <SyncStatus compact />
           <ScoreTip
             match={displayMatch}
             finalScore={finalScore}

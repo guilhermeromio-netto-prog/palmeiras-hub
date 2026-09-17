@@ -71,10 +71,11 @@ export function tipShareText(tip, matchLabel) {
   )
 }
 
-export function muralInviteText() {
+export function muralInviteText(room = 'VERDAO') {
+  const code = room || 'VERDAO'
   return (
     `💬 Entra no mural da torcida no Palmeiras Hub!\n` +
-    `Deixe uma mensagem pro Verdão (neste aparelho/família).\n\n` +
+    `Abra o link e use a sala ${code} (igual a nossa).\n\n` +
     `${SITE_URL}`
   )
 }
