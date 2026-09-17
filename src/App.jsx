@@ -62,7 +62,14 @@ export function scrollAppToTop() {
 }
 
 export default function App() {
-  const { prefs, update, toggleFavoritePlayer } = usePreferences()
+  const {
+    prefs,
+    update,
+    toggleFavoritePlayer,
+    moveHomeBlock,
+    setHomeBlockVisible,
+    resetHomeBlocks,
+  } = usePreferences()
   const [tab, setTab] = useState(prefs.defaultTab || 'home')
   const [prefsOpen, setPrefsOpen] = useState(false)
   const { data, loading, error, reload } = useHubData()
@@ -140,6 +147,7 @@ export default function App() {
     scrollAppToTop()
   }, [])
 
+  const themeAccent = prefs.themeAccent || 'verde'
   const appClass = [
     'app',
     'app--glass',
@@ -152,7 +160,11 @@ export default function App() {
     .join(' ')
 
   return (
-    <div className={appClass} style={{ '--hero-parallax': `${parallax}px` }}>
+    <div
+      className={appClass}
+      data-theme={themeAccent}
+      style={{ '--hero-parallax': `${parallax}px` }}
+    >
       <div
         className="pitch-bg"
         aria-hidden="true"
@@ -215,6 +227,7 @@ export default function App() {
                 matchDay={matchDay}
                 liveMatch={liveMatch}
                 favoriteIds={prefs.favoritePlayerIds}
+                homeBlocks={prefs.homeBlocks}
                 onOpenTorcida={() => selectTab('torcida')}
               />
             )}
@@ -242,6 +255,9 @@ export default function App() {
         onClose={() => setPrefsOpen(false)}
         prefs={prefs}
         update={update}
+        moveHomeBlock={moveHomeBlock}
+        setHomeBlockVisible={setHomeBlockVisible}
+        resetHomeBlocks={resetHomeBlocks}
       />
 
       <nav className="tabbar tabbar--liquid tabbar--six" aria-label="Seções">

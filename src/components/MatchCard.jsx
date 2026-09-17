@@ -4,7 +4,7 @@ import { MatchTeams } from './TeamLogo'
 import { isTodaySP } from '../utils/datetime'
 import MatchWeather from './MatchWeather'
 
-export default function MatchCard({ match, form, featured = false, emphasizeToday = false }) {
+export default function MatchCard({ match, form, featured = false, emphasizeToday = false, showWeather: showWeatherProp }) {
   if (!match) {
     return (
       <article className="card match-card empty">
@@ -18,6 +18,7 @@ export default function MatchCard({ match, form, featured = false, emphasizeToda
   const homeName = match.homeTeam || (match.isHome ? 'Palmeiras' : match.opponent) || '—'
   const awayName = match.awayTeam || (match.isHome ? match.opponent : 'Palmeiras') || '—'
   const showWeather =
+    showWeatherProp !== false &&
     featured &&
     match.status !== 'FINISHED' &&
     (match.status === 'SCHEDULED' || match.status === 'LIVE' || !match.status)
