@@ -1,5 +1,6 @@
 import {
   THEME_ACCENTS,
+  STADIUM_MODES,
   homeBlockLabel,
 } from '../utils/preferences'
 
@@ -55,6 +56,27 @@ export default function Preferences({
           </div>
           <p className="muted tiny prefs-hint">
             Muda a ênfase do gradiente e dos botões — continua tricolor Palmeiras.
+          </p>
+        </fieldset>
+
+        <fieldset className="prefs-field">
+          <legend>Modo estádio</legend>
+          <div className="prefs-seg prefs-seg--3">
+            {STADIUM_MODES.map((m) => (
+              <button
+                key={m.id}
+                type="button"
+                className={prefs.stadiumMode === m.id ? 'active' : ''}
+                onClick={() => update({ stadiumMode: m.id })}
+                aria-pressed={prefs.stadiumMode === m.id}
+              >
+                {m.label}
+              </button>
+            ))}
+          </div>
+          <p className="muted tiny prefs-hint">
+            Automático liga a ambiência rica quando há jogo do Palmeiras hoje
+            (horário de Brasília). Sempre ligado / Desligado forçam o modo.
           </p>
         </fieldset>
 

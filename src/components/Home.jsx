@@ -20,12 +20,27 @@ import { isTodaySP, msUntil } from '../utils/datetime'
 import {
   nextMatchShareText,
   resultShareText,
+  shareOrWhatsApp,
 } from '../utils/share'
 import { DEFAULT_HOME_BLOCKS } from '../utils/preferences'
 
 const BASE = import.meta.env.BASE_URL
 const CREST = `${BASE}palmeiras-crest.svg`
 const HERO = `${BASE}brand/hero-campeao.png`
+
+
+function scrollToId(id) {
+  const el = document.getElementById(id)
+  if (!el) return false
+  try {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    el.classList.add('quick-focus')
+    window.setTimeout(() => el.classList.remove('quick-focus'), 1400)
+  } catch {
+    el.scrollIntoView()
+  }
+  return true
+}
 
 function canShowWeather(match) {
   if (!match) return false
@@ -38,6 +53,7 @@ function canShowWeather(match) {
 export default function Home({
   data,
   matchDay = false,
+  stadiumActive = false,
   liveMatch,
   favoriteIds = [],
   homeBlocks = DEFAULT_HOME_BLOCKS,
@@ -87,7 +103,7 @@ export default function Home({
     switch (id) {
       case 'nextMatch':
         return (
-          <div key="nextMatch" className="home-block home-block--next">
+          <div key="nextMatch" id="home-next-match" className="home-block home-block--next">
             <h3 className="section-title">Próximo confronto</h3>
             {displayMatch ? (
               <>
@@ -129,7 +145,7 @@ export default function Home({
         if (!displayMatch) return null
         return (
           <div key="countdown" className="home-block">
-            <Countdown match={displayMatch} pulse={matchDay} />
+            <Countdown match={displayMatch} pulse={stadiumActive || matchDay} />
           </div>
         )
 
@@ -328,6 +344,37 @@ export default function Home({
       )}
 
       <FavoritePlayers squad={data.squad} favoriteIds={favoriteIds} />
+
+      <nav className="home-quick" aria-label="Ações rápidas">
+        <button
+          type="button"
+          className="home-quick__btn touch"
+          onClick={() => {
+            if (!scrollToId('home-radio')) scrollToId('home-next-match')
+          }}
+        >
+          <span aria-hidden="true">📻</span> Ouvir rádio
+        </button>
+        <button
+          type="button"
+          className="home-quick__btn touch"
+          onClick={() => {
+            if (!scrollToId('home-broadcast')) scrollToId('home-next-match')
+          }}
+        >
+          <span aria-hidden="true">📺</span> Onde assistir
+        </button>
+        <button
+          type="button"
+          className="home-quick__btn touch"
+          disabled={!shareNext}
+          onClick={() => {
+            if (shareNext) shareOrWhatsApp(shareNext)
+          }}
+        >
+          <span aria-hidden="true">📲</span> Compartilhar próximo jogo
+        </button>
+      </nav>
 
       {/* Personalized blocks */}
       {blocks

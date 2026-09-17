@@ -49,6 +49,9 @@ export default function CrowdWall() {
     }
     const n = String(name || 'Torcedor').trim().slice(0, MAX_NAME) || 'Torcedor'
     setDisplayName(n)
+    try {
+      window.dispatchEvent(new CustomEvent('palmeiras-hub-display-name', { detail: n }))
+    } catch { /* */ }
     db.transact(
       db.tx.mural[id()].update({
         roomCode: room,
@@ -71,7 +74,7 @@ export default function CrowdWall() {
 
       <form className="crowd-wall__form" onSubmit={onSubmit}>
         <label>
-          <span>Nome</span>
+          <span>Seu apelido</span>
           <input
             type="text"
             maxLength={MAX_NAME}

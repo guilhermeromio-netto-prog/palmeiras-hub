@@ -1,9 +1,9 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { REACTION_EMOJIS, softHaptic } from '../utils/torcidaStorage'
 import { reactionShareText } from '../utils/share'
 import ShareButton from './ShareButton'
 import { db, id } from '../sync/instant'
-import { getClientId } from '../sync/identity'
+import { getClientId, getDisplayName } from '../sync/identity'
 import { useRoomCodeState } from '../hooks/useRoomCode'
 
 /**
@@ -12,6 +12,15 @@ import { useRoomCodeState } from '../hooks/useRoomCode'
 export default function CrowdReactions({ matchId, matchLabel, compact = false }) {
   const room = useRoomCodeState()
   const matchKey = String(matchId || 'geral')
+  const [nick, setNick] = useState(() => getDisplayName())
+  useEffect(() => {
+    const sync = (e) => {
+      if (typeof e?.detail === 'string') setNick(e.detail)
+      else setNick(getDisplayName())
+    }
+    window.addEventListener('palmeiras-hub-display-name', sync)
+    return () => window.removeEventListener('palmeiras-hub-display-name', sync)
+  }, [])
   const { data, isLoading } = db.useQuery({
     reactionEvents: {
       $: { where: { roomCode: room, matchId: matchKey } },
@@ -59,7 +68,11 @@ export default function CrowdReactions({ matchId, matchLabel, compact = false })
       <header className="crowd-react__head">
         <h3 className="crowd-react__title">Reações da torcida</h3>
         <p className="muted tiny">
-          {isLoading ? 'carregando sala…' : `sala ${room} · sincronizado`}
+          {isLoading
+            ? 'carregando sala…'
+            : nick
+              ? `como ${nick} · sala ${room}`
+              : `sala ${room} · sincronizado`}
         </p>
       </header>
       <div className="crowd-react__bar" role="group" aria-label="Reações">

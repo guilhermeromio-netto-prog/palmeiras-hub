@@ -46,7 +46,7 @@ export default function BroadcastInfo({ match }) {
         : 'A confirmar'
 
   return (
-    <aside className="broadcast-info card" aria-live="polite">
+    <aside id="home-broadcast" className="broadcast-info card" aria-live="polite">
       <header className="broadcast-info__head">
         <h3 className="broadcast-info__title">Onde assistir</h3>
         <span className={`broadcast-info__badge broadcast-info__badge--${info?.confidence || 'unknown'}`}>

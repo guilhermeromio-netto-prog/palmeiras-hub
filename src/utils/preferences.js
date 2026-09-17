@@ -34,12 +34,19 @@ export const DEFAULT_HOME_BLOCKS = HOME_BLOCK_DEFS.map((b) => ({
   visible: true,
 }))
 
+export const STADIUM_MODES = [
+  { id: 'auto', label: 'Automático' },
+  { id: 'on', label: 'Sempre ligado' },
+  { id: 'off', label: 'Desligado' },
+]
+
 export const DEFAULT_PREFS = {
   defaultTab: 'home',
   fontSize: 'normal', // normal | large
   compactMode: false,
   favoritePlayerIds: [],
   themeAccent: 'verde', // verde | branco | vermelho
+  stadiumMode: 'auto', // auto | on | off — ambiência de estádio
   homeBlocks: DEFAULT_HOME_BLOCKS.map((b) => ({ ...b })),
 }
 
@@ -100,6 +107,9 @@ export function normalizePrefs(input) {
   const themeAccent = THEME_ACCENTS.some((t) => t.id === input?.themeAccent)
     ? input.themeAccent
     : 'verde'
+  const stadiumMode = STADIUM_MODES.some((m) => m.id === input?.stadiumMode)
+    ? input.stadiumMode
+    : 'auto'
   const homeBlocks = normalizeHomeBlocks(input?.homeBlocks)
   return {
     defaultTab: tab,
@@ -107,8 +117,17 @@ export function normalizePrefs(input) {
     compactMode,
     favoritePlayerIds: ids,
     themeAccent,
+    stadiumMode,
     homeBlocks,
   }
+}
+
+/** Resolve se o modo estádio está ativo (match day SP + preferência). */
+export function isStadiumModeActive(prefs, matchDay) {
+  const mode = prefs?.stadiumMode || 'auto'
+  if (mode === 'on') return true
+  if (mode === 'off') return false
+  return Boolean(matchDay)
 }
 
 export function toggleFavoritePlayer(prefs, playerId) {

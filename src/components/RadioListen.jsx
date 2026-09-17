@@ -140,7 +140,7 @@ export default function RadioListen() {
   if (!streamable.length && !linkOnly.length) return null
 
   return (
-    <aside className="radio-listen card" aria-label="Ouvir no rádio">
+    <aside id="home-radio" className="radio-listen card" aria-label="Ouvir no rádio">
       <header className="radio-listen__head">
         <h3 className="radio-listen__title">Ouvir no rádio</h3>
         <span className="radio-listen__badge">Ao vivo · HTTPS</span>

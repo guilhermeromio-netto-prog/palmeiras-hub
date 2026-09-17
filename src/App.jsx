@@ -18,6 +18,7 @@ import FeedbackButton from './components/FeedbackButton'
 import PitchParticles from './components/PitchParticles'
 import ConfettiBurst from './components/ConfettiBurst'
 import { isMatchDaySP, isTodaySP } from './utils/datetime'
+import { isStadiumModeActive } from './utils/preferences'
 import { matchTitle } from './utils/format'
 import { matchDedupeKey } from './utils/matchKey'
 import { didPalmeirasWin } from './utils/palmeirasWin'
@@ -78,6 +79,10 @@ export default function App() {
   const [parallax, setParallax] = useState(0)
 
   const matchDay = useMemo(() => (data ? isMatchDaySP(data) : false), [data])
+  const stadiumActive = useMemo(
+    () => isStadiumModeActive(prefs, matchDay),
+    [prefs, matchDay],
+  )
   const todayTitle = useMemo(() => {
     if (!data || !matchDay) return ''
     const pool = [data.nextMatch, ...(data.upcoming || []), ...(data.recentResults || [])].filter(
@@ -152,6 +157,7 @@ export default function App() {
     'app',
     'app--glass',
     matchDay ? 'matchday' : '',
+    stadiumActive ? 'stadium-mode' : '',
     arenaLive ? 'arena-mode' : '',
     prefs.fontSize === 'large' ? 'font-large' : '',
     prefs.compactMode ? 'compact' : '',
@@ -211,7 +217,7 @@ export default function App() {
       {data?.news?.length > 0 && <NewsTicker news={data.news} />}
       {matchDay && <MatchDayBanner matchTitle={todayTitle} />}
 
-      <main className="main" key={tab}>
+      <main className="main main--tab-fade" key={tab}>
         {loading && !data && <Loading />}
         {error && !data && <ErrorState message={error} onRetry={reload} />}
         {data && (
@@ -225,6 +231,7 @@ export default function App() {
               <Home
                 data={data}
                 matchDay={matchDay}
+                stadiumActive={stadiumActive}
                 liveMatch={liveMatch}
                 favoriteIds={prefs.favoritePlayerIds}
                 homeBlocks={prefs.homeBlocks}

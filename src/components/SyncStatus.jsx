@@ -28,8 +28,16 @@ function statusClass(conn) {
   return 'sync-status--pending'
 }
 
+function notifyDisplayName(n) {
+  try {
+    window.dispatchEvent(new CustomEvent('palmeiras-hub-display-name', { detail: n }))
+  } catch {
+    /* */
+  }
+}
+
 /**
- * Status da sala + edição do código (padrão VERDAO) e nome na torcida.
+ * Status da sala + edição do código (padrão VERDAO) e apelido na torcida.
  */
 export default function SyncStatus({ compact = false }) {
   const conn = db.useConnectionStatus()
@@ -37,10 +45,27 @@ export default function SyncStatus({ compact = false }) {
   const [name, setName] = useState(() => getDisplayName())
   const [draftRoom, setDraftRoom] = useState(room)
   const [editing, setEditing] = useState(false)
+  const [savedFlash, setSavedFlash] = useState(false)
 
   useEffect(() => {
     setDraftRoom(room)
   }, [room])
+
+  useEffect(() => {
+    const onName = (e) => {
+      if (typeof e?.detail === 'string') setName(e.detail)
+      else setName(getDisplayName())
+    }
+    const onStorage = (e) => {
+      if (e.key === 'palmeiras-hub-display-name-v1') setName(getDisplayName())
+    }
+    window.addEventListener('palmeiras-hub-display-name', onName)
+    window.addEventListener('storage', onStorage)
+    return () => {
+      window.removeEventListener('palmeiras-hub-display-name', onName)
+      window.removeEventListener('storage', onStorage)
+    }
+  }, [])
 
   function saveRoom(e) {
     e?.preventDefault?.()
@@ -48,7 +73,6 @@ export default function SyncStatus({ compact = false }) {
     setRoom(next)
     setDraftRoom(next)
     setEditing(false)
-    // avisa outras abas / remount via storage event
     try {
       window.dispatchEvent(new CustomEvent('palmeiras-hub-room', { detail: next }))
     } catch {
@@ -56,17 +80,36 @@ export default function SyncStatus({ compact = false }) {
     }
   }
 
-  function onNameBlur() {
-    const n = setDisplayName(name)
+  function persistName(raw) {
+    const n = setDisplayName(raw)
     setName(n)
+    notifyDisplayName(n)
+    setSavedFlash(true)
+    window.setTimeout(() => setSavedFlash(false), 1400)
+    return n
+  }
+
+  function onNameBlur() {
+    persistName(name)
+  }
+
+  function onNameKey(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      persistName(name)
+      e.currentTarget.blur()
+    }
   }
 
   const online = conn === 'authenticated' || conn === 'opened'
   const expired = isInstantExpired()
   const expiring = !expired && isInstantExpiringSoon(7)
+  const nick = (name || '').trim()
 
   return (
-    <section className={`sync-status sync-panel${compact ? ' sync-status--compact' : ''} ${statusClass(conn)}`}>
+    <section
+      className={`sync-status sync-panel${compact ? ' sync-status--compact' : ''} ${statusClass(conn)}`}
+    >
       <div className="sync-status__row">
         <span className="sync-status__dot" aria-hidden="true" />
         <div className="sync-status__text">
@@ -82,21 +125,41 @@ export default function SyncStatus({ compact = false }) {
         </div>
       </div>
 
+      <div className={`sync-status__nick${compact ? ' sync-status__nick--compact' : ''}`}>
+        <label className="sync-status__nick-label">
+          <span className="sync-status__nick-title">
+            Seu apelido
+            {nick ? (
+              <span className="sync-status__nick-pill" title="Apelido na torcida">
+                {nick}
+              </span>
+            ) : (
+              <span className="sync-status__nick-pill sync-status__nick-pill--empty">
+                defina o seu
+              </span>
+            )}
+          </span>
+          <input
+            type="text"
+            maxLength={20}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onBlur={onNameBlur}
+            onKeyDown={onNameKey}
+            placeholder="Ex.: Guilherme"
+            autoComplete="nickname"
+            aria-label="Seu apelido na torcida"
+          />
+        </label>
+        <p className="muted tiny sync-status__nick-hint">
+          {savedFlash
+            ? 'Apelido salvo neste aparelho ✓'
+            : 'Aparece no mural, palpites e reações · salvo só neste navegador'}
+        </p>
+      </div>
+
       {!compact && (
         <div className="sync-status__form">
-          <label>
-            <span>Seu nome na torcida</span>
-            <input
-              type="text"
-              maxLength={20}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              onBlur={onNameBlur}
-              placeholder="Ex.: Guilherme"
-              autoComplete="nickname"
-            />
-          </label>
-
           {editing ? (
             <form className="sync-status__room-edit" onSubmit={saveRoom}>
               <label>
@@ -144,4 +207,3 @@ export default function SyncStatus({ compact = false }) {
     </section>
   )
 }
-

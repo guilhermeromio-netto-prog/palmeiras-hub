@@ -99,7 +99,7 @@ export default function QuizVerdao({ embedded = false }) {
           {QUIZ_TOTAL} perguntas rápidas sobre o Palmeiras. Só fatos bem conhecidos.
         </p>
         <label className="quiz-verdao__name">
-          <span>Nome no ranking</span>
+          <span>Seu apelido</span>
           <input
             type="text"
             maxLength={20}

@@ -4,6 +4,14 @@ App pessoal de torcedor do **Palmeiras**: próximo jogo, **onde assistir**, **ou
 
 **Live:** https://guilhermeromio-netto-prog.github.io/palmeiras-hub/
 
+## Novidades v3.9
+
+- **Modo estádio** — ambiência rica no dia de jogo (SP). Preferências → Automático / Sempre / Desligado.
+- **Seu apelido** — campo destacado na Torcida (localStorage); aparece em mural, palpites e reações.
+- **Ações rápidas** no Início: rádio, onde assistir, compartilhar próximo jogo.
+- Skeletons verde/branco no carregamento + microinterações leves.
+
+
 ## Como abrir
 
 ```bash

@@ -5,7 +5,7 @@ import ShareButton from './ShareButton'
 import { matchTitle } from '../utils/format'
 import { matchDedupeKey } from '../utils/matchKey'
 import { db, id } from '../sync/instant'
-import { getClientId, getDisplayName } from '../sync/identity'
+import { getClientId, getDisplayName, setDisplayName } from '../sync/identity'
 import { useRoomCodeState } from '../hooks/useRoomCode'
 
 /**
@@ -56,6 +56,10 @@ export default function ScoreTip({ match, finalScore = null, finalStatus = null 
     const a = Math.max(0, Math.min(15, Math.floor(Number(away))))
     if (Number.isNaN(h) || Number.isNaN(a)) return
     const display = String(name || getDisplayName() || 'Torcedor').trim().slice(0, 20) || 'Torcedor'
+    setDisplayName(display)
+    try {
+      window.dispatchEvent(new CustomEvent('palmeiras-hub-display-name', { detail: display }))
+    } catch { /* */ }
     const payload = {
       roomCode: room,
       matchId: String(matchId),
@@ -131,7 +135,7 @@ export default function ScoreTip({ match, finalScore = null, finalStatus = null 
         <form className="score-tip__form" onSubmit={onSave}>
           <p className="muted tiny score-tip__hint">{label}</p>
           <label className="score-tip__name">
-            <span>Nome</span>
+            <span>Seu apelido</span>
             <input
               type="text"
               maxLength={20}
