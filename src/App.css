@@ -2243,12 +2243,10 @@ html[data-font-size='large'] {
 }
 
 .tab-liquid--primary .tab-liquid__orb {
-  width: 64px;
-  height: 64px;
-  margin-top: -10px;
+  /* same diameter as siblings — glow only, no size bump */
   box-shadow:
-    0 14px 28px rgba(0, 0, 0, 0.4),
-    0 0 0 3px rgba(0, 168, 89, 0.28),
+    0 10px 22px rgba(0, 0, 0, 0.35),
+    0 0 0 2px rgba(0, 168, 89, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
@@ -2262,7 +2260,7 @@ html[data-font-size='large'] {
     0 12px 26px rgba(0, 0, 0, 0.4),
     0 0 0 3px rgba(200, 16, 46, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.65);
-  transform: translateY(-2px) scale(1.04);
+  /* glow only — size stays identical */
   animation: none;
 }
 
@@ -2507,9 +2505,9 @@ html[data-font-size='large'] {
 }
 
 .tabbar--six .tab-liquid--primary .tab-liquid__orb {
-  width: 56px;
-  height: 56px;
-  margin-top: -8px;
+  width: 44px;
+  height: 44px;
+  margin-top: 0;
 }
 
 .tabbar--six .tab-liquid:nth-child(6) .tab-liquid__orb {
@@ -4401,9 +4399,9 @@ html[data-font-size='large'] {
 }
 
 .tabbar--six .tab-liquid--primary .tab-liquid__orb {
-  width: 50px;
-  height: 50px;
-  margin-top: -6px;
+  width: 40px;
+  height: 40px;
+  margin-top: 0;
 }
 
 .tab-liquid__label {
@@ -4579,4 +4577,118 @@ html[data-font-size='large'] {
 }
 .knockout-leg .row-top {
   margin-bottom: 0.35rem;
+}
+
+
+/* —— Equal-size liquid tabs (6-col grid, no primary bump) —— */
+.tabbar.tabbar--liquid.tabbar--six {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: end;
+  justify-content: stretch;
+  gap: 0.15rem;
+  padding: 0.4rem 0.45rem calc(0.5rem + var(--safe-bottom));
+  width: min(720px, 100%);
+}
+
+.tabbar--six .tab-liquid,
+.tabbar.tabbar--liquid.tabbar--six .tab-liquid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  flex: unset;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  gap: 0.18rem;
+  padding: 0.15rem 0.1rem 0.1rem;
+  font-size: 0.55rem;
+  box-sizing: border-box;
+}
+
+.tabbar--six .tab-liquid__orb,
+.tabbar--six .tab-liquid--primary .tab-liquid__orb,
+.tabbar.tabbar--liquid.tabbar--six .tab-liquid__orb,
+.tabbar.tabbar--liquid.tabbar--six .tab-liquid--primary .tab-liquid__orb {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
+  margin-top: 0;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.tabbar--six .tab-liquid__orb img,
+.tabbar.tabbar--liquid.tabbar--six .tab-liquid__orb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tabbar--six .tab-liquid__label,
+.tabbar.tabbar--liquid.tabbar--six .tab-liquid__label {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  min-height: 1.85em; /* room for 2 lines, same chip height */
+  max-width: 100%;
+  margin: 0;
+  padding: 0 0.05rem;
+  font-size: clamp(0.48rem, 2.35vw, 0.58rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Active = glow only (never resize) */
+.tab-liquid.active .tab-liquid__orb,
+.tabbar--six .tab-liquid.active .tab-liquid__orb,
+.tabbar.tabbar--liquid.tabbar--six .tab-liquid.active .tab-liquid__orb {
+  transform: none;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
+}
+
+.tab-liquid:active .tab-liquid__orb,
+.tabbar--six .tab-liquid:active .tab-liquid__orb {
+  /* press feedback without lasting size change */
+  transform: none;
+  filter: brightness(1.12);
+}
+
+.app.app--glass {
+  padding-bottom: calc(5.6rem + var(--safe-bottom));
+}
+
+.app--glass .feedback-fab {
+  bottom: calc(5.2rem + var(--safe-bottom));
+}
+
+@media (min-width: 420px) {
+  .tabbar--six .tab-liquid__orb,
+  .tabbar--six .tab-liquid--primary .tab-liquid__orb,
+  .tabbar.tabbar--liquid.tabbar--six .tab-liquid__orb,
+  .tabbar.tabbar--liquid.tabbar--six .tab-liquid--primary .tab-liquid__orb,
+  .tab-liquid.active .tab-liquid__orb,
+  .tabbar--six .tab-liquid.active .tab-liquid__orb {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    min-height: 46px;
+  }
+
+  .tabbar--six .tab-liquid__label,
+  .tabbar.tabbar--liquid.tabbar--six .tab-liquid__label {
+    font-size: 0.58rem;
+  }
 }

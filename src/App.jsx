@@ -37,7 +37,7 @@ const TABS = [
   { id: 'home', label: 'Início', icon: `${BASE}brand/btn-ball.png`, primary: true },
   { id: 'torcida', label: 'Torcida', icon: `${BASE}brand/btn-torcida.png`, torcida: true },
   { id: 'tables', label: 'Tabelas', icon: `${BASE}brand/btn-trophy.png` },
-  { id: 'news', label: 'Notíc.', fullLabel: 'Notícias', icon: `${BASE}brand/btn-ball.png`, news: true },
+  { id: 'news', label: 'Notícias', icon: `${BASE}brand/btn-ball.png`, news: true },
 ]
 
 /** Scroll window + main app/page containers to top (tab / placar view changes). */
