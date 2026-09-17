@@ -4349,3 +4349,68 @@ html[data-font-size='large'] {
 .tab-liquid.active .tab-liquid__label {
   color: #ffffff;
 }
+
+/* —— Sync / Trocar sala VERDAO: dark green panel (not white card) —— */
+.sync-status.card,
+.app--glass .sync-status.card {
+  background:
+    linear-gradient(145deg, #006437 0%, #004d2a 55%, #003820 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  box-shadow:
+    0 14px 36px rgba(0, 30, 18, 0.45),
+    0 0 0 1px rgba(227, 6, 19, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.sync-status.card .sync-status__text,
+.sync-status.card .sync-status__text strong,
+.sync-status.card .sync-status__text p,
+.sync-status.card .muted,
+.sync-status.card .tiny,
+.sync-status.card label,
+.sync-status.card label span {
+  color: #ffffff !important;
+  opacity: 1;
+}
+
+.sync-status.card .sync-status__text code {
+  background: rgba(255, 255, 255, 0.18);
+  color: #e8fff2 !important;
+  font-weight: 800;
+}
+
+.sync-status.card .sync-status__form input,
+.sync-status.card .sync-status__room-edit input {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #ffffff !important;
+}
+
+.sync-status.card .sync-status__form input::placeholder,
+.sync-status.card .sync-status__room-edit input::placeholder {
+  color: rgba(232, 255, 242, 0.65);
+}
+
+.sync-status.card .btn.ghost {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  font-weight: 800;
+}
+
+.sync-status.card .btn.ghost:active,
+.sync-status.card .btn.ghost:hover {
+  background: rgba(255, 255, 255, 0.28);
+  color: #ffffff !important;
+}
+
+.sync-status.card .btn.primary {
+  color: #ffffff !important;
+}
+
+.sync-status.card .sync-status__warn {
+  background: rgba(240, 193, 74, 0.22);
+  border-color: rgba(240, 193, 74, 0.55);
+  color: #fff8e0 !important;
+}
