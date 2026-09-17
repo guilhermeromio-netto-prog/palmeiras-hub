@@ -4,6 +4,14 @@ App pessoal de torcedor do **Palmeiras**: próximo jogo, **onde assistir**, **ou
 
 **Live:** https://guilhermeromio-netto-prog.github.io/palmeiras-hub/
 
+## Novidades v4.1.0
+
+- **Polimento visual** — hierarquia e ritmo vertical mais calmos na Home; tipografia consistente; cards brancos limpos (sombra suave + borda 1px, sem sage sujo).
+- **Hero / portal** — EntryGate e hero-campeão mais limpos e premium.
+- **Stories, streak e convite** — visual mais intencional (não “bolted on”).
+- **Ticker** mais fino; **ações rápidas** em pills refinadas; **tab bar** com glow/safe-area polidos e labels nítidos.
+- Auditoria de contraste (chips/status/painéis escuros).
+
 ## Novidades v4.0.1
 
 - Removido **Enquanto você saiu** (SinceLastVisit) da Home.

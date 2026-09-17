@@ -327,8 +327,11 @@ export default function Home({
             <span className="star-accent" aria-hidden="true">★</span>
           </h2>
           <p className="lede hero-campeao__lede">
-            Avanti Palestra — jogos, elenco e tabelas com fontes públicas
-            {liveMatch?.polling ? ' · placar ao vivo ativo' : ''}.
+            {matchDay
+              ? 'Dia de jogo — tudo o que importa, aqui.'
+              : liveMatch?.polling
+                ? 'Placar ao vivo ativo'
+                : 'Jogos, elenco e torcida'}
           </p>
         </div>
       </div>

@@ -56,7 +56,7 @@ export default function EntryGate() {
         />
         <p className="entry-gate__eyebrow">Palmeiras Hub</p>
         <h1 className="entry-gate__title">Avanti</h1>
-        <p className="entry-gate__lede">O Maior Campeão · sala VERDAO</p>
+        <p className="entry-gate__lede">O Maior Campeão</p>
         <button
           type="button"
           className="btn primary touch entry-gate__cta"

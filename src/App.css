@@ -5531,3 +5531,747 @@ html[data-font-size='large'] {
 .app--glass .streak-badge {
   backdrop-filter: blur(8px);
 }
+
+/* =========================================================
+   v4.1.0 — Visual polish: premium · calmer · coherent
+   Prefer cascade overrides; keep all features intact.
+   ========================================================= */
+
+:root {
+  --ink: #0a1a12;
+  --ink-soft: #152820;
+  --muted: #3d4f45;
+  --muted-quiet: #4a5c52;
+  --card: #ffffff;
+  --card-border: rgba(0, 77, 42, 0.12);
+  --shadow: 0 10px 28px rgba(0, 28, 16, 0.14);
+  --shadow-sm: 0 4px 14px rgba(0, 28, 16, 0.1);
+  --radius: 18px;
+  --type-title: 1.2rem;
+  --type-body: 0.95rem;
+  --type-meta: 0.78rem;
+  --home-gap: 0.85rem;
+}
+
+/* —— 1. Hierarchy & spacing (Home) —— */
+.page.home {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.page.home > * + * {
+  margin-top: 0;
+}
+
+.home-block {
+  margin-bottom: var(--home-gap);
+}
+
+.home-block + .home-block {
+  margin-top: 0.15rem;
+}
+
+.home-block .section-title {
+  margin: 0.15rem 0 0.55rem;
+}
+
+.section-title {
+  margin: 1.05rem 0 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.list-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.share-row {
+  margin: 0.55rem 0 0.15rem;
+}
+
+.page.home .crowd-react,
+.page.home .live-center,
+.page.home .fav-players,
+.page.home .favorite-players {
+  margin-bottom: var(--home-gap);
+}
+
+/* —— 2. Typography scale —— */
+.page h2 {
+  font-size: 1.4rem;
+  letter-spacing: -0.01em;
+}
+
+.lede {
+  font-size: var(--type-body);
+  line-height: 1.45;
+}
+
+.eyebrow {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+}
+
+.match-card__title {
+  font-size: 1.32rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--green-deep);
+  line-height: 1.2;
+}
+
+.match-card__score {
+  font-size: 1.65rem;
+}
+
+.match-meta div {
+  font-size: 0.88rem;
+}
+
+.match-meta dt {
+  color: var(--muted-quiet);
+  font-weight: 500;
+}
+
+.card .muted,
+.card .tiny,
+.card .muted.tiny,
+.app--glass .card .muted,
+.app--glass .card .tiny {
+  color: var(--muted-quiet);
+  font-size: var(--type-meta);
+  line-height: 1.4;
+}
+
+.row-card strong {
+  font-size: 1.02rem;
+  color: var(--green-deep);
+}
+
+.brand strong {
+  font-size: 1.02rem;
+  letter-spacing: 0.01em;
+}
+
+.brand-sub {
+  font-size: 0.7rem;
+  opacity: 0.72;
+}
+
+/* —— 3. Card system — clean white + soft shadow (no muddy sage) —— */
+.card,
+.app--glass .card {
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(12px) saturate(1.15);
+  -webkit-backdrop-filter: blur(12px) saturate(1.15);
+  color: var(--ink);
+}
+
+.match-card.featured,
+.app--glass .match-card.featured {
+  background: #ffffff;
+  border: 1px solid rgba(0, 100, 55, 0.16);
+  box-shadow:
+    0 12px 32px rgba(0, 32, 18, 0.14),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+}
+
+.app.matchday .match-card.featured,
+.app.matchday .match-card--hoje {
+  border: 1.5px solid rgba(227, 6, 19, 0.38);
+  background: linear-gradient(165deg, #ffffff 0%, #fff8f9 100%);
+}
+
+.row-card.card,
+.quick-tile.card {
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--card-border);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover,
+  .app--glass .card:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 14px 34px rgba(0, 32, 18, 0.16),
+      0 0 0 1px rgba(255, 255, 255, 0.95) inset;
+  }
+}
+
+/* Dark panels stay intentionally dark (sync / reactions / countdown / stories) */
+.sync-status.card,
+.app--glass .sync-status.card,
+.crowd-panel.card,
+.crowd-panel,
+.countdown,
+.app--glass .countdown,
+.stories-card {
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+}
+
+/* —— 4. Hero / portal — cleaner premium splash —— */
+.hero-campeao {
+  margin: 0 0 0.75rem;
+  min-height: 152px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 14px 36px rgba(0, 14, 8, 0.4);
+}
+
+.hero-campeao__img {
+  height: 176px;
+}
+
+.hero-campeao__veil {
+  background:
+    linear-gradient(105deg, rgba(0, 22, 12, 0.88) 0%, rgba(0, 36, 20, 0.5) 52%, rgba(0, 16, 10, 0.28) 100%),
+    linear-gradient(0deg, rgba(0, 14, 8, 0.72), transparent 58%);
+}
+
+.hero-campeao__copy {
+  padding: 0.95rem 1.05rem 1rem;
+  gap: 0.08rem;
+}
+
+.hero-campeao__copy .crest--hero {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 0.1rem;
+}
+
+.hero-campeao__title {
+  font-size: clamp(1.35rem, 5vw, 1.75rem);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
+}
+
+.hero-campeao__lede {
+  margin: 0.2rem 0 0;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 32ch;
+  line-height: 1.35;
+}
+
+.hero-campeao .eyebrow {
+  color: rgba(200, 255, 220, 0.75);
+  opacity: 1;
+}
+
+.entry-gate__veil {
+  background:
+    radial-gradient(ellipse at 50% 28%, rgba(0, 120, 65, 0.28), transparent 52%),
+    linear-gradient(180deg, rgba(0, 14, 8, 0.45) 0%, rgba(0, 28, 16, 0.92) 100%);
+}
+
+.entry-gate__content {
+  max-width: 20rem;
+  padding: 1.75rem 1.35rem;
+}
+
+.entry-gate__crest {
+  width: 88px;
+  height: 88px;
+  margin-bottom: 0.9rem;
+  filter: drop-shadow(0 10px 28px rgba(0, 0, 0, 0.5));
+}
+
+.entry-gate__eyebrow {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: rgba(200, 255, 220, 0.8);
+}
+
+.entry-gate__title {
+  margin: 0.4rem 0 0.35rem;
+  font-size: clamp(2.4rem, 11vw, 3.1rem);
+  letter-spacing: 0.06em;
+  text-shadow: 0 4px 32px rgba(0, 0, 0, 0.55);
+}
+
+.entry-gate__lede {
+  margin: 0 0 1.4rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.78);
+  letter-spacing: 0.02em;
+}
+
+.entry-gate__cta {
+  min-width: 11.5rem;
+  border-radius: 999px;
+  padding: 0.75rem 1.4rem;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 24px rgba(0, 168, 89, 0.25);
+}
+
+.entry-gate__skip {
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.8rem;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+}
+
+.entry-gate__skip:hover,
+.entry-gate__skip:focus-visible {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: underline;
+}
+
+/* —— 5. Stories + streak + invite — intentional, beautiful —— */
+.stories-card {
+  margin: 0.65rem 0 0.85rem;
+  padding: 1rem 1.05rem 1.1rem;
+  border-radius: var(--radius);
+  background:
+    linear-gradient(160deg, #0a2418 0%, #0f3d28 48%, #082016 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 12px 32px rgba(0, 16, 10, 0.35);
+  color: #f4fff8;
+}
+
+.stories-card .eyebrow {
+  color: rgba(168, 240, 196, 0.85);
+  opacity: 1;
+}
+
+.stories-card h3 {
+  margin: 0.2rem 0 0.25rem;
+  color: #ffffff;
+  font-size: 1.12rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.stories-card .muted,
+.stories-card .muted.tiny {
+  color: rgba(232, 255, 242, 0.72) !important;
+}
+
+.stories-card__preview {
+  width: 128px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
+}
+
+.stories-card__actions .btn {
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.streak-badge {
+  margin: 0 0 0.7rem;
+  padding: 0.7rem 0.95rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fffaf0 0%, #ffffff 60%);
+  border: 1px solid rgba(180, 120, 20, 0.22);
+  box-shadow: var(--shadow-sm);
+  gap: 0.65rem;
+}
+
+.streak-badge--compact {
+  padding: 0.55rem 0.8rem;
+  margin-bottom: 0.65rem;
+}
+
+.streak-badge--empty {
+  background: #ffffff;
+  border-color: var(--card-border);
+}
+
+.streak-badge__fire {
+  font-size: 1.45rem;
+  filter: drop-shadow(0 2px 4px rgba(180, 80, 0, 0.25));
+}
+
+.streak-badge__count {
+  color: #6b3400;
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.streak-badge__body .muted {
+  color: var(--muted-quiet) !important;
+  font-size: 0.72rem !important;
+}
+
+.streak-badge__text {
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.room-invite {
+  margin: 0 0 0.85rem;
+  padding: 1rem 1.05rem 1.05rem;
+  border-radius: var(--radius);
+  background: #ffffff;
+  border: 1px solid rgba(0, 100, 55, 0.14);
+  box-shadow: var(--shadow-sm);
+  color: var(--ink);
+}
+
+.room-invite .eyebrow {
+  color: var(--muted-quiet);
+  opacity: 1;
+}
+
+.room-invite h3 {
+  margin: 0.15rem 0 0.2rem;
+  font-size: 1.12rem;
+  color: var(--green-deep);
+  font-weight: 800;
+}
+
+.room-invite__lede {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.room-invite__code {
+  margin: 0.75rem 0 0.4rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #0a2418, #0f3d28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.room-invite__code-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+
+.room-invite__code-value {
+  font-size: 1.28rem;
+  letter-spacing: 0.14em;
+  color: #b8ffc8;
+}
+
+.room-invite__hint {
+  color: var(--muted-quiet) !important;
+}
+
+.room-invite__actions .btn {
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.room-invite .btn.ghost {
+  background: rgba(0, 100, 55, 0.06);
+  color: var(--green-deep) !important;
+  border: 1px solid rgba(0, 100, 55, 0.2);
+}
+
+/* —— 6. Ticker — slimmer, elegant —— */
+.news-ticker {
+  gap: 0.3rem;
+  margin: 0.05rem 0 0.45rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 12, 8, 0.38);
+  min-height: 0;
+}
+
+.news-ticker__label {
+  padding: 0 0.45rem;
+  font-size: 0.78rem;
+  background: rgba(200, 16, 46, 0.78);
+}
+
+.news-ticker__track {
+  padding: 0.38rem 0;
+  gap: 1.85rem;
+}
+
+.news-ticker__item {
+  font-size: 0.8rem;
+  gap: 0.38rem;
+  opacity: 0.92;
+}
+
+.news-ticker__src {
+  padding: 0.02rem 0.35rem;
+  font-size: 0.62rem;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.news-ticker__time {
+  font-size: 0.66rem;
+  opacity: 0.65;
+}
+
+.app--glass .news-ticker {
+  background: rgba(0, 12, 8, 0.4);
+}
+
+/* —— 7. Quick actions — refined pill row —— */
+.home-quick {
+  gap: 0.4rem;
+  margin: 0.15rem 0 0.75rem;
+  padding: 0.05rem 0 0.15rem;
+}
+
+.home-quick__btn {
+  padding: 0.48rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 12px rgba(0, 16, 10, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.home-quick__btn:hover,
+.home-quick__btn:focus-visible {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.home-quick__btn:disabled {
+  opacity: 0.4;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* —— 8. Tab bar — equal sizes, clearer labels, polished glow —— */
+.tabbar.tabbar--liquid {
+  padding: 0.4rem 0.5rem calc(0.55rem + var(--safe-bottom));
+  background:
+    linear-gradient(180deg, rgba(0, 36, 22, 0.42), rgba(0, 16, 10, 0.82));
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 -10px 32px rgba(0, 0, 0, 0.32);
+}
+
+.tabbar.tabbar--liquid.tabbar--six {
+  padding: 0.38rem 0.4rem calc(0.52rem + var(--safe-bottom));
+  gap: 0.12rem;
+}
+
+.tab-liquid {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.6rem;
+  font-weight: 800;
+  gap: 0.18rem;
+  letter-spacing: 0.03em;
+}
+
+.tab-liquid__label {
+  color: inherit;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+  font-size: 0.6rem;
+  line-height: 1.15;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tab-liquid.active {
+  color: #ffffff;
+}
+
+.tab-liquid.active .tab-liquid__label {
+  color: #ffffff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6), 0 0 12px rgba(0, 168, 89, 0.25);
+}
+
+.tab-liquid:not(.active) {
+  opacity: 0.9;
+}
+
+.tab-liquid__orb {
+  width: 48px;
+  height: 48px;
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.tab-liquid.active .tab-liquid__orb {
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.38),
+    0 0 0 2.5px rgba(227, 6, 19, 0.5),
+    0 0 18px rgba(0, 168, 89, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+/* —— 9. Contrast audit — chips, badges, panels —— */
+.pill {
+  background: #e6f6ec;
+  color: #004d2a;
+  font-weight: 700;
+  border: 1px solid rgba(0, 100, 55, 0.14);
+}
+
+.pill.status.scheduled,
+.pill.status.timed {
+  background: #e4ecfb;
+  color: #1e3a7a;
+  border-color: rgba(30, 58, 122, 0.18);
+}
+
+.pill.status.finished {
+  background: #ececec;
+  color: #2a2a2a;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.pill.status.live {
+  background: #ffe0dc;
+  color: #8b1212;
+  border-color: rgba(139, 18, 18, 0.2);
+}
+
+.result-badge {
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.result-badge.w { color: #006437; }
+.result-badge.l { color: #9b1c1c; }
+.result-badge.d { color: #3a4a40; }
+
+.live-badge {
+  color: #ffffff;
+  background: var(--red);
+  font-weight: 800;
+}
+
+.broadcast-info__badge,
+.radio-listen__badge,
+.yt-match__badge {
+  color: var(--green-deep);
+  background: #e6f6ec;
+  border: 1px solid rgba(0, 100, 55, 0.16);
+  font-weight: 700;
+}
+
+.stat-tile .lbl,
+.quick-tile__lbl {
+  color: var(--muted-quiet);
+  font-size: 0.72rem;
+}
+
+.stat-tile .num,
+.quick-tile__num {
+  color: var(--green-deep);
+  font-weight: 800;
+}
+
+/* Ensure dark panels never inherit light-card ink */
+.sync-status.card,
+.crowd-panel,
+.countdown,
+.stories-card {
+  color: #ffffff;
+}
+
+.sync-status.card .muted,
+.crowd-panel .muted,
+.countdown .muted,
+.stories-card .muted {
+  color: rgba(232, 255, 242, 0.75) !important;
+}
+
+/* Topbar breathing room */
+.topbar {
+  padding: 0.95rem 0 0.45rem;
+}
+
+/* Compact weather block */
+.home-block--weather {
+  padding: 0.7rem 0.9rem;
+  margin-bottom: var(--home-gap);
+}
+
+/* Torcida CTA sits calmer in the stack */
+.torcida-cta {
+  margin: 0.15rem 0 var(--home-gap);
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+/* Match weather inside cards: keep light, readable */
+.match-weather {
+  background: #f7fbf8;
+  border: 1px solid rgba(0, 100, 55, 0.12);
+}
+
+/* Preferências sheet stays clean white */
+.prefs-sheet {
+  background: #ffffff !important;
+  color: var(--ink);
+}
+
+/* v4.1.0 — specificity: dark panels win over unified white .card */
+.stories-card.card,
+.app--glass .stories-card.card {
+  background:
+    linear-gradient(160deg, #0a2418 0%, #0f3d28 48%, #082016 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  color: #f4fff8 !important;
+  box-shadow: 0 12px 32px rgba(0, 16, 10, 0.35) !important;
+}
+
+.stories-card.card h3,
+.stories-card.card .eyebrow {
+  color: #ffffff !important;
+}
+
+.streak-badge.card,
+.app--glass .streak-badge.card {
+  background: linear-gradient(135deg, #fffaf0 0%, #ffffff 60%) !important;
+  border: 1px solid rgba(180, 120, 20, 0.22) !important;
+  color: #1a1a1a !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.streak-badge--empty.card {
+  background: #ffffff !important;
+  border-color: var(--card-border) !important;
+}
+
+.room-invite.card,
+.app--glass .room-invite.card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 100, 55, 0.14) !important;
+  color: var(--ink) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.room-invite.card h3 {
+  color: var(--green-deep) !important;
+}
+
+.room-invite.card .eyebrow,
+.room-invite.card .lede,
+.room-invite.card .muted {
+  color: var(--muted-quiet) !important;
+}
+
+.crowd-panel.card,
+.app--glass .crowd-panel.card {
+  background:
+    linear-gradient(145deg, #006437 0%, #004d2a 55%, #003820 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+}
