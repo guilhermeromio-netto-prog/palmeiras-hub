@@ -149,6 +149,16 @@ export async function fetchEspnLiveSummary({ leagueSlug, eventId, signal } = {})
   const homeId = String(home?.id || home?.team?.id || '')
   const isHome = homeId === PALMEIRAS_ESPN_ID
 
+  const awayId = String(away?.id || away?.team?.id || '')
+  const homeLogo =
+    home?.team?.logos?.find((l) => l.rel?.includes('full'))?.href ||
+    home?.team?.logos?.[0]?.href ||
+    null
+  const awayLogo =
+    away?.team?.logos?.find((l) => l.rel?.includes('full'))?.href ||
+    away?.team?.logos?.[0]?.href ||
+    null
+
   return {
     eventId: String(eventId),
     leagueSlug,
@@ -157,6 +167,10 @@ export async function fetchEspnLiveSummary({ leagueSlug, eventId, signal } = {})
     statusDetail: statusType?.description || statusType?.detail || null,
     homeTeam: home?.team?.displayName || home?.team?.abbreviation || '—',
     awayTeam: away?.team?.displayName || away?.team?.abbreviation || '—',
+    homeEspnId: homeId || null,
+    awayEspnId: awayId || null,
+    homeLogoUrl: homeLogo,
+    awayLogoUrl: awayLogo,
     isHome,
     score,
     scorers,

@@ -72,7 +72,7 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: ({ url }) =>
-              /espn\.com|thesportsdb\.com|wikipedia\.org|rss2json\.com|instantdb\.com/i.test(
+              /espn\.com|espncdn\.com|thesportsdb\.com|wikipedia\.org|rss2json\.com|instantdb\.com/i.test(
                 url.hostname
               ),
             handler: 'NetworkFirst',

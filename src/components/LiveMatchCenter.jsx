@@ -1,4 +1,5 @@
 import { scoreLine, matchTitle } from '../utils/format'
+import { MatchTeams } from './TeamLogo'
 
 export default function LiveMatchCenter({ candidate, live, error, polling }) {
   if (!candidate && !live) return null
@@ -8,18 +9,10 @@ export default function LiveMatchCenter({ candidate, live, error, polling }) {
   const isFt = status === 'FINISHED'
   const home = live?.homeTeam || candidate?.homeTeam
   const away = live?.awayTeam || candidate?.awayTeam
-  const score =
-    live?.score ||
-    candidate?.score ||
-    null
+  const score = live?.score || candidate?.score || null
   const clock = live?.clock || (isLive ? 'Ao vivo' : isFt ? 'FT' : null)
-  const title =
-    home && away
-      ? `${home} × ${away}`
-      : matchTitle(candidate)
 
   if (!isLive && !isFt && !polling) {
-    // Ainda agendado fora da janela de poll — não ocupa espaço
     return null
   }
 
@@ -43,13 +36,19 @@ export default function LiveMatchCenter({ candidate, live, error, polling }) {
         {clock && <span className="live-center__clock">{clock}</span>}
       </header>
 
-      <h3 className="live-center__title">{title}</h3>
+      <MatchTeams
+        homeName={home || candidate?.homeTeam}
+        awayName={away || candidate?.awayTeam}
+        homeEspnId={live?.homeEspnId || candidate?.homeEspnId}
+        awayEspnId={live?.awayEspnId || candidate?.awayEspnId}
+        homeLogoUrl={live?.homeLogoUrl || candidate?.homeLogoUrl}
+        awayLogoUrl={live?.awayLogoUrl || candidate?.awayLogoUrl}
+        score={score}
+        size={44}
+        className="live-center__teams"
+      />
 
-      {score ? (
-        <p className="live-center__score">
-          {score.home} <span>×</span> {score.away}
-        </p>
-      ) : (
+      {!score && (
         <p className="muted live-center__waiting">
           {error
             ? `Placar indisponível agora (${error}).`
@@ -107,6 +106,9 @@ export default function LiveMatchCenter({ candidate, live, error, polling }) {
       </p>
       {!score && scoreLine(candidate) && (
         <p className="muted tiny">Último placar conhecido no hub: {scoreLine(candidate)}</p>
+      )}
+      {!home && !away && (
+        <h3 className="live-center__title sr-only">{matchTitle(candidate)}</h3>
       )}
     </section>
   )

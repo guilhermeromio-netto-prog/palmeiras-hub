@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { movementGlyph } from '../utils/standingsMovement'
+import TeamLogo from './TeamLogo'
 
 function MovementCell({ row }) {
   const g = movementGlyph(row.movement)
@@ -41,7 +42,12 @@ function StandingsTable({ table }) {
                 <td className="move-cell">
                   <MovementCell row={row} />
                 </td>
-                <td className="team-cell">{row.team}</td>
+                <td className="team-cell">
+                  <span className="team-cell__inner">
+                    <TeamLogo name={row.team} espnId={row.espnId} logoUrl={row.logoUrl} size={22} />
+                    <span>{row.team}</span>
+                  </span>
+                </td>
                 <td>
                   <strong>{row.points}</strong>
                 </td>

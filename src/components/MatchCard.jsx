@@ -1,5 +1,6 @@
-import { formatDateTime, matchTitle, scoreLine } from '../utils/format'
+import { formatDateTime, scoreLine } from '../utils/format'
 import FormDots from './FormDots'
+import { MatchTeams } from './TeamLogo'
 import { isTodaySP } from '../utils/datetime'
 
 export default function MatchCard({ match, form, featured = false, emphasizeToday = false }) {
@@ -11,8 +12,10 @@ export default function MatchCard({ match, form, featured = false, emphasizeToda
     )
   }
 
-  const score = scoreLine(match)
+  const score = match.score
   const today = emphasizeToday || isTodaySP(match.date)
+  const homeName = match.homeTeam || (match.isHome ? 'Palmeiras' : match.opponent) || '—'
+  const awayName = match.awayTeam || (match.isHome ? match.opponent : 'Palmeiras') || '—'
 
   return (
     <article
@@ -32,8 +35,23 @@ export default function MatchCard({ match, form, featured = false, emphasizeToda
                   : match.status}
         </span>
       </header>
-      <h3 className="match-card__title">{matchTitle(match)}</h3>
-      {score && <p className="match-card__score">{score}</p>}
+
+      <MatchTeams
+        homeName={homeName}
+        awayName={awayName}
+        homeEspnId={match.homeEspnId}
+        awayEspnId={match.awayEspnId}
+        homeLogoUrl={match.homeLogoUrl}
+        awayLogoUrl={match.awayLogoUrl}
+        score={score && (match.status === 'FINISHED' || match.status === 'LIVE') ? score : null}
+        size={featured ? 40 : 32}
+        className="match-card__teams"
+      />
+
+      {score && match.status === 'FINISHED' && !featured && (
+        <p className="match-card__score sr-only">{scoreLine(match)}</p>
+      )}
+
       <dl className="match-meta">
         <div>
           <dt>Data / hora</dt>

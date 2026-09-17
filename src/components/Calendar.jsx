@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
-import { formatDateTime, matchTitle, scoreLine } from '../utils/format'
+import { formatDateTime, scoreLine } from '../utils/format'
 import { matchDedupeKey } from '../utils/matchKey'
+import { MatchTeams } from './TeamLogo'
 
 const COMP_FILTERS = [
   { id: 'all', label: 'Todas' },
@@ -14,6 +15,8 @@ const COMP_FILTERS = [
 const KNOWN = new Set(['BSA', 'LIB', 'CDB', 'PAU'])
 
 function MatchRow({ m }) {
+  const homeName = m.homeTeam || (m.isHome ? 'Palmeiras' : m.opponent) || '—'
+  const awayName = m.awayTeam || (m.isHome ? m.opponent : 'Palmeiras') || '—'
   return (
     <article className="card row-card">
       <div>
@@ -21,7 +24,16 @@ function MatchRow({ m }) {
           <span className="pill tiny">{m.competition}</span>
           <span className="muted tiny">{m.isHome ? 'Casa' : 'Fora'}</span>
         </div>
-        <strong>{matchTitle(m)}</strong>
+        <MatchTeams
+          homeName={homeName}
+          awayName={awayName}
+          homeEspnId={m.homeEspnId}
+          awayEspnId={m.awayEspnId}
+          homeLogoUrl={m.homeLogoUrl}
+          awayLogoUrl={m.awayLogoUrl}
+          size={24}
+          className="calendar-row__teams"
+        />
         <p className="muted">{formatDateTime(m.date)} (SP)</p>
         <p className="muted">{m.venue}</p>
       </div>

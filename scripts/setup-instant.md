@@ -1,7 +1,7 @@
 # InstantDB permanente (opcional)
 
 O Hub já usa um app InstantDB **temporário** (sem login no provisionamento) com sala padrão `VERDAO`.  
-Ele **expira em ~01/10/2026**. Até lá, Guilherme e o pai sincronizam só abrindo o site.
+Ele **expira em ~01/10/2026**. Até lá, quem tiver o link (e o app) sincroniza só abrindo o site — mesmo código = mesmos dados.
 
 ## Trocar para app permanente (gratuito)
 

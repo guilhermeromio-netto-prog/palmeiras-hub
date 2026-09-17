@@ -14,14 +14,14 @@ npm run build && npm run serve
 
 `vite.config.js` mantém `base: '/palmeiras-hub/'` para GitHub Pages.
 
-## Torcida sincronizada (pai + filho)
+## Torcida sincronizada (sala VERDAO)
 
 Sem login. Backend: **InstantDB** (App ID público no client).
 
-1. Abra o link no celular (e no do pai).
+1. Abra o link em qualquer celular (ou instale o PWA).
 2. Aba **Torcida** → sala padrão **`VERDAO`** (pode trocar o código se quiser outra sala).
-3. Coloque o **mesmo código** nos dois aparelhos.
-4. Status **“Torcida online · sincronizada”** = reações, palpites, mural e ranking do quiz iguais nos dois.
+3. O **mesmo código** = os mesmos dados em qualquer aparelho de quem tiver o link (e o app).
+4. Status **“Torcida online · sincronizada”** = reações, palpites, mural e ranking do quiz iguais em todos.
 
 O App ID padrão é de um projeto **temporário** (válido até ~**01/10/2026**). Depois disso, crie um app free em [instantdb.com](https://www.instantdb.com) e defina `VITE_INSTANT_APP_ID` no build — ver `scripts/setup-instant.md`. **Não é necessário criar conta Firebase.**
 

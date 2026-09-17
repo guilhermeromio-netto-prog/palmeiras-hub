@@ -1,3 +1,4 @@
+import TeamLogo from './TeamLogo'
 export default function Stats({ data }) {
   const table = data.standings?.table || []
   const stats = data.stats
@@ -55,7 +56,12 @@ export default function Stats({ data }) {
               return (
                 <tr key={`${row.position}-${row.team}`} className={isPal ? 'highlight' : ''}>
                   <td>{row.position}</td>
-                  <td>{row.team}</td>
+                  <td className="team-cell">
+                    <span className="team-cell__inner">
+                      <TeamLogo name={row.team} espnId={row.espnId} logoUrl={row.logoUrl} size={22} />
+                      <span>{row.team}</span>
+                    </span>
+                  </td>
                   <td><strong>{row.points}</strong></td>
                   <td>{row.played}</td>
                   <td>{row.won}</td>

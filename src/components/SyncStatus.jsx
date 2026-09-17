@@ -75,7 +75,9 @@ export default function SyncStatus({ compact = false }) {
           </strong>
           <p className="muted tiny">
             Sala <code>{room || DEFAULT_ROOM}</code>
-            {online ? ' — mesmo código = mesmos dados no celular do pai' : ' — reconectando…'}
+            {online
+              ? ' — o mesmo código = os mesmos dados em qualquer celular de quem tiver o link (e o app)'
+              : ' — reconectando…'}
           </p>
         </div>
       </div>

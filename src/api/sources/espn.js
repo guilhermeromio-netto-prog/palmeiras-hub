@@ -81,6 +81,16 @@ function mapEspnEvent(event, leagueMeta) {
     ? `${comp.venue.fullName}${comp.venue.address?.city ? `, ${comp.venue.address.city}` : ''}`
     : 'A definir'
 
+  const awayId = String(away.id || away.team?.id || '')
+  const homeLogo =
+    home.team?.logos?.find((l) => l.rel?.includes('full'))?.href ||
+    home.team?.logos?.[0]?.href ||
+    null
+  const awayLogo =
+    away.team?.logos?.find((l) => l.rel?.includes('full'))?.href ||
+    away.team?.logos?.[0]?.href ||
+    null
+
   return {
     id: String(event.id || `${leagueMeta.code}-${event.date}-${opponent}`),
     espnEventId: String(event.id || ''),
@@ -89,6 +99,12 @@ function mapEspnEvent(event, leagueMeta) {
     leagueSlug: leagueMeta.slug,
     homeTeam: home.team?.displayName || home.team?.name || '—',
     awayTeam: away.team?.displayName || away.team?.name || '—',
+    homeEspnId: homeId || null,
+    awayEspnId: awayId || null,
+    homeLogoUrl: homeLogo,
+    awayLogoUrl: awayLogo,
+    opponentEspnId: isHome ? awayId || null : homeId || null,
+    opponentLogoUrl: isHome ? awayLogo : homeLogo,
     isHome,
     opponent,
     date: event.date,
@@ -148,9 +164,16 @@ function mapStandingEntry(row) {
   const rankChange =
     rankChangeRaw == null || rankChangeRaw === '' ? 0 : Number(rankChangeRaw)
 
+  const logoUrl =
+    row.team?.logos?.find((l) => l.rel?.includes('full'))?.href ||
+    row.team?.logos?.[0]?.href ||
+    null
+
   return {
     position: num('rank') || Number(row.team?.rank) || 0,
     team: teamName,
+    espnId: id || null,
+    logoUrl,
     played: num('gamesPlayed'),
     won: num('wins'),
     draw: num('ties'),

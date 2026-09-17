@@ -36,8 +36,8 @@ export default function Torcida({ data, liveMatch }) {
         <p className="eyebrow">Torcida</p>
         <h2>Avanti, família!</h2>
         <p className="lede">
-          Reações, palpite, mural e quiz — sincronizados entre celulares. Use a sala{' '}
-          <strong>VERDAO</strong> (padrão) no seu e no do pai.
+          Sala <strong>VERDAO</strong> — o mesmo código = os mesmos dados em qualquer
+          celular de quem tiver o link (e o app). Reações, palpite, mural e quiz juntos.
         </p>
       </header>
 
