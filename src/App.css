@@ -1895,45 +1895,6 @@
   margin: 0.65rem 0 0;
 }
 
-/* —— Since last visit —— */
-.since-card {
-  padding: 0.9rem 1rem 1rem;
-  margin-bottom: 1rem;
-  border: 1px solid rgba(0, 100, 55, 0.18);
-  background: linear-gradient(160deg, #ffffff, #eef9f2);
-}
-
-.since-card__head {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-  align-items: flex-start;
-}
-
-.since-card h3 {
-  margin: 0.1rem 0 0.15rem;
-  color: var(--green-deep);
-  font-size: 1.05rem;
-}
-
-.since-list {
-  margin: 0.55rem 0 0;
-  padding-left: 1.05rem;
-}
-
-.since-item {
-  margin: 0.3rem 0;
-  font-size: 0.92rem;
-}
-
-.since-item--up {
-  color: var(--green-deep);
-}
-
-.since-item--down {
-  color: var(--red);
-}
-
 /* —— Favorite players —— */
 .fav-players {
   margin-bottom: 0.35rem;
@@ -2290,7 +2251,6 @@ html[data-font-size='large'] {
   border-radius: 0 0 16px 16px;
 }
 
-.app--glass .since-card,
 .app--glass .live-center,
 .app--glass .fav-player-card,
 .app--glass .prefs-sheet {
@@ -3729,7 +3689,6 @@ html[data-font-size='large'] {
     linear-gradient(160deg, #ffffff 0%, #f0fff6 42%, #ffe8ec 100%);
 }
 
-.app--glass .since-card,
 .app--glass .live-center,
 .app--glass .fav-player-card,
 .app--glass .prefs-sheet {
@@ -5567,51 +5526,8 @@ html[data-font-size='large'] {
   margin: 0.5rem 0 0;
 }
 
-/* —— Since last visit drama —— */
-.since-card--drama {
-  background: linear-gradient(155deg, #0d3320 0%, #176b40 50%, #0a2818 100%);
-  border: 1px solid rgba(255, 215, 100, 0.28);
-  color: #f5fff8;
-  box-shadow: 0 10px 36px rgba(0, 40, 20, 0.35);
-}
-.since-card--drama .eyebrow {
-  color: #ffe566;
-}
-.since-card--drama h3 {
-  color: #fff !important;
-  font-size: 1.2rem;
-}
-.since-card--drama .muted,
-.since-card--drama .muted.tiny {
-  color: rgba(255, 255, 255, 0.7) !important;
-}
-.since-card--drama .since-item {
-  color: rgba(255, 255, 255, 0.92);
-}
-.since-card--drama .since-item--up {
-  color: #b8ffc8;
-}
-.since-card--drama .since-item--down {
-  color: #ffb4b4;
-}
-.since-card--drama a {
-  color: #ffe566;
-}
-.since-card__spotlight {
-  margin: 0.65rem 0 0.35rem;
-  padding: 0.75rem 0.85rem;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  font-size: 1.02rem;
-  font-weight: 700;
-  line-height: 1.35;
-}
-.since-card--quiet {
-  opacity: 0.95;
-}
 .app--glass .stories-card,
 .app--glass .room-invite,
-.app--glass .streak-badge,
-.app--glass .since-card--drama {
+.app--glass .streak-badge {
   backdrop-filter: blur(8px);
 }

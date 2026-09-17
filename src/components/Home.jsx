@@ -4,7 +4,6 @@ import Countdown from './Countdown'
 import H2H from './H2H'
 import ShareButton from './ShareButton'
 import LiveMatchCenter from './LiveMatchCenter'
-import SinceLastVisit from './SinceLastVisit'
 import FavoritePlayers from './FavoritePlayers'
 import CrowdReactions from './CrowdReactions'
 import ScoreTip from './ScoreTip'
@@ -334,7 +333,6 @@ export default function Home({
         </div>
       </div>
 
-      <SinceLastVisit data={data} />
 
       <StreakBadge compact />
 
