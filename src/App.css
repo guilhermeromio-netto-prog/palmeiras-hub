@@ -3034,6 +3034,47 @@ html[data-font-size='large'] {
   font-size: 0.9rem;
 }
 
+.radio-listen__controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.radio-listen__playbtn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 3rem;
+  padding: 0.65rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(157, 255, 192, 0.35);
+  background: linear-gradient(135deg, rgba(0, 140, 75, 0.95), rgba(0, 80, 45, 0.95));
+  color: #eafff2;
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.radio-listen__playbtn:hover,
+.radio-listen__playbtn:focus-visible {
+  border-color: rgba(157, 255, 192, 0.7);
+  outline: none;
+}
+
+.radio-listen__playbtn.is-playing {
+  background: linear-gradient(135deg, rgba(40, 40, 40, 0.9), rgba(20, 40, 30, 0.95));
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.radio-listen__playbtn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
 .radio-listen__audio {
   width: 100%;
   height: 2.5rem;
