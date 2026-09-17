@@ -67,6 +67,9 @@ export default defineConfig({
         ],
       },
       workbox: {
+        cacheId: 'palmeiras-hub-v372',
+        skipWaiting: true,
+        clientsClaim: true,
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,woff2}'],
         navigateFallback: '/palmeiras-hub/index.html',
         runtimeCaching: [

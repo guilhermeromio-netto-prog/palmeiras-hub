@@ -55,7 +55,7 @@ export default function CrowdReactions({ matchId, matchLabel, compact = false })
     REACTION_EMOJIS.slice().sort((a, b) => (counts[b] || 0) - (counts[a] || 0))[0] || '💚'
 
   return (
-    <section className={`crowd-react card${compact ? ' crowd-react--compact' : ''}`}>
+    <section className={`crowd-react crowd-panel${compact ? ' crowd-react--compact' : ''}`}>
       <header className="crowd-react__head">
         <h3 className="crowd-react__title">Reações da torcida</h3>
         <p className="muted tiny">

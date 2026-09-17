@@ -66,7 +66,7 @@ export default function SyncStatus({ compact = false }) {
   const expiring = !expired && isInstantExpiringSoon(7)
 
   return (
-    <section className={`sync-status card${compact ? ' sync-status--compact' : ''} ${statusClass(conn)}`}>
+    <section className={`sync-status sync-panel${compact ? ' sync-status--compact' : ''} ${statusClass(conn)}`}>
       <div className="sync-status__row">
         <span className="sync-status__dot" aria-hidden="true" />
         <div className="sync-status__text">

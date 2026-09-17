@@ -4414,3 +4414,79 @@ html[data-font-size='large'] {
   border-color: rgba(240, 193, 74, 0.55);
   color: #fff8e0 !important;
 }
+
+/* —— Dark panels: sync + reações (no white .card) —— */
+.sync-panel,
+.crowd-panel,
+.app--glass .sync-panel,
+.app--glass .crowd-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+  padding: 1rem 1.05rem 1.1rem;
+  border-radius: var(--radius, 18px);
+  background: linear-gradient(145deg, #006437 0%, #004d2a 55%, #003820 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow:
+    0 14px 36px rgba(0, 30, 18, 0.45),
+    0 0 0 1px rgba(227, 6, 19, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.sync-panel *,
+.crowd-panel *:not(input):not(button) {
+  /* keep children inheriting light ink unless overridden */
+}
+
+.sync-panel,
+.crowd-panel,
+.sync-panel .muted,
+.sync-panel .tiny,
+.crowd-panel .muted,
+.crowd-panel .tiny,
+.crowd-panel .crowd-react__title,
+.crowd-panel h3,
+.sync-panel strong,
+.sync-panel label,
+.sync-panel label span {
+  color: #ffffff !important;
+  opacity: 1;
+}
+
+.crowd-panel .crowd-react__title {
+  font-weight: 800;
+  margin: 0;
+}
+
+.sync-panel input {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: #fff !important;
+}
+
+.sync-panel input::placeholder {
+  color: rgba(232, 255, 242, 0.7);
+}
+
+.sync-panel .btn.ghost,
+.crowd-panel .btn.ghost,
+.crowd-panel .share-btn--compact,
+.crowd-panel button.share-btn {
+  background: rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  font-weight: 800;
+}
+
+.crowd-panel .crowd-react__btn {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #fff;
+}
+
+.crowd-panel .crowd-react__count {
+  color: #e8fff2 !important;
+  font-weight: 800;
+}
