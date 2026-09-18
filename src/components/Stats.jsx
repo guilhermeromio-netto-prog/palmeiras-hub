@@ -1,4 +1,5 @@
 import TeamLogo from './TeamLogo'
+import SeasonPanel from './SeasonPanel'
 export default function Stats({ data }) {
   const table = data.standings?.table || []
   const stats = data.stats
@@ -11,6 +12,8 @@ export default function Stats({ data }) {
         {data.standings?.competition || 'Brasileirão'} · temporada{' '}
         {data.standings?.season || '—'}
       </p>
+
+      <SeasonPanel data={data} />
 
       {stats && (
         <div className="stats-mini grid-4">

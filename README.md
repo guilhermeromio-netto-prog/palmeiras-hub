@@ -4,6 +4,14 @@ App pessoal de torcedor do **Palmeiras**: próximo jogo, **onde assistir**, **ou
 
 **Live:** https://guilhermeromio-netto-prog.github.io/palmeiras-hub/
 
+## Novidades v4.2.0 (Pro)
+
+- **Dossiê do próximo jogo** — adversário, competição, apito, local, onde assistir, clima, desfalques/suspensões (ESPN/notícias ou empty state honesto), snippet da última escalação, mini H2H (3) e situação na tabela.
+- **Painel da temporada** — posição, pts, V-E-D, GP/GC, forma (5), próximos 5, folga p/ líder e zona (só com dados reais).
+- **Agenda .ics** — “Adicionar ao calendário” (jogo único ou próximos) no dossiê e em Jogos.
+- **Chrome Pro** — badge PRO no header/hero; Preferências → **Layout Pro (compacto)**.
+- Sem paywall falso; sem restaurar “Enquanto você saiu”.
+
 ## Novidades v4.1.0
 
 - **Polimento visual** — hierarquia e ritmo vertical mais calmos na Home; tipografia consistente; cards brancos limpos (sombra suave + borda 1px, sem sage sujo).

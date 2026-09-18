@@ -192,7 +192,12 @@ export default function App() {
             decoding="async"
           />
           <div>
-            <strong>Palmeiras Hub</strong>
+            <strong>
+              Palmeiras Hub{' '}
+              <span className="pro-badge pro-badge--header" title="Palmeiras Hub Pro">
+                PRO
+              </span>
+            </strong>
             <span className="brand-sub">
               <span className="star-accent" aria-hidden="true">★</span>
               O Maior Campeão

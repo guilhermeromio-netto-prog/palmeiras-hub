@@ -17,21 +17,25 @@ export const THEME_ACCENTS = [
  * id estável; label só para a UI de preferências.
  */
 export const HOME_BLOCK_DEFS = [
-  { id: 'nextMatch', label: 'Próximo jogo' },
+  { id: 'nextMatch', label: 'Dossiê do jogo (Pro)' },
   { id: 'countdown', label: 'Countdown' },
+  { id: 'seasonPanel', label: 'Painel da temporada (Pro)' },
   { id: 'weather', label: 'Clima' },
   { id: 'broadcast', label: 'Onde assistir' },
   { id: 'radio', label: 'Rádio' },
   { id: 'youtube', label: 'YouTube' },
   { id: 'torcidaCta', label: 'Torcida (CTA)' },
-  { id: 'h2h', label: 'H2H' },
-  { id: 'stats', label: 'Estatísticas' },
+  { id: 'h2h', label: 'H2H completo' },
+  { id: 'stats', label: 'Atalhos rápidos' },
   { id: 'recent', label: 'Resultados recentes' },
 ]
 
+const DEFAULT_HIDDEN = new Set(['weather', 'broadcast'])
+
 export const DEFAULT_HOME_BLOCKS = HOME_BLOCK_DEFS.map((b) => ({
   id: b.id,
-  visible: true,
+  // Clima + onde assistir já entram no dossiê Pro — ocultos por padrão na Home
+  visible: !DEFAULT_HIDDEN.has(b.id),
 }))
 
 export const STADIUM_MODES = [
@@ -89,7 +93,8 @@ function normalizeHomeBlocks(input) {
   }
   for (const def of HOME_BLOCK_DEFS) {
     if (!fromSaved.some((b) => b.id === def.id)) {
-      fromSaved.push({ id: def.id, visible: true })
+      const defVisible = DEFAULT_HOME_BLOCKS.find((b) => b.id === def.id)?.visible !== false
+      fromSaved.push({ id: def.id, visible: defVisible })
     }
   }
   return fromSaved

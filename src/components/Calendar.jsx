@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { formatDateTime, scoreLine } from '../utils/format'
 import { matchDedupeKey } from '../utils/matchKey'
 import { MatchTeams } from './TeamLogo'
+import AddToCalendar from './AddToCalendar'
 
 const COMP_FILTERS = [
   { id: 'all', label: 'Todas' },
@@ -88,6 +89,10 @@ export default function Calendar({ data, onViewChange }) {
       <p className="lede">
         Brasileirão, Libertadores, Paulistão e Copa do Brasil — próximos e recentes.
       </p>
+      <AddToCalendar
+        match={(data.upcoming || [])[0] || data.nextMatch}
+        upcoming={data.upcoming || []}
+      />
 
       <div className="filters" aria-label="Filtros da agenda">
         <div className="filter-row">

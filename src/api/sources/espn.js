@@ -460,11 +460,29 @@ function extractAthleteStat(athlete, name) {
   return 0
 }
 
+function mapInjuries(list) {
+  if (!Array.isArray(list) || !list.length) return []
+  return list.map((inj) => ({
+    status: inj.status || inj.type || inj.injury || null,
+    detail:
+      inj.longComment ||
+      inj.shortComment ||
+      inj.details ||
+      inj.description ||
+      inj.detail ||
+      null,
+    date: inj.date || inj.startDate || null,
+  }))
+}
+
 function mapAthlete(a) {
   const abbr = a.position?.abbreviation || 'M'
   const posKey = abbr.charAt(0)
   const group =
     posKey === 'G' ? 'G' : posKey === 'D' ? 'D' : posKey === 'F' ? 'F' : 'M'
+  const statusType = a.status?.type || null
+  const statusAbbr = a.status?.abbreviation || null
+  const statusName = a.status?.name || null
   return {
     id: String(a.id),
     name: a.displayName || a.fullName || a.shortName || '—',
@@ -475,7 +493,11 @@ function mapAthlete(a) {
     positionDetail: a.position?.displayName || a.position?.name || null,
     age: a.age ?? null,
     nationality: a.citizenshipCountry?.abbreviation || a.flag?.alt || null,
-    status: a.status?.type || a.status?.abbreviation || 'active',
+    status: statusType || statusAbbr || 'active',
+    statusType: statusType || 'active',
+    statusAbbr: statusAbbr || null,
+    statusLabel: statusName || statusAbbr || statusType || null,
+    injuries: mapInjuries(a.injuries),
     yellowCards: extractAthleteStat(a, 'yellowCards'),
     redCards: extractAthleteStat(a, 'redCards'),
     appearances: extractAthleteStat(a, 'appearances'),

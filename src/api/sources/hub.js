@@ -15,6 +15,8 @@ import { fetchHeadToHead } from './h2h.js'
 import { mergeMatchesByKey } from '../../utils/matchKey.js'
 import { applyStandingsMovement } from '../../utils/standingsMovement.js'
 import { dateKeySP } from '../../utils/datetime.js'
+import { buildSeasonContext } from '../../utils/seasonContext.js'
+import { buildAvailability } from '../../utils/availability.js'
 
 function mergeUpcoming(primary, extra) {
   const now = Date.now() - 60 * 60 * 1000
@@ -265,6 +267,11 @@ export async function buildHubFromPublicSources({ signal } = {}) {
     news: newsRes?.news || [],
     newsSource: newsRes?.source || null,
     newsErrors: newsRes?.errors || [],
+    seasonContext: buildSeasonContext(standings, standingsRes?.stats || null),
+    availability: buildAvailability({
+      squad: rosterRes?.squad || [],
+      news: newsRes?.news || [],
+    }),
     errors,
     fromCache: false,
     movementNote:

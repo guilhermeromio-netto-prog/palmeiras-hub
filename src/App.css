@@ -6339,3 +6339,401 @@ html[data-font-size='large'] {
 .quick-tile {
   padding: 0.85rem 0.7rem;
 }
+
+/* —— v4.2.0 Pro: badge, dossier, season panel, ICS —— */
+.pro-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  padding: 0.22em 0.48em;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #c9a227 0%, #f0d060 45%, #a8841a 100%);
+  color: #1a1405;
+  border: 1px solid rgba(80, 55, 0, 0.35);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset;
+  vertical-align: middle;
+  text-transform: uppercase;
+}
+
+.pro-badge--header {
+  margin-left: 0.35rem;
+  font-size: 0.55rem;
+  position: relative;
+  top: -1px;
+}
+
+.pro-badge--hero {
+  margin-left: 0.4rem;
+  font-size: 0.58rem;
+}
+
+.pro-badge--inline {
+  margin-left: 0.35rem;
+  font-size: 0.58rem;
+  vertical-align: 0.15em;
+}
+
+.brand strong {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.15rem;
+}
+
+/* Dossier */
+.dossier {
+  padding: 1.15rem 1.1rem 1.25rem;
+  background: #fff !important;
+  color: var(--ink, #0a1a12);
+  border: 1px solid rgba(0, 40, 24, 0.1);
+  box-shadow: 0 12px 32px rgba(0, 20, 12, 0.14);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dossier--hoje {
+  border-color: rgba(0, 100, 55, 0.35);
+  box-shadow: 0 12px 36px rgba(0, 80, 40, 0.2);
+}
+
+.dossier--live {
+  border-color: rgba(200, 40, 40, 0.4);
+}
+
+.dossier__head-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.dossier__teams {
+  margin-bottom: 0.65rem;
+}
+
+.dossier__meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.45rem;
+  margin: 0;
+}
+
+.dossier__meta div {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.35rem;
+  align-items: baseline;
+}
+
+.dossier__meta dt {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #5a6b62;
+}
+
+.dossier__meta dd {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--ink, #0a1a12);
+  font-weight: 600;
+}
+
+.dossier__form-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.55rem;
+}
+
+.dossier__section {
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(0, 40, 24, 0.08);
+}
+
+.dossier__section-title {
+  margin: 0 0 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #006437;
+}
+
+.dossier__situation {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--ink, #0a1a12);
+  line-height: 1.35;
+}
+
+.dossier__section--broadcast .broadcast-info,
+.dossier__section--weather .match-weather {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.dossier__avail {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.dossier__avail-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.55rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 10px;
+  background: #f4f7f5;
+  border: 1px solid rgba(0, 40, 24, 0.06);
+}
+
+.dossier__avail-item.kind-suspended {
+  background: #fff0ee;
+  border-color: rgba(180, 50, 40, 0.2);
+}
+
+.dossier__avail-item.kind-injury,
+.dossier__avail-item.kind-unavailable {
+  background: #fff8e6;
+  border-color: rgba(200, 150, 20, 0.22);
+}
+
+.dossier__lineup-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.35rem;
+}
+
+.dossier__lineup-names {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--ink, #0a1a12);
+}
+
+.dossier__h2h {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dossier__h2h-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+}
+
+/* Season panel */
+.season-panel__card {
+  padding: 1.1rem 1.05rem 1.2rem;
+  background: #fff !important;
+  color: var(--ink, #0a1a12);
+  border: 1px solid rgba(0, 40, 24, 0.1);
+  box-shadow: 0 10px 28px rgba(0, 20, 12, 0.12);
+}
+
+.season-panel__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.season-panel__pos {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.season-panel__pos-num {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #006437;
+}
+
+.season-panel__pos-pts {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #4a5c52;
+  margin-top: 0.15rem;
+}
+
+.season-panel__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.season-panel__tile {
+  background: #f4f7f5;
+  border: 1px solid rgba(0, 40, 24, 0.07);
+  border-radius: 12px;
+  padding: 0.65rem 0.45rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.season-panel__tile-val {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--ink, #0a1a12);
+}
+
+.season-panel__tile-lbl {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #5a6b62;
+}
+
+.season-panel__tile--form .form-dots {
+  justify-content: center;
+}
+
+.season-panel__gaps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.85rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(0, 100, 55, 0.08), rgba(0, 100, 55, 0.02));
+  border: 1px solid rgba(0, 100, 55, 0.12);
+}
+
+.season-panel__gap {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ink, #0a1a12);
+}
+
+.season-panel__sub {
+  margin: 0 0 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #006437;
+}
+
+.season-panel__fixtures {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.season-panel__fix {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  gap: 0.15rem 0.5rem;
+  align-items: center;
+  padding: 0.4rem 0.45rem;
+  border-radius: 10px;
+  background: #f7faf8;
+  border: 1px solid rgba(0, 40, 24, 0.06);
+}
+
+.season-panel__fix .pill {
+  grid-row: 1 / 3;
+}
+
+.season-panel__when {
+  grid-column: 2;
+}
+
+.season-panel__teams {
+  grid-column: 2;
+}
+
+/* Add to calendar */
+.add-cal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.add-cal__btn {
+  align-self: stretch;
+  background: #006437;
+  color: #fff;
+  border: none;
+  font-weight: 700;
+}
+
+.add-cal__btn--secondary {
+  background: transparent;
+  color: #006437;
+  border: 1px solid rgba(0, 100, 55, 0.35);
+}
+
+.add-cal__hint {
+  margin: 0;
+}
+
+.app.compact .dossier,
+.app.compact .season-panel__card {
+  padding: 0.8rem 0.85rem 0.9rem;
+  gap: 0.7rem;
+}
+
+.app.compact .dossier__section {
+  padding-top: 0.55rem;
+}
+
+.app.compact .season-panel__grid {
+  gap: 0.35rem;
+}
+
+.app.compact .home-block {
+  margin-bottom: 0.65rem;
+}
+
+.app.compact .hero-campeao {
+  min-height: 140px;
+  margin-bottom: 0.75rem;
+}
+
+@media (min-width: 520px) {
+  .dossier__meta {
+    grid-template-columns: 1fr 1fr;
+  }
+  .dossier__meta div:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}

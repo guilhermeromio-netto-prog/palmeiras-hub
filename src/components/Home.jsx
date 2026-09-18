@@ -1,4 +1,3 @@
-import MatchCard from './MatchCard'
 import FormDots from './FormDots'
 import Countdown from './Countdown'
 import H2H from './H2H'
@@ -14,10 +13,12 @@ import MatchWeather from './MatchWeather'
 import SyncStatus from './SyncStatus'
 import StoriesCard from './StoriesCard'
 import StreakBadge from './StreakBadge'
+import MatchDossier from './MatchDossier'
+import SeasonPanel from './SeasonPanel'
 import { formatDate, formatDateTime, scoreLine, matchTitle } from '../utils/format'
 import { formationLabel } from '../utils/formation'
 import { matchDedupeKey } from '../utils/matchKey'
-import { isTodaySP, msUntil } from '../utils/datetime'
+import { msUntil } from '../utils/datetime'
 import {
   nextMatchShareText,
   resultShareText,
@@ -104,17 +105,19 @@ export default function Home({
     switch (id) {
       case 'nextMatch':
         return (
-          <div key="nextMatch" id="home-next-match" className="home-block home-block--next">
-            <h3 className="section-title">Próximo confronto</h3>
-            {displayMatch ? (
+          <div key="nextMatch" id="home-next-match" className="home-block home-block--next home-block--dossier">
+            <h3 className="section-title">
+              Dossiê do próximo jogo{' '}
+              <span className="pro-badge pro-badge--inline">PRO</span>
+            </h3>
+            <MatchDossier
+              match={displayMatch}
+              data={data}
+              upcoming={upcoming}
+              form={data.form}
+            />
+            {displayMatch && (
               <>
-                <MatchCard
-                  match={displayMatch}
-                  form={data.form}
-                  featured
-                  emphasizeToday={isTodaySP(displayMatch.date)}
-                  showWeather={false}
-                />
                 <SyncStatus compact />
                 <ScoreTip
                   match={displayMatch}
@@ -126,19 +129,6 @@ export default function Home({
                 </div>
                 <StoriesCard nextMatch={displayMatch} lastResult={lastFinished} />
               </>
-            ) : (
-              <article className="card match-card featured">
-                <p className="muted">
-                  Nenhum jogo futuro encontrado nas fontes públicas neste momento. Confira os
-                  resultados recentes ou toque em Atualizar.
-                </p>
-                {data.form?.length > 0 && (
-                  <div className="match-card__form">
-                    <span className="label">Forma recente</span>
-                    <FormDots form={data.form} />
-                  </div>
-                )}
-              </article>
             )}
             {!displayMatch && lastFinished && (
               <StoriesCard nextMatch={null} lastResult={lastFinished} />
@@ -154,15 +144,27 @@ export default function Home({
           </div>
         )
 
-      case 'weather':
+      case 'seasonPanel':
+        return (
+          <div key="seasonPanel" className="home-block home-block--season">
+            <SeasonPanel data={data} />
+          </div>
+        )
+
+      case 'weather': {
+        const dossierOn = blocks.some((b) => b.id === 'nextMatch' && b.visible !== false)
+        if (dossierOn) return null
         if (!displayMatch || !canShowWeather(displayMatch)) return null
         return (
           <div key="weather" className="home-block home-block--weather card">
             <MatchWeather match={displayMatch} />
           </div>
         )
+      }
 
-      case 'broadcast':
+      case 'broadcast': {
+        const dossierOn = blocks.some((b) => b.id === 'nextMatch' && b.visible !== false)
+        if (dossierOn) return null
         if (!displayMatch) return null
         return (
           <div key="broadcast" className="home-block">
@@ -170,6 +172,7 @@ export default function Home({
             <BroadcastInfo match={displayMatch} />
           </div>
         )
+      }
 
       case 'radio':
         return (
@@ -320,7 +323,10 @@ export default function Home({
         <div className="hero-campeao__veil" aria-hidden="true" />
         <div className="hero-campeao__copy">
           <img className="crest crest--hero" src={CREST} width={52} height={52} alt="" decoding="async" />
-          <p className="eyebrow">{matchDay ? 'Dia de jogo' : 'Palmeiras Hub'}</p>
+          <p className="eyebrow">
+            {matchDay ? 'Dia de jogo' : 'Palmeiras Hub'}{' '}
+            <span className="pro-badge pro-badge--hero">PRO</span>
+          </p>
           <h2 className="hero-campeao__title">
             <span className="star-accent" aria-hidden="true">★</span>
             O Maior Campeão

@@ -120,7 +120,7 @@ export default function Preferences({
             checked={Boolean(prefs.compactMode)}
             onChange={(e) => update({ compactMode: e.target.checked })}
           />
-          <span>Modo compacto (menos espaço entre cards)</span>
+          <span>Layout Pro (compacto) — cards e espaçamento mais densos</span>
         </label>
 
         <fieldset className="prefs-field prefs-home-blocks">
