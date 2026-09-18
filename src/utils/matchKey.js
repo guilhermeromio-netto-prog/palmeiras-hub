@@ -84,3 +84,57 @@ export function mergeMatchesByKey(...lists) {
   }
   return [...map.values()]
 }
+
+/**
+ * Dedupe H2H meetings across ESPN/TheSportsDB timezone drift.
+ * Collapses same score+teams within ±2 days, or same competition+score+teams.
+ */
+function scorePair(m) {
+  if (!m?.score) return ''
+  const h = m.score.home
+  const a = m.score.away
+  if (h == null || a == null) return ''
+  return `${h}-${a}`
+}
+
+function teamsPair(m) {
+  const home = normalizeTeamName(m.homeTeam || (m.isHome ? 'Palmeiras' : m.opponent))
+  const away = normalizeTeamName(m.awayTeam || (m.isHome ? m.opponent : 'Palmeiras'))
+  return `${home}|${away}`
+}
+
+function dayStamp(iso) {
+  const d = dateDaySP(iso)
+  if (!d) return NaN
+  return Date.parse(`${d}T12:00:00Z`)
+}
+
+export function isSameH2HMeeting(a, b) {
+  if (!a || !b) return false
+  const score = scorePair(a)
+  const teams = teamsPair(a)
+  if (!score || !teams) return false
+  if (score !== scorePair(b) || teams !== teamsPair(b)) return false
+
+  const codeA = (a.competitionCode || inferCompetitionCode(a.competition) || '').toUpperCase()
+  const codeB = (b.competitionCode || inferCompetitionCode(b.competition) || '').toUpperCase()
+  if (codeA && codeB && codeA === codeB) return true
+
+  const ta = dayStamp(a.date)
+  const tb = dayStamp(b.date)
+  if (!Number.isFinite(ta) || !Number.isFinite(tb)) return false
+  const dayDiff = Math.abs(ta - tb) / 86400000
+  return dayDiff <= 2
+}
+
+/** Keep newest unique meetings (already sorted or will be sorted by caller). */
+export function dedupeH2HMeetings(meetings) {
+  const sorted = [...(meetings || [])].sort((a, b) => new Date(b.date) - new Date(a.date))
+  const kept = []
+  for (const m of sorted) {
+    if (kept.some((prev) => isSameH2HMeeting(prev, m))) continue
+    kept.push(m)
+  }
+  return kept
+}
+

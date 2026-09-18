@@ -4,7 +4,7 @@
  */
 import { fetchJson } from './fetchJson.js'
 import { sameOpponent, normalizeTeamName } from '../../utils/opponent.js'
-import { mergeMatchesByKey } from '../../utils/matchKey.js'
+import { mergeMatchesByKey, dedupeH2HMeetings } from '../../utils/matchKey.js'
 
 const TSDB = 'https://www.thesportsdb.com/api/v1/json/123'
 
@@ -123,9 +123,11 @@ export async function fetchHeadToHead({ opponent, localMatches = [], signal } = 
     remote = []
   }
 
-  const merged = mergeMatchesByKey(local, remote)
-    .filter((m) => m.status === 'FINISHED' && m.score)
-    .filter((m) => sameOpponent(m.opponent, opponent))
+  const merged = dedupeH2HMeetings(
+    mergeMatchesByKey(local, remote)
+      .filter((m) => m.status === 'FINISHED' && m.score)
+      .filter((m) => sameOpponent(m.opponent, opponent)),
+  )
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 8)
 

@@ -495,12 +495,13 @@
 }
 
 .stat-tile {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid var(--line);
-  color: white;
+  background: #ffffff;
+  border: 1px solid var(--card-border, rgba(0, 77, 42, 0.12));
+  color: var(--ink, #0a1a12);
   border-radius: 14px;
   padding: 0.85rem 0.7rem;
   text-align: center;
+  box-shadow: var(--shadow-sm, 0 4px 14px rgba(0, 28, 16, 0.1));
 }
 
 .stat-tile .num {
@@ -6168,13 +6169,18 @@ html[data-font-size='large'] {
 .stat-tile .lbl,
 .quick-tile__lbl {
   color: var(--muted-quiet);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .stat-tile .num,
 .quick-tile__num {
   color: var(--green-deep);
-  font-weight: 800;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
 /* Ensure dark panels never inherit light-card ink */
@@ -6274,4 +6280,62 @@ html[data-font-size='large'] {
     linear-gradient(145deg, #006437 0%, #004d2a 55%, #003820 100%) !important;
   color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.28) !important;
+}
+
+/* =========================================================
+   v4.1.1 — Quick/stat tiles: white cards + deep green ink
+   Fixes dark-on-dark contrast from v4.1.0 ink overrides.
+   ========================================================= */
+
+.stats-mini {
+  gap: 0.7rem;
+  margin: 0.85rem 0 0.35rem;
+}
+
+.stat-tile,
+.quick-tile.card,
+.quick-tile {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 77, 42, 0.12) !important;
+  color: var(--ink, #0a1a12) !important;
+  box-shadow:
+    0 4px 14px rgba(0, 28, 16, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.95) inset !important;
+  border-radius: 16px;
+}
+
+.stat-tile .num,
+.quick-tile__num {
+  color: #004d2a !important;
+  font-weight: 900 !important;
+  font-size: clamp(1.15rem, 3.6vw, 1.35rem);
+}
+
+.stat-tile .lbl,
+.quick-tile__lbl {
+  color: #4a5c52 !important;
+  opacity: 1 !important;
+}
+
+/* Discipline accent tiles keep soft tinted backgrounds */
+.stat-tile.card-tile.yellow,
+.stat-tile.card-tile.red {
+  color: var(--ink, #0a1a12) !important;
+}
+.stat-tile.card-tile.yellow {
+  background: #fff8e6 !important;
+  border-color: rgba(200, 150, 20, 0.28) !important;
+}
+.stat-tile.card-tile.red {
+  background: #fff0ee !important;
+  border-color: rgba(180, 50, 40, 0.28) !important;
+}
+
+.quick-grid {
+  gap: 0.7rem;
+  margin-top: 0.7rem;
+}
+
+.quick-tile {
+  padding: 0.85rem 0.7rem;
 }
