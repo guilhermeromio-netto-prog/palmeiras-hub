@@ -4,6 +4,14 @@ App pessoal de torcedor do **Palmeiras**: próximo jogo, **onde assistir**, **ou
 
 **Live:** https://guilhermeromio-netto-prog.github.io/palmeiras-hub/
 
+## Novidades v4.3.0 (UX lean Pro)
+
+- **Home deduplicada** — um dossiê + um painel da temporada; countdown/clima/onde assistir/H2H/stats/rádio/YouTube não empilham de novo quando o Pro já cobre.
+- **Ordem padrão lean** — hero compacto → ao vivo → Dossiê Pro → Painel da temporada → ações rápidas → streak/Stories; Torcida em uma linha.
+- **Mídia no dossiê** — rádio e YouTube atrás de “Rádio · YouTube” no dossiê (blocos separados opcionais nas preferências).
+- **Visual mais calmo** — menos chrome, ticker mais fino, tiles com contraste garantido; Layout Pro compacto por padrão.
+- Sem restaurar “Enquanto você saiu”.
+
 ## Novidades v4.2.0 (Pro)
 
 - **Dossiê do próximo jogo** — adversário, competição, apito, local, onde assistir, clima, desfalques/suspensões (ESPN/notícias ou empty state honesto), snippet da última escalação, mini H2H (3) e situação na tabela.

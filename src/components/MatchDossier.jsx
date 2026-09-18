@@ -1,11 +1,13 @@
 import FormDots from './FormDots'
+import RadioListen from './RadioListen'
+import YouTubeMatch from './YouTubeMatch'
 import BroadcastInfo from './BroadcastInfo'
 import MatchWeather from './MatchWeather'
 import AddToCalendar from './AddToCalendar'
 import { MatchTeams } from './TeamLogo'
 import { formatDate, formatDateTime, scoreLine } from '../utils/format'
 import { formationLabel } from '../utils/formation'
-import { matchDedupeKey } from '../utils/matchKey'
+import { matchDedupeKey, dedupeH2HMeetings } from '../utils/matchKey'
 import { isTodaySP } from '../utils/datetime'
 import { tableSituationLine } from '../utils/seasonContext'
 
@@ -33,6 +35,7 @@ export default function MatchDossier({
   data,
   upcoming = [],
   form,
+  includeMedia = false,
 }) {
   if (!match) {
     return (
@@ -57,7 +60,7 @@ export default function MatchDossier({
   const score =
     match.score && (match.status === 'FINISHED' || match.status === 'LIVE') ? match.score : null
 
-  const meetings = (data?.h2h?.meetings || []).slice(0, 3)
+  const meetings = dedupeH2HMeetings(data?.h2h?.meetings || []).slice(0, 3)
   const lineup = data?.lineup
   const availability = data?.availability
   const situation = tableSituationLine(data?.seasonContext, match)
@@ -221,6 +224,18 @@ export default function MatchDossier({
           <p className="muted tiny">Fonte: {data.h2h.source}</p>
         )}
       </section>
+
+      {includeMedia && (
+        <details id="dossier-media" className="dossier__section dossier__media">
+          <summary className="dossier__section-title dossier__media-summary">
+            Rádio · YouTube
+          </summary>
+          <div className="dossier__media-body">
+            <RadioListen />
+            <YouTubeMatch match={match} />
+          </div>
+        </details>
+      )}
     </article>
   )
 }

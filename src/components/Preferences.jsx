@@ -126,8 +126,8 @@ export default function Preferences({
         <fieldset className="prefs-field prefs-home-blocks">
           <legend>Início — ordem e visibilidade</legend>
           <p className="muted tiny prefs-hint">
-            Use ↑ ↓ para reordenar e o olho para mostrar/ocultar. Hero, ao vivo e favoritos
-            ficam no topo.
+            Use ↑ ↓ para reordenar e o olho para mostrar/ocultar. Padrão lean: dossiê + painel
+            cobrem clima, H2H e stats; rádio/YouTube ficam no dossiê.
           </p>
           <ul className="prefs-blocks">
             {blocks.map((b, i) => (

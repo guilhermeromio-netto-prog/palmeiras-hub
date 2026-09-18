@@ -6737,3 +6737,178 @@ html[data-font-size='large'] {
     grid-column: 1 / -1;
   }
 }
+
+
+/* =========================================================
+   v4.3.0 lean Home — calmer Pro, less chrome, tile contrast
+   ========================================================= */
+
+.home--lean {
+  gap: 0;
+}
+
+.home--lean .hero-campeao,
+.hero-campeao--compact {
+  margin: 0 0 0.55rem;
+  min-height: 112px;
+  border-radius: 16px;
+}
+
+.hero-campeao--compact .hero-campeao__img,
+.home--lean .hero-campeao__img {
+  height: 128px;
+}
+
+.hero-campeao--compact .hero-campeao__copy,
+.home--lean .hero-campeao__copy {
+  padding: 0.7rem 0.9rem 0.75rem;
+}
+
+.hero-campeao--compact .crest--hero,
+.home--lean .crest--hero {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 0.05rem;
+}
+
+.hero-campeao--compact .hero-campeao__title,
+.home--lean .hero-campeao__title {
+  font-size: clamp(1.15rem, 4.4vw, 1.45rem);
+}
+
+.hero-campeao--compact .hero-campeao__lede,
+.home--lean .hero-campeao__lede {
+  font-size: 0.78rem;
+  max-width: 36ch;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.home-dossier-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 0.55rem;
+}
+
+.home-engage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0.35rem 0 0.6rem;
+}
+
+.home-engage--compact .streak-badge,
+.home-engage--compact .stories-card {
+  margin: 0;
+}
+
+.torcida-cta--oneline {
+  width: 100%;
+  margin: 0.1rem 0 0.55rem;
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.dossier__media {
+  padding-top: 0.65rem;
+}
+
+.dossier__media-summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #006437;
+}
+
+.dossier__media-summary::-webkit-details-marker {
+  display: none;
+}
+
+.dossier__media-summary::before {
+  content: '▸';
+  font-size: 0.85rem;
+  color: #006437;
+}
+
+.dossier__media[open] .dossier__media-summary::before {
+  content: '▾';
+}
+
+.dossier__media-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.55rem;
+}
+
+.home--lean .home-quick {
+  margin: 0.15rem 0 0.55rem;
+}
+
+.home--lean .section-title {
+  margin: 0.35rem 0 0.45rem;
+  letter-spacing: 0.1em;
+}
+
+.home--lean .home-block {
+  margin-bottom: 0.7rem;
+}
+
+/* Slimmer RSS ticker */
+.news-ticker {
+  min-height: 0;
+  margin: 0.05rem 0 0.35rem;
+  border-radius: 8px;
+  padding: 0;
+}
+
+.news-ticker__label {
+  padding: 0 0.35rem;
+  font-size: 0.72rem;
+}
+
+.news-ticker__track {
+  padding: 0.28rem 0;
+  gap: 1.5rem;
+}
+
+.news-ticker__item {
+  font-size: 0.76rem;
+}
+
+/* Tile contrast lock (white + deep green) */
+.stat-tile,
+.quick-tile,
+.quick-tile.card,
+.season-panel__tile {
+  background: #ffffff !important;
+  color: #0a1a12 !important;
+  border: 1px solid rgba(0, 77, 42, 0.12) !important;
+}
+
+.stat-tile .num,
+.quick-tile__num,
+.season-panel__tile-val {
+  color: #004d2a !important;
+}
+
+.stat-tile .lbl,
+.quick-tile__lbl,
+.season-panel__tile-lbl {
+  color: #4a5c52 !important;
+  opacity: 1 !important;
+}
+
+.app.compact .hero-campeao--compact .hero-campeao__img,
+.app.compact .home--lean .hero-campeao__img {
+  height: 112px;
+}
+
+.app.compact .home-block {
+  margin-bottom: 0.55rem;
+}

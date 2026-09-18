@@ -5,6 +5,9 @@
 export const PREFS_KEY = 'palmeiras-hub-prefs-v1'
 export const MAX_FAVORITES = 5
 
+/** Bump when Home defaults change so existing installs get lean layout once. */
+export const HOME_LAYOUT_VERSION = 430
+
 /** Tema do torcedor: ênfase na tricolor Palmeiras */
 export const THEME_ACCENTS = [
   { id: 'verde', label: 'Verde' },
@@ -13,28 +16,37 @@ export const THEME_ACCENTS = [
 ]
 
 /**
- * Blocos personalizáveis da Home (ordem padrão: o essencial primeiro).
+ * Blocos personalizáveis da Home (ordem padrão: Pro lean).
  * id estável; label só para a UI de preferências.
  */
 export const HOME_BLOCK_DEFS = [
   { id: 'nextMatch', label: 'Dossiê do jogo (Pro)' },
-  { id: 'countdown', label: 'Countdown' },
   { id: 'seasonPanel', label: 'Painel da temporada (Pro)' },
+  { id: 'torcidaCta', label: 'Torcida (CTA)' },
+  { id: 'countdown', label: 'Countdown' },
   { id: 'weather', label: 'Clima' },
   { id: 'broadcast', label: 'Onde assistir' },
   { id: 'radio', label: 'Rádio' },
   { id: 'youtube', label: 'YouTube' },
-  { id: 'torcidaCta', label: 'Torcida (CTA)' },
   { id: 'h2h', label: 'H2H completo' },
   { id: 'stats', label: 'Atalhos rápidos' },
   { id: 'recent', label: 'Resultados recentes' },
 ]
 
-const DEFAULT_HIDDEN = new Set(['weather', 'broadcast'])
+/** Ocultos por padrão — dossiê / painel / mídia no dossiê já cobrem. */
+const DEFAULT_HIDDEN = new Set([
+  'countdown',
+  'weather',
+  'broadcast',
+  'radio',
+  'youtube',
+  'h2h',
+  'stats',
+  'recent',
+])
 
 export const DEFAULT_HOME_BLOCKS = HOME_BLOCK_DEFS.map((b) => ({
   id: b.id,
-  // Clima + onde assistir já entram no dossiê Pro — ocultos por padrão na Home
   visible: !DEFAULT_HIDDEN.has(b.id),
 }))
 
@@ -47,11 +59,12 @@ export const STADIUM_MODES = [
 export const DEFAULT_PREFS = {
   defaultTab: 'home',
   fontSize: 'normal', // normal | large
-  compactMode: false,
+  compactMode: true, // Layout Pro compacto por padrão (v4.3)
   favoritePlayerIds: [],
   themeAccent: 'verde', // verde | branco | vermelho
   stadiumMode: 'auto', // auto | on | off — ambiência de estádio
   homeBlocks: DEFAULT_HOME_BLOCKS.map((b) => ({ ...b })),
+  homeLayoutVersion: HOME_LAYOUT_VERSION,
 }
 
 export function readPreferences() {
@@ -81,7 +94,10 @@ export function writePreferences(prefs) {
   }
 }
 
-function normalizeHomeBlocks(input) {
+function normalizeHomeBlocks(input, { forceLean = false } = {}) {
+  if (forceLean) {
+    return DEFAULT_HOME_BLOCKS.map((b) => ({ ...b }))
+  }
   const fromSaved = []
   if (Array.isArray(input)) {
     for (const item of input) {
@@ -105,7 +121,6 @@ export function normalizePrefs(input) {
     ? input.defaultTab
     : 'home'
   const fontSize = input?.fontSize === 'large' ? 'large' : 'normal'
-  const compactMode = Boolean(input?.compactMode)
   const ids = Array.isArray(input?.favoritePlayerIds)
     ? [...new Set(input.favoritePlayerIds.map(String))].slice(0, MAX_FAVORITES)
     : []
@@ -115,7 +130,18 @@ export function normalizePrefs(input) {
   const stadiumMode = STADIUM_MODES.some((m) => m.id === input?.stadiumMode)
     ? input.stadiumMode
     : 'auto'
-  const homeBlocks = normalizeHomeBlocks(input?.homeBlocks)
+
+  const savedLayout = Number(input?.homeLayoutVersion) || 0
+  const needsLeanMigrate = savedLayout < HOME_LAYOUT_VERSION
+  const homeBlocks = normalizeHomeBlocks(input?.homeBlocks, { forceLean: needsLeanMigrate })
+
+  // v4.3: compact default; one-time migrate enables it; afterwards honor saved boolean
+  const compactMode = needsLeanMigrate
+    ? true
+    : typeof input?.compactMode === 'boolean'
+      ? input.compactMode
+      : true
+
   return {
     defaultTab: tab,
     fontSize,
@@ -124,6 +150,7 @@ export function normalizePrefs(input) {
     themeAccent,
     stadiumMode,
     homeBlocks,
+    homeLayoutVersion: HOME_LAYOUT_VERSION,
   }
 }
 
@@ -150,14 +177,14 @@ export function moveHomeBlock(prefs, blockId, direction) {
   const swap = direction === 'up' ? idx - 1 : idx + 1
   if (swap < 0 || swap >= blocks.length) return prefs
   ;[blocks[idx], blocks[swap]] = [blocks[swap], blocks[idx]]
-  return normalizePrefs({ ...prefs, homeBlocks: blocks })
+  return normalizePrefs({ ...prefs, homeBlocks: blocks, homeLayoutVersion: HOME_LAYOUT_VERSION })
 }
 
 export function setHomeBlockVisible(prefs, blockId, visible) {
   const blocks = (prefs.homeBlocks || DEFAULT_HOME_BLOCKS).map((b) =>
     b.id === blockId ? { ...b, visible: Boolean(visible) } : b
   )
-  return normalizePrefs({ ...prefs, homeBlocks: blocks })
+  return normalizePrefs({ ...prefs, homeBlocks: blocks, homeLayoutVersion: HOME_LAYOUT_VERSION })
 }
 
 export function homeBlockLabel(id) {
@@ -168,5 +195,6 @@ export function resetHomeBlocks(prefs) {
   return normalizePrefs({
     ...prefs,
     homeBlocks: DEFAULT_HOME_BLOCKS.map((b) => ({ ...b })),
+    homeLayoutVersion: HOME_LAYOUT_VERSION,
   })
 }

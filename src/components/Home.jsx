@@ -3,8 +3,6 @@ import Countdown from './Countdown'
 import H2H from './H2H'
 import ShareButton from './ShareButton'
 import LiveMatchCenter from './LiveMatchCenter'
-import FavoritePlayers from './FavoritePlayers'
-import CrowdReactions from './CrowdReactions'
 import ScoreTip from './ScoreTip'
 import BroadcastInfo from './BroadcastInfo'
 import RadioListen from './RadioListen'
@@ -30,7 +28,6 @@ const BASE = import.meta.env.BASE_URL
 const CREST = `${BASE}palmeiras-crest.svg`
 const HERO = `${BASE}brand/hero-campeao.png`
 
-
 function scrollToId(id) {
   const el = document.getElementById(id)
   if (!el) return false
@@ -52,6 +49,15 @@ function canShowWeather(match) {
   )
 }
 
+function isBlockOn(blocks, id) {
+  return blocks.some((b) => b.id === id && b.visible !== false)
+}
+
+/**
+ * Home lean Pro (v4.3):
+ * hero compact → live → dossier → season → quick actions → streak/stories.
+ * Duplicates (countdown/weather/broadcast/h2h/stats/radio/youtube) suppressed when Pro panels cover them.
+ */
 export default function Home({
   data,
   matchDay = false,
@@ -61,6 +67,8 @@ export default function Home({
   homeBlocks = DEFAULT_HOME_BLOCKS,
   onOpenTorcida,
 }) {
+  void favoriteIds // favoritos ficam na aba Time — Home lean
+
   const recent = (data.recentResults || []).slice(0, 3)
   const lineup = data.lineup
   const squadCount = data.squad?.length || 0
@@ -87,11 +95,6 @@ export default function Home({
     liveMatch?.candidate?.status === 'LIVE' ||
     liveMatch?.candidate?.status === 'FINISHED'
 
-  const reactionMatch = liveMatch?.candidate || displayMatch
-  const reactionId =
-    (reactionMatch && (matchDedupeKey(reactionMatch) || reactionMatch.id)) || 'geral'
-  const reactionLabel = reactionMatch ? matchTitle(reactionMatch) : 'Palmeiras'
-
   const finalScore =
     liveMatch?.live?.score ||
     (liveMatch?.candidate?.status === 'FINISHED' ? liveMatch?.candidate?.score : null)
@@ -101,11 +104,20 @@ export default function Home({
     ? homeBlocks
     : DEFAULT_HOME_BLOCKS
 
+  const dossierOn = isBlockOn(blocks, 'nextMatch')
+  const seasonOn = isBlockOn(blocks, 'seasonPanel')
+  const radioOn = isBlockOn(blocks, 'radio')
+  const youtubeOn = isBlockOn(blocks, 'youtube')
+
   const renderBlock = (id) => {
     switch (id) {
       case 'nextMatch':
         return (
-          <div key="nextMatch" id="home-next-match" className="home-block home-block--next home-block--dossier">
+          <div
+            key="nextMatch"
+            id="home-next-match"
+            className="home-block home-block--next home-block--dossier"
+          >
             <h3 className="section-title">
               Dossiê do próximo jogo{' '}
               <span className="pro-badge pro-badge--inline">PRO</span>
@@ -115,9 +127,10 @@ export default function Home({
               data={data}
               upcoming={upcoming}
               form={data.form}
+              includeMedia={!radioOn && !youtubeOn}
             />
             {displayMatch && (
-              <>
+              <div className="home-dossier-tools">
                 <SyncStatus compact />
                 <ScoreTip
                   match={displayMatch}
@@ -127,17 +140,13 @@ export default function Home({
                 <div className="share-row">
                   <ShareButton text={shareNext} label="WhatsApp · próximo jogo" />
                 </div>
-                <StoriesCard nextMatch={displayMatch} lastResult={lastFinished} />
-              </>
-            )}
-            {!displayMatch && lastFinished && (
-              <StoriesCard nextMatch={null} lastResult={lastFinished} />
+              </div>
             )}
           </div>
         )
 
       case 'countdown':
-        if (!displayMatch) return null
+        if (!displayMatch || dossierOn) return null
         return (
           <div key="countdown" className="home-block">
             <Countdown match={displayMatch} pulse={stadiumActive || matchDay} />
@@ -152,7 +161,6 @@ export default function Home({
         )
 
       case 'weather': {
-        const dossierOn = blocks.some((b) => b.id === 'nextMatch' && b.visible !== false)
         if (dossierOn) return null
         if (!displayMatch || !canShowWeather(displayMatch)) return null
         return (
@@ -163,7 +171,6 @@ export default function Home({
       }
 
       case 'broadcast': {
-        const dossierOn = blocks.some((b) => b.id === 'nextMatch' && b.visible !== false)
         if (dossierOn) return null
         if (!displayMatch) return null
         return (
@@ -175,6 +182,7 @@ export default function Home({
       }
 
       case 'radio':
+        if (dossierOn) return null
         return (
           <div key="radio" className="home-block">
             <RadioListen />
@@ -182,7 +190,7 @@ export default function Home({
         )
 
       case 'youtube':
-        if (!displayMatch) return null
+        if (dossierOn || !displayMatch) return null
         return (
           <div key="youtube" className="home-block">
             <YouTubeMatch match={displayMatch} />
@@ -195,15 +203,15 @@ export default function Home({
           <button
             key="torcidaCta"
             type="button"
-            className="btn torcida-cta touch"
+            className="btn torcida-cta torcida-cta--oneline touch"
             onClick={onOpenTorcida}
           >
-            💚 Abrir Torcida — mural, quiz e mais
+            💚 Torcida — mural, quiz e sala VERDAO
           </button>
         )
 
       case 'h2h':
-        if (!displayMatch) return null
+        if (!displayMatch || dossierOn) return null
         return (
           <div key="h2h" className="home-block">
             <H2H h2h={data.h2h} opponent={displayMatch.opponent} />
@@ -211,6 +219,7 @@ export default function Home({
         )
 
       case 'stats':
+        if (seasonOn) return null
         return (
           <div key="stats" className="home-block">
             {data.stats && (
@@ -310,9 +319,8 @@ export default function Home({
   }
 
   return (
-    <section className="page home">
-      {/* Fixed top: hero + live + reactions + favorites */}
-      <div className="hero-campeao">
+    <section className="page home home--lean">
+      <div className="hero-campeao hero-campeao--compact">
         <img
           className="hero-campeao__img"
           src={HERO}
@@ -322,28 +330,36 @@ export default function Home({
         />
         <div className="hero-campeao__veil" aria-hidden="true" />
         <div className="hero-campeao__copy">
-          <img className="crest crest--hero" src={CREST} width={52} height={52} alt="" decoding="async" />
+          <img
+            className="crest crest--hero"
+            src={CREST}
+            width={40}
+            height={40}
+            alt=""
+            decoding="async"
+          />
           <p className="eyebrow">
             {matchDay ? 'Dia de jogo' : 'Palmeiras Hub'}{' '}
             <span className="pro-badge pro-badge--hero">PRO</span>
           </p>
           <h2 className="hero-campeao__title">
-            <span className="star-accent" aria-hidden="true">★</span>
+            <span className="star-accent" aria-hidden="true">
+              ★
+            </span>
             O Maior Campeão
-            <span className="star-accent" aria-hidden="true">★</span>
+            <span className="star-accent" aria-hidden="true">
+              ★
+            </span>
           </h2>
           <p className="lede hero-campeao__lede">
             {matchDay
-              ? 'Dia de jogo — tudo o que importa, aqui.'
+              ? 'Dia de jogo — o essencial, aqui.'
               : liveMatch?.polling
                 ? 'Placar ao vivo ativo'
-                : 'Jogos, elenco e torcida'}
+                : 'Dossiê, temporada e torcida'}
           </p>
         </div>
       </div>
-
-
-      <StreakBadge compact />
 
       {showLive && (
         <LiveMatchCenter
@@ -354,18 +370,16 @@ export default function Home({
         />
       )}
 
-      {reactionMatch && (
-        <CrowdReactions matchId={reactionId} matchLabel={reactionLabel} compact />
-      )}
-
-      <FavoritePlayers squad={data.squad} favoriteIds={favoriteIds} />
+      {blocks.filter((b) => b.visible !== false).map((b) => renderBlock(b.id))}
 
       <nav className="home-quick" aria-label="Ações rápidas">
         <button
           type="button"
           className="home-quick__btn touch"
           onClick={() => {
-            if (!scrollToId('home-radio')) scrollToId('home-next-match')
+            if (!scrollToId('home-radio') && !scrollToId('dossier-media')) {
+              scrollToId('home-next-match')
+            }
           }}
         >
           <span aria-hidden="true">📻</span> Ouvir rádio
@@ -387,14 +401,14 @@ export default function Home({
             if (shareNext) shareOrWhatsApp(shareNext)
           }}
         >
-          <span aria-hidden="true">📲</span> Compartilhar próximo jogo
+          <span aria-hidden="true">📲</span> Compartilhar
         </button>
       </nav>
 
-      {/* Personalized blocks */}
-      {blocks
-        .filter((b) => b.visible !== false)
-        .map((b) => renderBlock(b.id))}
+      <div className="home-engage home-engage--compact">
+        <StreakBadge compact />
+        <StoriesCard nextMatch={displayMatch} lastResult={lastFinished} />
+      </div>
     </section>
   )
 }

@@ -1,11 +1,11 @@
 import { formatDate, scoreLine } from '../utils/format'
 import FormDots from './FormDots'
 import TeamLogo, { MatchTeams } from './TeamLogo'
-import { matchDedupeKey } from '../utils/matchKey'
+import { matchDedupeKey, dedupeH2HMeetings } from '../utils/matchKey'
 
 export default function H2H({ h2h, opponent }) {
   const name = h2h?.opponent || opponent
-  const meetings = h2h?.meetings || []
+  const meetings = dedupeH2HMeetings(h2h?.meetings || [])
 
   if (!name) return null
 
