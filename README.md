@@ -4,6 +4,18 @@ App pessoal de torcedor do **Palmeiras**: próximo jogo, **onde assistir**, **ou
 
 **Live:** https://guilhermeromio-netto-prog.github.io/palmeiras-hub/
 
+## Novidades v4.4.0 (Premium Pro craft)
+
+- **Design tokens** — escala 8pt, raios SF-like, sombras em camadas suaves, stack tipográfica system/SF/Inter.
+- **Surfaces** — cards brancos com hairline + elevação soft; painéis Pro escuros com gradiente rico e texto de alto contraste.
+- **Dossiê & Painel da temporada** — layout editorial: chips segmentados, meta com ícones, hierarquia densa mas arejada.
+- **Motion** — transição de abas refinada, press states 60fps-friendly; respeita `prefers-reduced-motion`.
+- **Tab bar** — frost/blur premium, orbs iguais, labels nítidos.
+- **Header / PRO** — top bar limpa, pill PRO sutil.
+- **Tipografia** — títulos de jogo maiores, `tabular-nums` em placares/stats, meta mais quieta.
+- **Empty / loading** — skeletons e empty states premium; contraste de tiles reforçado.
+- Sem cards de feature novos; Home lean de v4.3 mantida.
+
 ## Novidades v4.3.0 (UX lean Pro)
 
 - **Home deduplicada** — um dossiê + um painel da temporada; countdown/clima/onde assistir/H2H/stats/rádio/YouTube não empilham de novo quando o Pro já cobre.

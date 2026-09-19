@@ -19,7 +19,7 @@ export default function SeasonPanel({ data }) {
         <h3 className="section-title">
           Painel da temporada <span className="pro-badge pro-badge--inline">PRO</span>
         </h3>
-        <article className="card season-panel__card">
+        <article className="card season-panel__card season-panel__card--empty">
           <p className="muted">
             Classificação do Brasileirão indisponível nesta atualização. Não inventamos números.
           </p>

@@ -1,5 +1,5 @@
 :root {
-  /* Palmeiras / Italian tricolor — vivid, premium */
+  /* Palmeiras / Italian tricolor — premium Pro tokens (v4.4) */
   --green: #006437;
   --green-deep: #004d2a;
   --green-mid: #0a7a45;
@@ -10,24 +10,66 @@
   --red-soft: #ffe5e8;
   --pitch: #004d2a;
   --white: #ffffff;
-  --ink: #0b1f14;
-  --muted: #3a4a40;
-  --line: rgba(0, 77, 42, 0.12);
-  --card: rgba(255, 255, 255, 0.96);
-  --card-border: rgba(0, 100, 55, 0.16);
-  --shadow: 0 16px 48px rgba(0, 40, 24, 0.22);
-  --shadow-sm: 0 8px 22px rgba(0, 40, 24, 0.14);
-  --glow-green: 0 0 28px rgba(0, 168, 89, 0.18);
-  --glow-red: 0 0 24px rgba(227, 6, 19, 0.16);
-  --radius: 20px;
+  --ink: #0a1a12;
+  --ink-soft: #152820;
+  --muted: #3d4f45;
+  --muted-quiet: #5a6b62;
+  --line: rgba(0, 77, 42, 0.1);
+  --card: #ffffff;
+  --card-border: rgba(0, 77, 42, 0.1);
+  --hairline: rgba(0, 40, 24, 0.08);
+
+  /* 8pt spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --space-8: 48px;
+
+  /* Radius — SF-like soft geometry */
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  /* Soft layered shadows (FotMob/Apple Sports feel) */
+  --shadow-xs: 0 1px 2px rgba(0, 28, 16, 0.04);
+  --shadow-sm:
+    0 1px 2px rgba(0, 28, 16, 0.04),
+    0 4px 12px rgba(0, 28, 16, 0.08);
+  --shadow:
+    0 2px 4px rgba(0, 28, 16, 0.04),
+    0 8px 24px rgba(0, 28, 16, 0.1),
+    0 16px 40px rgba(0, 20, 12, 0.06);
+  --shadow-lg:
+    0 4px 8px rgba(0, 28, 16, 0.05),
+    0 16px 40px rgba(0, 28, 16, 0.14);
+  --glow-green: 0 0 28px rgba(0, 168, 89, 0.16);
+  --glow-red: 0 0 24px rgba(227, 6, 19, 0.14);
+
+  --type-title: 1.25rem;
+  --type-body: 0.95rem;
+  --type-meta: 0.75rem;
+  --home-gap: 16px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
-  font-family: 'Segoe UI', system-ui, -apple-system, Roboto, Ubuntu, sans-serif;
+
+  /* SF / Inter feel via system stack */
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
+    'Segoe UI', 'Inter', Roboto, 'Helvetica Neue', Ubuntu, system-ui, sans-serif;
   color: var(--ink);
   background: var(--pitch);
   line-height: 1.45;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'kern' 1, 'liga' 1;
 }
 
 *,
@@ -67,4 +109,19 @@ code {
 
 html[data-compact='1'] body {
   line-height: 1.35;
+}
+
+/* Tabular nums utility for scores/stats */
+.tabular,
+.num,
+.match-card__score,
+.stat-tile .num,
+.quick-tile__num,
+.season-panel__tile-val,
+.season-panel__pos-num,
+.season-panel__pos-pts,
+.result-badge,
+.countdown__digit {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1, 'kern' 1;
 }

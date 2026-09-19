@@ -39,7 +39,8 @@ export default function MatchDossier({
 }) {
   if (!match) {
     return (
-      <article className="card dossier dossier--empty">
+      <article className="card dossier dossier--empty" aria-label="Dossiê vazio">
+        <p className="eyebrow">Dossiê Pro</p>
         <p className="muted">
           Nenhum jogo futuro encontrado nas fontes públicas neste momento. Confira os resultados
           recentes ou toque em Atualizar.
@@ -76,7 +77,7 @@ export default function MatchDossier({
       aria-label="Dossiê do próximo jogo"
     >
       <header className="dossier__head">
-        <div className="dossier__head-top">
+        <div className="dossier__head-top dossier__chips" role="group" aria-label="Status do jogo">
           <span className="pill">{match.competition}</span>
           <span className={`pill status ${(match.status || '').toLowerCase()}`}>
             {statusLabel(match, today)}

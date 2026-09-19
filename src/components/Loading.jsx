@@ -1,5 +1,5 @@
 /**
- * Skeleton loaders — placeholders verde/branco enquanto o hub carrega.
+ * Skeleton loaders — premium Pro placeholders while the hub loads.
  */
 export default function Loading({ label = 'Atualizando dados públicos…', variant = 'hub' }) {
   if (variant === 'news') {
@@ -35,6 +35,7 @@ export default function Loading({ label = 'Atualizando dados públicos…', vari
           <div className="skeleton-line skeleton-line--half" />
           <div className="skeleton-line skeleton-line--half" />
         </div>
+        <div className="skeleton-line skeleton-line--short" style={{ marginTop: '0.75rem' }} />
       </div>
       <div className="skeleton-row skeleton-row--tiles">
         <div className="skeleton-tile" />
@@ -42,6 +43,7 @@ export default function Loading({ label = 'Atualizando dados públicos…', vari
         <div className="skeleton-tile" />
       </div>
       <div className="skeleton-card">
+        <div className="skeleton-line skeleton-line--pill" />
         <div className="skeleton-line skeleton-line--title" />
         <div className="skeleton-line skeleton-line--body" />
         <div className="skeleton-line skeleton-line--short" />

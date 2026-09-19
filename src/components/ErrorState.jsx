@@ -1,6 +1,7 @@
 export default function ErrorState({ message, onRetry }) {
   return (
-    <div className="state-box error" role="alert">
+    <div className="state-box error empty-card" role="alert">
+      <p className="eyebrow">Palmeiras Hub</p>
       <h2>Não foi possível atualizar</h2>
       <p>{message || 'Falha ao buscar dados nas fontes públicas. Tente novamente.'}</p>
       <p className="hint">

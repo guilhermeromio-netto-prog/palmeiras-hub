@@ -6912,3 +6912,882 @@ html[data-font-size='large'] {
 .app.compact .home-block {
   margin-bottom: 0.55rem;
 }
+
+/* =========================================================
+   v4.4.0 — Premium Pro craft (FotMob / SofaScore / Apple Sports)
+   Tokens · surfaces · dossier/season · motion · tabbar · chrome
+   ========================================================= */
+
+:root {
+  --ink: #0a1a12;
+  --ink-soft: #152820;
+  --muted: #3d4f45;
+  --muted-quiet: #5a6b62;
+  --card: #ffffff;
+  --card-border: rgba(0, 77, 42, 0.1);
+  --hairline: rgba(0, 40, 24, 0.08);
+  --radius: 16px;
+  --radius-sm: 12px;
+  --radius-lg: 20px;
+  --shadow-xs: 0 1px 2px rgba(0, 28, 16, 0.04);
+  --shadow-sm:
+    0 1px 2px rgba(0, 28, 16, 0.04),
+    0 4px 12px rgba(0, 28, 16, 0.08);
+  --shadow:
+    0 2px 4px rgba(0, 28, 16, 0.04),
+    0 8px 24px rgba(0, 28, 16, 0.1),
+    0 16px 40px rgba(0, 20, 12, 0.06);
+  --home-gap: 16px;
+  --type-title: 1.28rem;
+  --type-body: 0.95rem;
+  --type-meta: 0.74rem;
+}
+
+/* —— Typography: larger match titles, quieter meta —— */
+.match-card__title,
+.dossier .match-teams__name,
+.dossier__teams .team-name,
+.match-teams--dossier .team-name {
+  font-size: clamp(1.2rem, 4.2vw, 1.42rem);
+  font-weight: 800;
+  letter-spacing: -0.022em;
+  line-height: 1.18;
+  color: var(--green-deep);
+}
+
+.match-card__score,
+.live-center__score,
+.score-line {
+  font-size: clamp(1.55rem, 5vw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.eyebrow,
+.section-title {
+  letter-spacing: 0.1em;
+}
+
+.card .muted,
+.card .tiny,
+.card .muted.tiny,
+.dossier .muted,
+.dossier .tiny,
+.season-panel__card .muted,
+.season-panel__card .tiny {
+  color: var(--muted-quiet) !important;
+  font-size: var(--type-meta);
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.brand strong {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+
+.brand-sub {
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  opacity: 0.68;
+  font-weight: 500;
+}
+
+/* —— Surfaces: premium white + soft elevation —— */
+.card,
+.app--glass .card {
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  color: var(--ink);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+}
+
+.match-card.featured,
+.app--glass .match-card.featured,
+.dossier,
+.season-panel__card {
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(0, 77, 42, 0.11);
+}
+
+/* Dark Pro panels — richer gradient, high-contrast text */
+.stories-card,
+.sync-status.card,
+.crowd-panel.card,
+.crowd-panel,
+.countdown,
+.app--glass .countdown {
+  background:
+    linear-gradient(165deg, #0c2a1c 0%, #0f3a26 42%, #081a12 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  color: #f4fff8 !important;
+  box-shadow:
+    0 12px 36px rgba(0, 12, 8, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+.stories-card h3,
+.countdown__label,
+.crowd-panel h3 {
+  color: #ffffff !important;
+}
+
+.stories-card .muted,
+.stories-card .muted.tiny,
+.countdown .muted,
+.crowd-panel .muted {
+  color: rgba(232, 255, 242, 0.72) !important;
+}
+
+/* —— Header / PRO pill —— */
+.topbar,
+.topbar--glass,
+.app--glass .topbar--glass {
+  margin: 0 -1rem;
+  padding: 0.55rem 1rem 0.65rem;
+  background:
+    linear-gradient(180deg, rgba(0, 22, 14, 0.55) 0%, rgba(0, 28, 18, 0.22) 70%, transparent 100%);
+  backdrop-filter: blur(18px) saturate(1.35);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
+  border-radius: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.pro-badge {
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 0.28em 0.55em;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #d4af37 0%, #f5e6a3 42%, #b8941f 100%);
+  color: #1a1405;
+  border: 1px solid rgba(80, 55, 0, 0.28);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.45) inset,
+    0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+.pro-badge--header {
+  margin-left: 0.4rem;
+  font-size: 0.52rem;
+  top: 0;
+}
+
+.topbar-actions .btn.ghost {
+  border-radius: var(--radius-pill);
+  min-height: 36px;
+  padding: 0.35rem 0.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.topbar-actions .btn.ghost:active {
+  background: rgba(255, 255, 255, 0.16);
+  transform: scale(0.97);
+}
+
+/* —— Tab bar: iOS/Android premium frost —— */
+.tabbar.tabbar--liquid,
+.tabbar.tabbar--liquid.tabbar--six {
+  background: rgba(6, 28, 18, 0.72) !important;
+  backdrop-filter: blur(24px) saturate(1.6) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.6) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow:
+    0 -8px 32px rgba(0, 12, 8, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  padding: 0.35rem 0.4rem calc(0.45rem + var(--safe-bottom)) !important;
+  gap: 0.1rem !important;
+}
+
+.tabbar--six .tab-liquid,
+.tabbar.tabbar--liquid.tabbar--six .tab-liquid {
+  gap: 0.2rem;
+  padding: 0.2rem 0.05rem 0.12rem;
+  transition:
+    transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tabbar--six .tab-liquid__orb,
+.tabbar--six .tab-liquid--primary .tab-liquid__orb,
+.tabbar.tabbar--liquid.tabbar--six .tab-liquid__orb,
+.tabbar.tabbar--liquid.tabbar--six .tab-liquid--primary .tab-liquid__orb {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  border-radius: 50%;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition:
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.2s ease;
+}
+
+.tabbar--six .tab-liquid__label,
+.tabbar.tabbar--liquid.tabbar--six .tab-liquid__label {
+  font-size: 0.58rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.58);
+  line-height: 1.15;
+  min-height: 1.7em;
+}
+
+.tab-liquid.active .tab-liquid__label,
+.tabbar--six .tab-liquid.active .tab-liquid__label {
+  color: #ffffff !important;
+  font-weight: 750;
+}
+
+.tab-liquid.active .tab-liquid__orb,
+.tabbar--six .tab-liquid.active .tab-liquid__orb {
+  transform: translateY(-2px) scale(1.06);
+  box-shadow:
+    0 0 0 2px rgba(0, 168, 89, 0.55),
+    0 6px 18px rgba(0, 100, 55, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28) !important;
+}
+
+.tab-liquid:active .tab-liquid__orb,
+.tabbar--six .tab-liquid:active .tab-liquid__orb {
+  transform: scale(0.92);
+}
+
+/* —— Motion: refined tab transitions + press —— */
+.main--tab-fade {
+  animation: tabFadeIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card,
+.btn,
+.quick-tile,
+.stat-tile,
+.row-card,
+.torcida-cta,
+.add-cal__btn {
+  transition:
+    transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.18s ease;
+}
+
+.btn:active,
+.quick-tile:active,
+.stat-tile:active,
+.row-card:active,
+.torcida-cta:active,
+.tab-liquid:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main--tab-fade,
+  .card,
+  .btn,
+  .quick-tile,
+  .stat-tile,
+  .row-card,
+  .torcida-cta,
+  .tab-liquid,
+  .tab-liquid__orb,
+  .skeleton-line {
+    animation: none !important;
+    transition: none !important;
+  }
+  .tab-liquid.active .tab-liquid__orb,
+  .tab-liquid:active .tab-liquid__orb {
+    transform: none !important;
+  }
+}
+
+/* —— Match Dossier: editorial Pro layout —— */
+.dossier {
+  padding: 1.15rem 1.1rem 1.3rem !important;
+  gap: 0 !important;
+  background: #ffffff !important;
+  color: var(--ink) !important;
+  border-radius: var(--radius-lg) !important;
+  border: 1px solid rgba(0, 77, 42, 0.1) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+.dossier__head {
+  margin-bottom: 0.85rem;
+}
+
+.dossier__chips,
+.dossier__head-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+  padding: 0.28rem;
+  background: #f3f6f4;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--hairline);
+  width: fit-content;
+  max-width: 100%;
+}
+
+.dossier__chips .pill,
+.dossier__head-top .pill {
+  margin: 0;
+  border-radius: var(--radius-pill);
+  padding: 0.28rem 0.65rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+}
+
+.dossier__chips .pill.status,
+.dossier__head-top .pill.status,
+.dossier__chips .pill:first-child,
+.dossier__head-top .pill:first-child {
+  background: #ffffff;
+  box-shadow: var(--shadow-xs);
+  color: var(--green-deep);
+}
+
+.dossier__chips .pro-badge,
+.dossier__head-top .pro-badge {
+  margin-left: 0.1rem;
+}
+
+.dossier__teams {
+  margin-bottom: 0.75rem !important;
+}
+
+.dossier__meta {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.35rem !important;
+  margin: 0 !important;
+  padding: 0.55rem 0.65rem;
+  background: #f7faf8;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--hairline);
+}
+
+.dossier__meta div {
+  display: grid !important;
+  grid-template-columns: 1.35rem 4.2rem 1fr !important;
+  gap: 0.35rem 0.4rem !important;
+  align-items: baseline !important;
+  padding: 0.2rem 0;
+}
+
+.dossier__meta div::before {
+  font-size: 0.85rem;
+  line-height: 1;
+  opacity: 0.7;
+  grid-column: 1;
+}
+
+.dossier__meta div:nth-child(1)::before { content: '⏱'; }
+.dossier__meta div:nth-child(2)::before { content: '📍'; }
+.dossier__meta div:nth-child(3)::before { content: '🏠'; }
+
+.dossier__meta dt {
+  grid-column: 2;
+  font-size: 0.66rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted-quiet) !important;
+}
+
+.dossier__meta dd {
+  grid-column: 3;
+  font-size: 0.92rem !important;
+  font-weight: 650 !important;
+  color: var(--ink) !important;
+  letter-spacing: -0.01em;
+}
+
+.dossier__form-row {
+  margin-top: 0.65rem !important;
+  padding: 0.4rem 0.55rem;
+  background: #f7faf8;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--hairline);
+}
+
+.dossier__section {
+  padding-top: 0.85rem !important;
+  margin-top: 0.85rem;
+  border-top: 1px solid var(--hairline) !important;
+}
+
+.dossier__section-title {
+  margin: 0 0 0.5rem !important;
+  font-size: 0.7rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase;
+  color: var(--green) !important;
+}
+
+.dossier__situation {
+  font-size: 1.05rem !important;
+  font-weight: 750 !important;
+  letter-spacing: -0.015em;
+  line-height: 1.35 !important;
+}
+
+.dossier__avail-item {
+  border-radius: var(--radius-sm) !important;
+  padding: 0.5rem 0.65rem !important;
+  background: #f7faf8 !important;
+  border: 1px solid var(--hairline) !important;
+}
+
+.dossier__h2h-row {
+  padding: 0.4rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: #f7faf8;
+  border: 1px solid var(--hairline);
+}
+
+.dossier--hoje {
+  border-color: rgba(0, 100, 55, 0.28) !important;
+  box-shadow:
+    var(--shadow),
+    0 0 0 1px rgba(0, 168, 89, 0.12) !important;
+}
+
+.dossier--live {
+  border-color: rgba(200, 40, 40, 0.35) !important;
+}
+
+.dossier--empty {
+  padding: 1.5rem 1.2rem !important;
+  text-align: center;
+}
+
+.dossier--empty .muted {
+  max-width: 36ch;
+  margin: 0 auto;
+}
+
+/* —— Season Panel: denser but airy —— */
+.season-panel__card {
+  padding: 1.15rem 1.1rem 1.25rem !important;
+  border-radius: var(--radius-lg) !important;
+  background: #ffffff !important;
+  box-shadow: var(--shadow) !important;
+}
+
+.season-panel__head {
+  margin-bottom: 1rem !important;
+  align-items: center !important;
+}
+
+.season-panel__pos {
+  padding: 0.45rem 0.7rem;
+  background: linear-gradient(145deg, #e8f8ef 0%, #f4faf6 100%);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(0, 100, 55, 0.14);
+}
+
+.season-panel__pos-num {
+  font-size: 1.85rem !important;
+  font-weight: 850 !important;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--green) !important;
+}
+
+.season-panel__pos-pts {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700 !important;
+  color: var(--muted) !important;
+}
+
+.season-panel__grid {
+  gap: 0.55rem !important;
+  margin-bottom: 0.85rem !important;
+}
+
+.season-panel__tile {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 77, 42, 0.1) !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 0.7rem 0.45rem !important;
+  box-shadow: var(--shadow-xs);
+  color: var(--ink) !important;
+}
+
+.season-panel__tile-val {
+  font-size: 1.08rem !important;
+  font-weight: 850 !important;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--green-deep) !important;
+}
+
+.season-panel__tile-lbl {
+  font-size: 0.62rem !important;
+  letter-spacing: 0.06em !important;
+  color: var(--muted-quiet) !important;
+}
+
+.season-panel__gaps {
+  border-radius: var(--radius-sm) !important;
+  padding: 0.65rem 0.75rem !important;
+  margin-bottom: 1rem !important;
+  background: linear-gradient(135deg, rgba(0, 100, 55, 0.07), rgba(0, 100, 55, 0.02)) !important;
+  border: 1px solid rgba(0, 100, 55, 0.12) !important;
+}
+
+.season-panel__gap {
+  font-size: 0.9rem !important;
+  letter-spacing: -0.01em;
+}
+
+.season-panel__sub {
+  font-size: 0.7rem !important;
+  letter-spacing: 0.08em !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.season-panel__fix {
+  border-radius: var(--radius-sm) !important;
+  padding: 0.5rem 0.55rem !important;
+  background: #f7faf8 !important;
+  border: 1px solid var(--hairline) !important;
+  gap: 0.2rem 0.55rem !important;
+}
+
+/* —— Stat / quick tiles: contrast lock —— */
+.stat-tile,
+.quick-tile,
+.quick-tile.card {
+  background: #ffffff !important;
+  color: var(--ink) !important;
+  border: 1px solid rgba(0, 77, 42, 0.1) !important;
+  border-radius: var(--radius-sm) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.stat-tile .num,
+.quick-tile__num {
+  color: var(--green-deep) !important;
+  font-variant-numeric: tabular-nums;
+  font-weight: 850 !important;
+  letter-spacing: -0.02em;
+}
+
+.stat-tile .lbl,
+.quick-tile__lbl {
+  color: var(--muted-quiet) !important;
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 1 !important;
+}
+
+/* —— Skeletons: premium —— */
+.skeleton-pack {
+  gap: 16px;
+  padding: 0.5rem 0 1.5rem;
+}
+
+.skeleton-hero,
+.skeleton-card {
+  border-radius: var(--radius-lg);
+  padding: 1.1rem 1.15rem;
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  position: relative;
+}
+
+.skeleton-hero {
+  background:
+    linear-gradient(160deg, #0a2418 0%, #0f3d28 50%, #082016 100%);
+  min-height: 7.25rem;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.skeleton-line {
+  height: 0.65rem;
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 77, 42, 0.07) 0%,
+    rgba(0, 100, 55, 0.04) 35%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(0, 100, 55, 0.04) 65%,
+    rgba(0, 77, 42, 0.07) 100%
+  );
+  background-size: 220% 100%;
+  animation: skeletonShimmer 1.5s ease-in-out infinite;
+}
+
+.skeleton-hero .skeleton-line {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.22) 48%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  background-size: 220% 100%;
+}
+
+.skeleton-tile {
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-xs);
+  height: 4.25rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 100, 55, 0.06) 50%,
+    transparent 100%
+  );
+  background-size: 220% 100%;
+  animation: skeletonShimmer 1.5s ease-in-out infinite;
+}
+
+.skeleton-label {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.65) !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.04em;
+  margin-top: 0.35rem;
+}
+
+.skeleton-pack--hub .skeleton-card--featured {
+  min-height: 8.5rem;
+}
+
+/* —— Empty / error states —— */
+.state-box,
+.empty,
+.empty-card,
+.dossier--empty {
+  border-radius: var(--radius-lg);
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-sm);
+  color: var(--ink);
+}
+
+.state-box {
+  padding: 1.75rem 1.35rem;
+  text-align: center;
+}
+
+.state-box h2 {
+  margin: 0 0 0.45rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--green-deep);
+}
+
+.state-box p {
+  margin: 0 0 0.65rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.state-box .hint {
+  font-size: 0.78rem;
+  color: var(--muted-quiet);
+}
+
+.state-box .btn.primary {
+  margin-top: 0.5rem;
+  border-radius: var(--radius-pill);
+  padding: 0.7rem 1.35rem;
+  font-weight: 750;
+}
+
+/* —— Stories: one elegant premium polish —— */
+.stories-card {
+  margin: 0.55rem 0 0.75rem !important;
+  padding: 1.05rem 1.1rem 1.15rem !important;
+  border-radius: var(--radius-lg) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.stories-card::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 55%;
+  height: 90%;
+  background: radial-gradient(ellipse, rgba(0, 168, 89, 0.22), transparent 70%);
+  pointer-events: none;
+}
+
+.stories-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.stories-card h3 {
+  font-size: 1.15rem !important;
+  letter-spacing: -0.02em !important;
+}
+
+.stories-card__preview {
+  border-radius: 14px !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45) !important;
+}
+
+.stories-card__actions .btn {
+  border-radius: var(--radius-pill) !important;
+  font-weight: 750 !important;
+  min-height: 40px;
+}
+
+/* —— Home rhythm (8pt) —— */
+.home--lean .home-block {
+  margin-bottom: 16px;
+}
+
+.home--lean .section-title {
+  margin: 8px 0 10px;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.home-engage {
+  gap: 12px;
+  margin: 8px 0 12px;
+}
+
+.torcida-cta--oneline {
+  box-shadow: var(--shadow-sm);
+  letter-spacing: -0.01em;
+}
+
+.home-dossier-tools {
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.add-cal__btn {
+  border-radius: var(--radius-pill) !important;
+  min-height: 42px;
+  letter-spacing: -0.01em;
+}
+
+.add-cal__btn--secondary {
+  background: #f3f6f4 !important;
+}
+
+/* —— Row cards —— */
+.row-card.card {
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-xs) !important;
+}
+
+.row-card strong {
+  letter-spacing: -0.015em;
+  font-weight: 750;
+}
+
+/* Compact mode keeps denser Pro */
+.app.compact .dossier,
+.app.compact .season-panel__card {
+  padding: 0.9rem 0.95rem 1rem !important;
+}
+
+.app.compact .dossier__meta {
+  padding: 0.4rem 0.5rem;
+}
+
+.app.compact .dossier__section {
+  margin-top: 0.65rem;
+  padding-top: 0.65rem !important;
+}
+
+@media (min-width: 520px) {
+  .dossier__meta {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .dossier__meta div:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* v4.4.0 — MatchTeams titles inside dossier */
+.dossier__teams .match-teams__name {
+  font-size: clamp(1.05rem, 3.8vw, 1.28rem);
+  font-weight: 800;
+  letter-spacing: -0.022em;
+  line-height: 1.15;
+  color: var(--green-deep);
+}
+
+.dossier__teams .match-teams__score {
+  font-size: clamp(1.45rem, 5vw, 1.75rem);
+  font-weight: 850;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.season-panel__card--empty {
+  text-align: center;
+  padding: 1.5rem 1.2rem !important;
+}
+
+.season-panel__card--empty .muted {
+  max-width: 36ch;
+  margin: 0 auto;
+}
