@@ -4,6 +4,14 @@ App pessoal de torcedor do **Palmeiras**: próximo jogo, **onde assistir**, **ou
 
 **Live:** https://guilhermeromio-netto-prog.github.io/palmeiras-hub/
 
+## Novidades v4.4.1 (Vídeo de fundo)
+
+- **Fundo imersivo** — vídeo ambient de gramado/estádio em loop, mudo, `playsInline`, com poster `brand/bg-pitch.png`.
+- **Legibilidade** — véu multi-camada (gradiente verde-escuro + blur/scrim) sobre o vídeo para cards brancos e painéis Pro manterem contraste.
+- **Acessibilidade** — `prefers-reduced-motion: reduce` esconde/pausa o vídeo e usa só o pitch estático; toggle **Vídeo de fundo** nas Preferências (padrão ligado).
+- **Performance** — pausa com `visibilitychange` quando a aba está oculta; assets WebM+MP4 leves em `public/brand/`.
+- Fonte: Mixkit stock (royalty-free), comprimido com ffmpeg — ver `public/brand/VIDEO-CREDIT.txt`.
+
 ## Novidades v4.4.0 (Premium Pro craft)
 
 - **Design tokens** — escala 8pt, raios SF-like, sombras em camadas suaves, stack tipográfica system/SF/Inter.

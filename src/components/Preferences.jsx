@@ -123,6 +123,19 @@ export default function Preferences({
           <span>Layout Pro (compacto) — cards e espaçamento mais densos</span>
         </label>
 
+        <label className="prefs-check">
+          <input
+            type="checkbox"
+            checked={prefs.videoBg !== false}
+            onChange={(e) => update({ videoBg: e.target.checked })}
+          />
+          <span>Vídeo de fundo — gramado/estádio em loop (sempre silencioso)</span>
+        </label>
+        <p className="muted tiny prefs-hint">
+          Desliga automaticamente se o sistema pedir menos movimento
+          (prefers-reduced-motion). Overlay escuro mantém o texto legível.
+        </p>
+
         <fieldset className="prefs-field prefs-home-blocks">
           <legend>Início — ordem e visibilidade</legend>
           <p className="muted tiny prefs-hint">

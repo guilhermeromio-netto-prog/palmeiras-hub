@@ -17,6 +17,7 @@ import Preferences from './components/Preferences'
 import FeedbackButton from './components/FeedbackButton'
 import EntryGate from './components/EntryGate'
 import PitchParticles from './components/PitchParticles'
+import PitchBackground from './components/PitchBackground'
 import ConfettiBurst from './components/ConfettiBurst'
 import { isMatchDaySP, isTodaySP } from './utils/datetime'
 import { isStadiumModeActive } from './utils/preferences'
@@ -31,8 +32,6 @@ import './App.css'
 
 const BASE = import.meta.env.BASE_URL
 const CREST = `${BASE}palmeiras-crest.svg`
-const BG_PITCH = `${BASE}brand/bg-pitch.png`
-
 const TABS = [
   { id: 'calendar', label: 'Jogos', icon: `${BASE}brand/btn-calendar.png` },
   { id: 'team', label: 'Time', icon: `${BASE}brand/btn-shield.png` },
@@ -154,6 +153,7 @@ export default function App() {
   }, [])
 
   const themeAccent = prefs.themeAccent || 'verde'
+  const videoBgOn = prefs.videoBg !== false
   const appClass = [
     'app',
     'app--glass',
@@ -162,6 +162,7 @@ export default function App() {
     arenaLive ? 'arena-mode' : '',
     prefs.fontSize === 'large' ? 'font-large' : '',
     prefs.compactMode ? 'compact' : '',
+    videoBgOn ? 'video-bg' : '',
   ]
     .filter(Boolean)
     .join(' ')
@@ -172,11 +173,7 @@ export default function App() {
       data-theme={themeAccent}
       style={{ '--hero-parallax': `${parallax}px` }}
     >
-      <div
-        className="pitch-bg"
-        aria-hidden="true"
-        style={{ '--pitch-img': `url(${BG_PITCH})` }}
-      />
+      <PitchBackground videoEnabled={prefs.videoBg !== false} />
       <PitchParticles />
       <ConfettiBurst active={confetti} onDone={onConfettiDone} />
       <EntryGate />

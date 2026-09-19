@@ -16,6 +16,8 @@ export default defineConfig({
         'pwa-512.png',
         'pwa-maskable-512.png',
         'brand/bg-pitch.png',
+        'brand/bg-stadium.webm',
+        'brand/bg-stadium.mp4',
         'brand/hero-campeao.png',
         'brand/btn-ball.png',
         'brand/btn-trophy.png',
@@ -67,10 +69,10 @@ export default defineConfig({
         ],
       },
       workbox: {
-        cacheId: 'palmeiras-hub-v440',
+        cacheId: 'palmeiras-hub-v441',
         skipWaiting: true,
         clientsClaim: true,
-        globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,woff2}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,woff2,webm,mp4}'],
         navigateFallback: '/palmeiras-hub/index.html',
         runtimeCaching: [
           {
