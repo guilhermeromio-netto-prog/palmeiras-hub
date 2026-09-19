@@ -63,7 +63,7 @@ export const DEFAULT_PREFS = {
   favoritePlayerIds: [],
   themeAccent: 'verde', // verde | branco | vermelho
   stadiumMode: 'auto', // auto | on | off — ambiência de estádio
-  videoBg: true, // looping muted stadium video (respects reduced-motion)
+  videoBg: true, // looping muted Verdão 3D immersion (respects reduced-motion)
   homeBlocks: DEFAULT_HOME_BLOCKS.map((b) => ({ ...b })),
   homeLayoutVersion: HOME_LAYOUT_VERSION,
 }

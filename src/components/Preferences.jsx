@@ -129,7 +129,7 @@ export default function Preferences({
             checked={prefs.videoBg !== false}
             onChange={(e) => update({ videoBg: e.target.checked })}
           />
-          <span>Vídeo de fundo — gramado/estádio em loop (sempre silencioso)</span>
+          <span>Vídeo de fundo — imersão Verdão 3D em loop (sempre silencioso)</span>
         </label>
         <p className="muted tiny prefs-hint">
           Desliga automaticamente se o sistema pedir menos movimento

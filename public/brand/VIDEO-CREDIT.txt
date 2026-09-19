@@ -1,6 +1,7 @@
 bg-stadium.webm / bg-stadium.mp4
-Source: Mixkit — "Flying over the grass of a stadium waiting for the game"
-https://mixkit.co/free-stock-video/flying-over-the-grass-of-a-stadium-waiting-for-the-14190/
-License: Mixkit Stock Video Free License (royalty-free for commercial/personal use)
-Processed: scaled, lightly blurred, color-tuned, muted, compressed for GH Pages
-Poster: brand/bg-pitch.png (existing)
+Source: Ken Burns / slow zoom+pan loop generated with ffmpeg from brand/bg-verdao-3d.png
+Composition: AI-generated Verdão-inspired 3D props (jersey + ball + shield) — fan art style.
+NOT official Sociedade Esportiva Palmeiras trademarks, logos, or licensed imagery.
+NOT match footage or stadium broadcast. For personal fan hub ambiance only.
+Poster / reduced-motion static: brand/bg-verdao-3d.png (fallback: brand/bg-pitch.png)
+Processed: 960x540, muted, ~9s seamless sinusoidal zoom/pan, compressed for GH Pages

@@ -4,6 +4,13 @@ App pessoal de torcedor do **Palmeiras**: próximo jogo, **onde assistir**, **ou
 
 **Live:** https://guilhermeromio-netto-prog.github.io/palmeiras-hub/
 
+## Novidades v4.4.2 (Imersão Verdão 3D)
+
+- **Fundo Verdão** — vídeo ambient Ken Burns gerado a partir de `brand/bg-verdao-3d.png` (camisa + bola + escudo 3D), mudo, loop, `playsInline`.
+- **Poster / reduced-motion** — estático `bg-verdao-3d.png` (fallback pitch); Preferências **Vídeo de fundo** inalteradas.
+- **Legibilidade** — véu verde-escuro reforçado + props flutuantes bem sutis atrás do véu.
+- Crédito: props AI / fan-art inspirados no Verdão — ver `public/brand/VIDEO-CREDIT.txt` (não são marcas oficiais nem footage de jogo).
+
 ## Novidades v4.4.1 (Vídeo de fundo)
 
 - **Fundo imersivo** — vídeo ambient de gramado/estádio em loop, mudo, `playsInline`, com poster `brand/bg-pitch.png`.

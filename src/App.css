@@ -7792,7 +7792,7 @@ html[data-font-size='large'] {
   margin: 0 auto;
 }
 
-/* ===== v4.4.1 — Immersive video background ===== */
+/* ===== v4.4.2 — Verdão 3D immersion (jersey + ball + shield) ===== */
 .pitch-bg {
   overflow: hidden;
   isolation: isolate;
@@ -7807,17 +7807,80 @@ html[data-font-size='large'] {
   object-fit: cover;
   object-position: center;
   pointer-events: none;
-  /* Low visual weight — motion only; veil carries contrast */
-  opacity: 0.38;
-  filter: saturate(0.9) brightness(0.92);
+  /* Visible enough to read jersey/ball/shield; veil carries contrast */
+  opacity: 0.48;
+  filter: saturate(1.05) brightness(0.88) contrast(1.05);
+}
+
+/* Subtle floating prop layers (behind veil) */
+.pitch-bg__props {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.pitch-bg__prop {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  opacity: 0.11;
+  filter: blur(0.4px) saturate(0.95);
+  will-change: transform;
+}
+
+.pitch-bg__prop--jersey {
+  width: min(52vw, 420px);
+  height: min(52vw, 420px);
+  left: -6%;
+  bottom: 8%;
+  background-image: var(--prop-jersey);
+  animation: pitch-drift-a 28s ease-in-out infinite;
+}
+
+.pitch-bg__prop--ball {
+  width: min(28vw, 220px);
+  height: min(28vw, 220px);
+  right: 4%;
+  top: 18%;
+  background-image: var(--prop-ball);
+  animation: pitch-drift-b 22s ease-in-out infinite;
+}
+
+.pitch-bg__prop--shield {
+  width: min(34vw, 280px);
+  height: min(34vw, 280px);
+  right: 12%;
+  bottom: 4%;
+  background-image: var(--prop-shield);
+  opacity: 0.09;
+  animation: pitch-drift-c 32s ease-in-out infinite;
+}
+
+@keyframes pitch-drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-2deg) scale(1); }
+  50% { transform: translate3d(2.5%, -3%, 0) rotate(2deg) scale(1.04); }
+}
+
+@keyframes pitch-drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-3%, 4%, 0) scale(1.06); }
+}
+
+@keyframes pitch-drift-c {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(-2%, -2.5%, 0) rotate(-3deg); }
 }
 
 .pitch-bg::after {
-  z-index: 1;
+  z-index: 2;
 }
 
-/* Strong multi-layer veil when video is playing — keep cards/text readable */
-.pitch-bg--has-video::after {
+/* Dark-green veil — video + static Verdão (cards/text stay readable) */
+.pitch-bg--has-video::after,
+.pitch-bg--static-verdao::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -7825,16 +7888,32 @@ html[data-font-size='large'] {
   background:
     linear-gradient(
       180deg,
-      rgba(0, 22, 14, 0.78) 0%,
-      rgba(0, 40, 24, 0.72) 28%,
-      rgba(0, 48, 28, 0.76) 55%,
-      rgba(0, 28, 18, 0.88) 100%
+      rgba(0, 18, 12, 0.84) 0%,
+      rgba(0, 36, 22, 0.78) 26%,
+      rgba(0, 44, 26, 0.82) 55%,
+      rgba(0, 22, 14, 0.92) 100%
     ),
-    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(0, 60, 36, 0.35), transparent 55%),
-    radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.45), transparent 58%),
-    radial-gradient(circle at 88% 8%, rgba(200, 16, 46, 0.18), transparent 36%);
-  backdrop-filter: blur(2.5px) saturate(1.05);
-  -webkit-backdrop-filter: blur(2.5px) saturate(1.05);
+    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(0, 55, 32, 0.4), transparent 55%),
+    radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.52), transparent 58%),
+    radial-gradient(circle at 88% 8%, rgba(200, 16, 46, 0.16), transparent 36%);
+  backdrop-filter: blur(2.8px) saturate(1.04);
+  -webkit-backdrop-filter: blur(2.8px) saturate(1.04);
+}
+
+/* Static Verdão: tone down bright mid-gradient so jersey/crest read */
+.pitch-bg--static-verdao {
+  background-color: #003820 !important;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(0, 22, 14, 0.55) 0%,
+      rgba(0, 40, 24, 0.45) 40%,
+      rgba(0, 28, 18, 0.7) 100%
+    ),
+    radial-gradient(circle at 88% 8%, rgba(200, 16, 46, 0.2), transparent 34%),
+    var(--pitch-img, none) !important;
+  background-size: cover, cover, cover, cover !important;
+  background-position: center !important;
 }
 
 /* Theme accents still tint the veil slightly over video */
@@ -7842,24 +7921,24 @@ html[data-font-size='large'] {
   background:
     linear-gradient(
       180deg,
-      rgba(0, 28, 18, 0.74) 0%,
-      rgba(0, 44, 28, 0.68) 40%,
-      rgba(20, 36, 28, 0.82) 100%
+      rgba(0, 24, 16, 0.8) 0%,
+      rgba(0, 40, 26, 0.74) 40%,
+      rgba(16, 32, 24, 0.88) 100%
     ),
-    radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.12), transparent 40%),
-    radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.4), transparent 55%);
+    radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.1), transparent 40%),
+    radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.45), transparent 55%);
 }
 
 .app[data-theme='vermelho'].video-bg .pitch-bg--has-video::after {
   background:
     linear-gradient(
       180deg,
-      rgba(28, 8, 12, 0.7) 0%,
-      rgba(0, 40, 24, 0.72) 40%,
-      rgba(20, 8, 12, 0.88) 100%
+      rgba(24, 6, 10, 0.76) 0%,
+      rgba(0, 36, 22, 0.78) 40%,
+      rgba(18, 6, 10, 0.9) 100%
     ),
-    radial-gradient(circle at 88% 8%, rgba(200, 16, 46, 0.32), transparent 36%),
-    radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.42), transparent 55%);
+    radial-gradient(circle at 88% 8%, rgba(200, 16, 46, 0.3), transparent 36%),
+    radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.46), transparent 55%);
 }
 
 /* Match day / arena: slightly deeper veil so live chrome stays crisp */
@@ -7868,12 +7947,12 @@ html[data-font-size='large'] {
   background:
     linear-gradient(
       180deg,
-      rgba(24, 6, 10, 0.72) 0%,
-      rgba(0, 36, 22, 0.76) 40%,
-      rgba(0, 20, 12, 0.9) 100%
+      rgba(20, 4, 8, 0.78) 0%,
+      rgba(0, 32, 20, 0.8) 40%,
+      rgba(0, 16, 10, 0.94) 100%
     ),
-    radial-gradient(circle at 88% 6%, rgba(200, 16, 46, 0.35), transparent 34%),
-    radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.48), transparent 55%);
+    radial-gradient(circle at 88% 6%, rgba(200, 16, 46, 0.32), transparent 34%),
+    radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.52), transparent 55%);
 }
 
 /* Cards stay opaque enough over moving video */
@@ -7895,10 +7974,15 @@ html[data-font-size='large'] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pitch-bg__video {
+  .pitch-bg__video,
+  .pitch-bg__props {
     display: none !important;
   }
-  .pitch-bg--has-video::after {
+  .pitch-bg__prop {
+    animation: none !important;
+  }
+  .pitch-bg--has-video::after,
+  .pitch-bg--static-verdao::after {
     /* fall back to static gradient strength without blur motion cost */
     backdrop-filter: none;
     -webkit-backdrop-filter: none;

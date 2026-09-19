@@ -1,12 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 
 const BASE = import.meta.env.BASE_URL
+const BG_VERDAO = `${BASE}brand/bg-verdao-3d.png`
 const BG_PITCH = `${BASE}brand/bg-pitch.png`
 const BG_WEBM = `${BASE}brand/bg-stadium.webm`
 const BG_MP4 = `${BASE}brand/bg-stadium.mp4`
+const PROP_JERSEY = `${BASE}brand/prop-jersey-3d.png`
+const PROP_BALL = `${BASE}brand/prop-ball-3d.png`
+const PROP_SHIELD = `${BASE}brand/prop-shield-3d.png`
 
 /**
- * Full-bleed pitch backdrop: static poster + optional looping muted video.
+ * Full-bleed Verdão immersion: 3D jersey/ball/shield poster + optional looping muted video.
  * Respects prefers-reduced-motion and Preferências “Vídeo de fundo”.
  * Pauses when the tab is hidden.
  */
@@ -76,26 +80,38 @@ export default function PitchBackground({ videoEnabled = true }) {
 
   return (
     <div
-      className={`pitch-bg${playVideo ? ' pitch-bg--has-video' : ''}`}
+      className={`pitch-bg${playVideo ? ' pitch-bg--has-video' : ' pitch-bg--static-verdao'}`}
       aria-hidden="true"
-      style={{ '--pitch-img': `url(${BG_PITCH})` }}
+      style={{
+        '--pitch-img': `url(${BG_VERDAO}), url(${BG_PITCH})`,
+        '--prop-jersey': `url(${PROP_JERSEY})`,
+        '--prop-ball': `url(${PROP_BALL})`,
+        '--prop-shield': `url(${PROP_SHIELD})`,
+      }}
     >
       {playVideo ? (
-        <video
-          ref={videoRef}
-          className="pitch-bg__video"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster={BG_PITCH}
-          disablePictureInPicture
-          disableRemotePlayback
-        >
-          <source src={BG_WEBM} type="video/webm" />
-          <source src={BG_MP4} type="video/mp4" />
-        </video>
+        <>
+          <video
+            ref={videoRef}
+            className="pitch-bg__video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster={BG_VERDAO}
+            disablePictureInPicture
+            disableRemotePlayback
+          >
+            <source src={BG_WEBM} type="video/webm" />
+            <source src={BG_MP4} type="video/mp4" />
+          </video>
+          <div className="pitch-bg__props" aria-hidden="true">
+            <span className="pitch-bg__prop pitch-bg__prop--jersey" />
+            <span className="pitch-bg__prop pitch-bg__prop--ball" />
+            <span className="pitch-bg__prop pitch-bg__prop--shield" />
+          </div>
+        </>
       ) : null}
     </div>
   )
