@@ -5,6 +5,7 @@
 import { fetchJson } from './fetchJson.js'
 import { sameOpponent, normalizeTeamName } from '../../utils/opponent.js'
 import { mergeMatchesByKey, dedupeH2HMeetings } from '../../utils/matchKey.js'
+import { normalizeToIsoInstant } from '../../utils/datetime.js'
 
 const TSDB = 'https://www.thesportsdb.com/api/v1/json/123'
 
@@ -47,7 +48,18 @@ function mapTsdbEvent(e) {
   const our = isHome ? hs : as
   const their = isHome ? as : hs
   const result = our > their ? 'W' : our < their ? 'L' : 'D'
-  const date = e.strTimestamp || (e.dateEvent ? `${e.dateEvent}T12:00:00Z` : null)
+  // SportsDB timestamps are Brazil local wall clock — never use naive/Z for local BRT
+  let date = null
+  if (e.strTimestamp) {
+    date = normalizeToIsoInstant(e.strTimestamp, { assume: 'america-sao-paulo' })
+  }
+  if (!date && e.dateEvent && e.strTime) {
+    const time = String(e.strTime).length === 5 ? `${e.strTime}:00` : e.strTime
+    date = normalizeToIsoInstant(`${e.dateEvent}T${time}`, { assume: 'america-sao-paulo' })
+  }
+  if (!date && e.dateEvent) {
+    date = normalizeToIsoInstant(`${e.dateEvent}T12:00:00`, { assume: 'america-sao-paulo' })
+  }
   if (!date) return null
 
   const code = leagueCode(e.strLeague)

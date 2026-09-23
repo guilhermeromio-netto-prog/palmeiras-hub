@@ -3,6 +3,7 @@
  * Useful fallback for próximo jogo when ESPN schedule lags.
  */
 import { fetchJson } from './fetchJson.js'
+import { normalizeToIsoInstant } from '../../utils/datetime.js'
 
 const BASE = 'https://www.thesportsdb.com/api/v1/json/123'
 export const PALMEIRAS_TSDB_ID = '134465'
@@ -13,13 +14,20 @@ function mapEvent(e, finished) {
   const away = e.strAwayTeam
   const isHome = /palmeiras/i.test(home)
   const opponent = isHome ? away : home
-  const date =
-    e.strTimestamp ||
-    (e.dateEvent && e.strTime
-      ? `${e.dateEvent}T${e.strTime}Z`
-      : e.dateEvent
-        ? `${e.dateEvent}T00:00:00Z`
-        : null)
+
+  // SportsDB strTimestamp is Brazil local wall clock WITHOUT offset.
+  // Never pass naive strings to Date — append -03:00 (BR has no DST).
+  let date = null
+  if (e.strTimestamp) {
+    date = normalizeToIsoInstant(e.strTimestamp, { assume: 'america-sao-paulo' })
+  }
+  if (!date && e.dateEvent && e.strTime) {
+    const time = String(e.strTime).length === 5 ? `${e.strTime}:00` : e.strTime
+    date = normalizeToIsoInstant(`${e.dateEvent}T${time}`, { assume: 'america-sao-paulo' })
+  }
+  if (!date && e.dateEvent) {
+    date = normalizeToIsoInstant(`${e.dateEvent}T00:00:00`, { assume: 'america-sao-paulo' })
+  }
   if (!date) return null
 
   let score = null

@@ -54,6 +54,9 @@ export function matchFreshnessScore(m) {
   if (m?.status === 'FINISHED') s += 2
   if (m?.id && !String(m.id).startsWith('tsdb-')) s += 2
   if (m?.venue && m.venue !== 'A definir') s += 1
+  // Prefer dates that already carry Z / ±offset (avoids naive SportsDB drift)
+  const ds = String(m?.date || '')
+  if (/[zZ]$/.test(ds) || /[+-]\d{2}:?\d{2}$/.test(ds)) s += 2
   return s
 }
 
@@ -61,6 +64,43 @@ export function matchFreshnessScore(m) {
  * Funde listas de jogos sem duplicar o mesmo confronto.
  * @param {object[]} lists
  */
+/**
+ * Same opponent+competition+side within ~36h → keep one.
+ * Prefers ESPN (espnEventId) and dates with explicit TZ.
+ */
+function isNearDuplicate(a, b) {
+  if (!a || !b) return false
+  const codeA = (a.competitionCode || inferCompetitionCode(a.competition) || 'OTH').toUpperCase()
+  const codeB = (b.competitionCode || inferCompetitionCode(b.competition) || 'OTH').toUpperCase()
+  if (codeA !== codeB) return false
+  if (Boolean(a.isHome) !== Boolean(b.isHome)) return false
+  const oppA = normalizeTeamName(a.opponent)
+  const oppB = normalizeTeamName(b.opponent)
+  if (!oppA || oppA !== oppB) return false
+  const ta = new Date(a.date).getTime()
+  const tb = new Date(b.date).getTime()
+  if (!Number.isFinite(ta) || !Number.isFinite(tb)) return false
+  return Math.abs(ta - tb) <= 36 * 60 * 60 * 1000
+}
+
+/** Second pass: collapse ±1 calendar day SP for same code+side+opponent. */
+function collapseNearDuplicates(matches) {
+  const sorted = [...matches].sort(
+    (a, b) => matchFreshnessScore(b) - matchFreshnessScore(a) || new Date(a.date) - new Date(b.date),
+  )
+  const kept = []
+  for (const m of sorted) {
+    const idx = kept.findIndex((prev) => isNearDuplicate(prev, m))
+    if (idx < 0) {
+      kept.push(m)
+      continue
+    }
+    const prev = kept[idx]
+    if (matchFreshnessScore(m) > matchFreshnessScore(prev)) kept[idx] = m
+  }
+  return kept
+}
+
 export function mergeMatchesByKey(...lists) {
   const map = new Map()
   for (const list of lists) {
@@ -82,7 +122,8 @@ export function mergeMatchesByKey(...lists) {
       }
     }
   }
-  return [...map.values()]
+  // Collapse timezone drift: SportsDB naive Oct9 00:30 vs ESPN Oct8 21:30 SP
+  return collapseNearDuplicates([...map.values()])
 }
 
 /**

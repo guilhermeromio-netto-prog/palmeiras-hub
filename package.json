@@ -1,7 +1,7 @@
 {
   "name": "palmeiras-hub",
   "private": true,
-  "version": "4.4.2",
+  "version": "4.4.3",
   "type": "module",
   "description": "Hub pessoal Palmeiras \u2014 r\u00e1dio + YouTube + torcida VERDAO + onde assistir",
   "scripts": {
@@ -12,7 +12,8 @@
     "preview": "vite preview",
     "serve": "npx --yes serve dist -p 4173",
     "start": "NODE_ENV=production node server/index.js",
-    "lint": "oxlint"
+    "lint": "oxlint",
+    "test:datetime": "node scripts/assert-datetime.mjs"
   },
   "dependencies": {
     "@instantdb/react": "^1.0.67",

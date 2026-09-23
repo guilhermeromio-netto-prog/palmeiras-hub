@@ -3,6 +3,7 @@
  * Standings (multi-liga), schedule, roster (+ cartões), lineup/formação.
  */
 import { fetchJson } from './fetchJson.js'
+import { normalizeToIsoInstant } from '../../utils/datetime.js'
 
 const ESPN = 'https://site.api.espn.com'
 const ESPN_V2 = 'https://site.api.espn.com/apis/v2'
@@ -107,7 +108,7 @@ function mapEspnEvent(event, leagueMeta) {
     opponentLogoUrl: isHome ? awayLogo : homeLogo,
     isHome,
     opponent,
-    date: event.date,
+    date: normalizeToIsoInstant(event.date, { assume: 'utc' }) || event.date,
     venue,
     status: finished ? 'FINISHED' : live ? 'LIVE' : scheduled ? 'SCHEDULED' : statusName || 'SCHEDULED',
     score,
@@ -322,12 +323,12 @@ export async function fetchEspnAllStandings(signal) {
   }
 }
 
-/** Datas extras de scoreboard só para mata-mata (CdB) além da janela de 14 dias. */
+/** Datas extras de scoreboard só para mata-mata (CdB) além da janela principal. */
 function cdbHorizonDates() {
   const out = []
   const start = new Date()
   start.setUTCHours(0, 0, 0, 0)
-  for (let i = 14; i < 100; i++) {
+  for (let i = 45; i < 100; i++) {
     const d = new Date(start)
     d.setUTCDate(d.getUTCDate() + i)
     // Domingos + quartas (datas-base típicas da CdB) — evita dezenas de requests
@@ -368,7 +369,8 @@ export async function fetchEspnMatches(signal) {
   const days = []
   const start = new Date()
   start.setUTCHours(0, 0, 0, 0)
-  for (let i = 0; i < 14; i++) {
+  // BSA/LIB/PAU: 45 dias — Brasileirão futuros (ex. Bahia 08/10) ficavam fora da janela de 14d
+  for (let i = 0; i < 45; i++) {
     const d = new Date(start)
     d.setUTCDate(d.getUTCDate() + i)
     days.push(yyyymmdd(d))
